@@ -32,7 +32,11 @@ const ImportarUsuarios = () => {
         setMessage(`Error al importar usuarios: ${JSON.stringify(errorData.errors)}`);
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        setMessage('Error: No se puede conectar con el servidor. Por favor, intenta más tarde.');
+      } else {
+        setMessage(`Error: ${error.message}`);
+      }
       console.error(error);
     }
   };

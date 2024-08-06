@@ -1,46 +1,49 @@
 import {useContext} from 'react'
 import AuthContext from '../../context/AuthContext'
 import './LogInStyle.css';
+import { Link } from 'react-router-dom';
+
+
 
 const Login = () => {
-  const {loginUser} = useContext(AuthContext)
+  const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    // console.log(e.target)
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
-    const email = e.target.email.value
-    const password = e.target.password.value
+    loginUser(email, password);
+  };
 
-    loginUser(email, password)
-  }
   return (
-    
     <div className="login-container">
-    <img className="loginLogo" src="/src/assets/tup_logo.jpg" alt="Login Logo"></img>
-    <form onSubmit={handleSubmit}>
+      <img className="loginLogo" src="/src/assets/tup_logo.jpg" alt="Login Logo" />
+      <form onSubmit={handleSubmit}>
         <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                required
-            />
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+          />
         </div>
         <div className="input-group">
-            <label htmlFor="password">Contraseña</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                required
-            />
+          <label htmlFor="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+          />
         </div>
         <button type="submit">Acceder</button>
-    </form>
-</div>
-
+      </form>
+      <Link to="/recuperar-password">¿Olvidaste tu contraseña?</Link>
+    </div>
+  );
+};
     /*
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="mainContainer">
@@ -86,7 +89,6 @@ const Login = () => {
     </div>
     </div>
     */
-  )
-}
+
 
 export default Login

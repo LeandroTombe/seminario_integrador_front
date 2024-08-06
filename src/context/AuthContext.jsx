@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert2";
 
 
+
 const AuthContext = createContext();
 
 export default AuthContext
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem("authTokens", JSON.stringify(data));
             navigate("/importar")
             swal.fire({
-                title: "Login Success",
+                title: "sesión iniciada correctamente",
                 icon: "success",
                 toast: true,
                 timer: 1300,
@@ -52,9 +53,9 @@ export const AuthProvider = ({ children }) => {
             })
         } else {
             console.log(response.status)
-            console.log("An Error Occured")
+            
             swal.fire({
-                title: "El email o password no existen",
+                title: "El email no existe o el password es incorrecta",
                 icon: "error",
                 toast: true,
                 timer: 6000,
@@ -65,6 +66,8 @@ export const AuthProvider = ({ children }) => {
         }
 
     }
+
+    
     const contextData = {
         user,setUser,
         authTokens, setAuthTokens,

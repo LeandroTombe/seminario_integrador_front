@@ -12,6 +12,8 @@ import Configuracion from './pages/coordinador/Configuracion.jsx';
 import Inicio from './pages/coordinador/Inicio.jsx';
 import Mensajes from './pages/coordinador/Mensajes.jsx';
 import Reportes from './pages/coordinador/Reportes.jsx';
+import RecuperarPass from './pages/login/RecuperarPass.jsx';
+import VerificarNuevoPassword from './pages/login/VerificarNuevoPassword.jsx';
 
 const App = () => {
   return (
@@ -31,6 +33,9 @@ const App = () => {
 
           <Route path="/importar" element={ <ProtectedRoute> <ImportarUsuarios /> </ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
+          <Route path="/recuperar-password" element={<RecuperarPass />} />
+          <Route path="/verificar-nuevo-password" element={<VerificarNuevoPassword />} />
+
         </Routes>
       </div>
     </div>

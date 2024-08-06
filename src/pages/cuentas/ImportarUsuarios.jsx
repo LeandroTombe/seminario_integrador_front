@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import './ImportarUsuarios.css';
 
+import { useContext } from 'react';
+import AuthContext from '../../context/AuthContext';
+
 const ImportarUsuarios = () => {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState('');
+  const { authTokens } = useContext(AuthContext);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -20,9 +24,12 @@ const ImportarUsuarios = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/auth/importar_usuarios/', {
-        method: 'POST',
-        body: formData,
+      const response = await fetch("http://127.0.0.1:8000/api/v1/auth/importar_usuarios/", {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${authTokens.access}` // Asegúrate de enviar el token
+        },
+        body: formData
       });
 
       if (response.ok) {

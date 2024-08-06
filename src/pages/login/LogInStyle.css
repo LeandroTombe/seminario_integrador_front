@@ -1,0 +1,119 @@
+  /* Reseteo básico del margen y padding */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Estilos básicos del cuerpo */
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #01161E, #124559, #81A4B1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 10px; /* Añadido para manejar márgenes en pantallas pequeñas */
+  }
+
+  /* Contenedor principal de login */
+  .login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Aumentado para pantallas más grandes */
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  /* Estilo del encabezado */
+  .login-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  /* Estilo de los grupos de entrada */
+  .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  /* Estilo de las etiquetas de los campos de entrada */
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #222222;
+  }
+
+  /* Estilo de los campos de entrada */
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  /* Estilo del botón */
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #124559;
+    border-color: #124559;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #165974;
+  }
+
+  /* Media Queries para mejorar la responsividad */
+
+  /* Pantallas más pequeñas */
+  @media (max-width: 600px) {
+    .login-container {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .input-group input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px;
+    }
+  }
+
+  /* Pantallas muy pequeñas, como dispositivos móviles en modo retrato */
+  @media (max-width: 400px) {
+    .login-container {
+        padding: 10px;
+    }
+
+    .input-group input {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 6px;
+    }
+  }
+
+  .loginLogo {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+  }

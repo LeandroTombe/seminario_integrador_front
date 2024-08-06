@@ -40,13 +40,13 @@ export const AuthProvider = ({ children }) => {
             setAuthTokens(data)
             setUser(jwtDecode(data.access))
             localStorage.setItem("authTokens", JSON.stringify(data));
-            navigate("/")
+            navigate("/importar")
             swal.fire({
                 title: "Login Success",
                 icon: "success",
                 toast: true,
-                timer: 6000,
-                position: 'top-right',
+                timer: 1300,
+                position: 'top',
                 timerProgressBar: true,
                 showConfirmButton: false
             })
@@ -54,11 +54,11 @@ export const AuthProvider = ({ children }) => {
             console.log(response.status)
             console.log("An Error Occured")
             swal.fire({
-                title: "Email - Password does not exist",
+                title: "El email o password no existen",
                 icon: "error",
                 toast: true,
                 timer: 6000,
-                position: 'top-right',
+                position: 'top',
                 timerProgressBar: true,
                 showConfirmButton: false
             })

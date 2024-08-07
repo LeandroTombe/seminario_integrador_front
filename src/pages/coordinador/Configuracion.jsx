@@ -1,6 +1,6 @@
 import SeccionConfiguracion from "../../components/SeccionConfiguracion";
 import Sidebar from "../../components/Sidebar";
-import ImportarUsuarios from "../cuentas/ImportarUsuarios"
+import ImportarUsuarios from "../importaciones/ImportarUsuarios";
 import './Configuracion.css'
 
 function Configuracion() {

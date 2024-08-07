@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
             setAuthTokens(data)
             setUser(jwtDecode(data.access))
             localStorage.setItem("authTokens", JSON.stringify(data));
-            navigate("/inicio")
+            navigate("/coordinador/inicio")
             swal.fire({
                 title: "sesión iniciada correctamente",
                 icon: "success",

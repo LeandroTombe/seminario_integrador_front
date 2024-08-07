@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { validarPassword } from '../../services/authService';
+import { validarPassword } from '../../../services/authService';
 
 const VerificarNuevoPassword = () => {
 

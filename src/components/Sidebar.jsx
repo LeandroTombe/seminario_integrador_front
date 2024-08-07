@@ -9,16 +9,16 @@ const Sidebar = () => {
         <h3>Menú</h3>
       </div>
       <nav className="sidebar-nav">
-        <NavLink to="/inicio" className="sidebar-link" activeClassName="active">
+        <NavLink to="/coordinador/inicio" className="sidebar-link" activeClassName="active">
           <i className="icon">🏠</i> Inicio
         </NavLink>
-        <NavLink to="/mensajes" className="sidebar-link" activeClassName="active">
+        <NavLink to="/coordinador/mensajes" className="sidebar-link" activeClassName="active">
           <i className="icon">📧</i> Mensajes
         </NavLink>
-        <NavLink to="/reportes" className="sidebar-link" activeClassName="active">
+        <NavLink to="/coordinador/reportes" className="sidebar-link" activeClassName="active">
           <i className="icon">📊</i> Reportes
         </NavLink>
-        <NavLink to="/configuracion" className="sidebar-link" activeClassName="active">
+        <NavLink to="/coordinador/configuracion" className="sidebar-link" activeClassName="active">
           <i className="icon">⚙️</i> Configuración
         </NavLink>
       </nav>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { recuperarPassword } from '../../services/authService';
+import { recuperarPassword } from '../../../services/authService';
 
 const RecuperarPass = () => {
 

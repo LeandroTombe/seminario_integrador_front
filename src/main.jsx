@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ImportarUsuarios from './pages/cuentas/ImportarUsuarios.jsx';
+import ImportarUsuarios from './pages/importaciones/ImportarUsuarios.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './utils/ProtectedRoute';
-import Login from './pages/login/Login.jsx';
+import Login from './pages/cuentas/login/Login.jsx';
 import Sidebar from './components/Sidebar.jsx';
 
 /* Paginas de coordinador */ 
@@ -12,8 +12,8 @@ import Configuracion from './pages/coordinador/Configuracion.jsx';
 import Inicio from './pages/coordinador/Inicio.jsx';
 import Mensajes from './pages/coordinador/Mensajes.jsx';
 import Reportes from './pages/coordinador/Reportes.jsx';
-import RecuperarPass from './pages/login/RecuperarPass.jsx';
-import VerificarNuevoPassword from './pages/login/VerificarNuevoPassword.jsx';
+import RecuperarPass from './pages/cuentas/login/RecuperarPass.jsx';
+import VerificarNuevoPassword from './pages/cuentas/login/VerificarNuevoPassword.jsx';
 
 const App = () => {
   return (
@@ -24,10 +24,10 @@ const App = () => {
 
           {/* Paginas de coordinador */}
 
-          <Route path="/inicio" element={<Inicio />} />
-          <Route path="/mensajes" element={<Mensajes />} />
-          <Route path="/reportes" element={<Reportes />} />
-          <Route path="/configuracion" element={<Configuracion />} />
+          <Route path="/coordinador/inicio" element={<Inicio />} />
+          <Route path="/coordinador/mensajes" element={<Mensajes />} />
+          <Route path="/coordinador/reportes" element={<Reportes />} />
+          <Route path="/coordinador/configuracion" element={<Configuracion />} />
 
 
 

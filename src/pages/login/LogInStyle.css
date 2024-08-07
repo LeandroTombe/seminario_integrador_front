@@ -1,20 +1,20 @@
-  /* Reseteo básico del margen y padding */
+/* Esto le daba estilo a todas las paginas. */
   * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  /* Estilos básicos del cuerpo */
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #01161E, #124559, #81A4B1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 10px; /* Añadido para manejar márgenes en pantallas pequeñas */
-  }
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  
+    /*Estilos básicos del cuerpo */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #01161E, #124559, #81A4B1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 10px; /* Añadido para manejar márgenes en pantallas pequeñas */
+    }
 
   /* Contenedor principal de login */
   .login-container {
@@ -57,7 +57,7 @@
   }
 
   /* Estilo del botón */
-  button {
+  .login-button {
     width: 100%;
     padding: 10px;
     background-color: #124559;
@@ -70,7 +70,7 @@
     transition: background-color 0.3s ease;
   }
 
-  button:hover {
+  .login-button:hover {
     background-color: #165974;
   }
 

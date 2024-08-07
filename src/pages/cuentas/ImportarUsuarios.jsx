@@ -49,16 +49,16 @@ const ImportarUsuarios = () => {
   };
 
   return (
-    <div className="container">
-      <h2 className="heading">Importar Usuarios</h2>
-      <form onSubmit={handleSubmit} className="form">
+    <div className="container-import">
+      <h3 className="heading-import">Importar Usuarios</h3>
+      <form onSubmit={handleSubmit} className="form-import">
         <input
           type="file"
           accept=".csv"
           onChange={handleFileChange}
-          className="input"
+          className="input-import"
         />
-        <button type="submit" className="button">
+        <button type="submit" className="button-import">
           Importar
         </button>
       </form>

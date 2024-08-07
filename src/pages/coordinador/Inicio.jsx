@@ -1,11 +1,13 @@
-
+import Sidebar from "../../components/Sidebar";
+import './Inicio.css';
 
 function Inicio() {
 
     return (
-      <>
-       <p>Inicio desde coordinador</p>
-      </>
+      <div class="contenedor-principal">
+        <Sidebar/>
+      </div>
+      
     )
   }
   

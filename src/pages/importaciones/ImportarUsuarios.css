@@ -51,3 +51,27 @@
     margin-top: 20px;
     color: #d9534f;
   }
+
+  .import-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+  
+  .import-stats p {
+    margin: 0;
+    padding: 0 10px;
+    font-weight: bold;
+  }
+  
+  .import-stats .total {
+    color: black;
+  }
+  
+  .import-stats .validos {
+    color: green;
+  }
+  
+  .import-stats .invalidos {
+    color: red;
+  }

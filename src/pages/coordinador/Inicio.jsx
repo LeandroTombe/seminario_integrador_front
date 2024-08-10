@@ -4,7 +4,7 @@ import './Inicio.css';
 function Inicio() {
 
     return (
-      <div class="contenedor-principal">
+      <div className="contenedor-principal">
         <Sidebar/>
       </div>
       

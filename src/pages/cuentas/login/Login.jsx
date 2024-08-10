@@ -38,7 +38,7 @@ const Login = () => {
             required
           />
         </div>
-        <button class="login-button"type="submit">Acceder</button>
+        <button className="login-button"type="submit">Acceder</button>
       </form>
       <Link to="/recuperar-password">¿Olvidaste tu contraseña?</Link>
     </div>

@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import ImportarUsuarios from './pages/importaciones/ImportarUsuarios.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './utils/ProtectedRoute';
+import ProtectedRoute from './utils/ProtectedRoute.jsx';
 import Login from './pages/cuentas/login/Login.jsx';
+import Desautorizacion from './components/Desautorizacion.jsx';
 
 /* Paginas de coordinador */ 
 import Configuracion from './pages/coordinador/Configuracion.jsx';
@@ -24,6 +25,8 @@ const App = () => {
 
           {/* Paginas de coordinador */}
 
+          <Route path="/estudiante" element={<ProtectedRoute element={<Inicio />} roles={['Admin', 'Coordinador', 'Alumno']} />} />
+
           <Route path="/coordinador/inicio" element={<Inicio />} />
           <Route path="/coordinador/mensajes" element={<Mensajes />} />
           <Route path="/coordinador/reportes" element={<Reportes />} />
@@ -36,6 +39,10 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/recuperar-password" element={<RecuperarPass />} />
           <Route path="/verificar-nuevo-password" element={<VerificarNuevoPassword />} />
+
+
+
+          <Route path="/unauthorized" element={<ProtectedRoute element={<Desautorizacion />} />} />
 
         </Routes>
       </div>

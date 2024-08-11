@@ -59,6 +59,13 @@ const ImportarUsuariosForm = ({ onImport }) => {
           title: 'Error',
           text: 'No tiene los permisos necesarios para realizar esta acción.'
         });
+      }else if (response.status === 403) {
+        setMessage('Error: No tiene los permisos necesarios para realizar esta acción.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No tiene los permisos necesarios para realizar esta acción.'
+        });
       } else {
         const errorData = await response.json();
         setMessage('');

@@ -36,9 +36,20 @@ export const AuthProvider = ({ children }) => {
 
         if (response.status === 200) {
             setAuthTokens(data);
-            setUser(jwtDecode(data.access));
+            const decodedUser = jwtDecode(data.access);
+            setUser(decodedUser);
             localStorage.setItem("authTokens", JSON.stringify(data));
-            navigate("/coordinador/inicio");
+                        // Redirigir a la página según el rol del usuario
+            const userRole = decodedUser.role;
+            if (userRole === "Admin") {
+                navigate("/admin/inicio");
+            } else if (userRole === "Coordinador") {
+                navigate("/coordinador/inicio");
+            } else if (userRole === "Alumno") {
+                navigate("/alumno/inicio");
+            } else {
+                navigate("/unauthorized");
+            }
             swal.fire({
                 title: "Sesión iniciada correctamente",
                 icon: "success",
@@ -147,3 +158,6 @@ export const AuthProvider = ({ children }) => {
 
 // Export default AuthContext
 export default AuthContext;
+
+// Export useAuth hook
+export const useAuth = () => useContext(AuthContext);

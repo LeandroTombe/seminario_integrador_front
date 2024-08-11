@@ -1,7 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import './Sidebar.css';
+import './SidebarCoordinador.css';
+import { useAuth } from '../../context/AuthContext';
+import '../../assets/logout-button.css';
 
-const Sidebar = () => {
+const SidebarCoordinador = () => {
+  const { logoutUser } = useAuth();
+
+
   return (
     <div className="sidebar">
       <div className="sidebar-header">
@@ -23,9 +28,12 @@ const Sidebar = () => {
         <NavLink to="/coordinador/importaciones-validas" className="sidebar-link" activeClassName="active">
           <i className="icon">⚙️</i> Importaciones
         </NavLink>
+        <button onClick={logoutUser} className="sidebar-link logout-button">
+          <i className="icon">🔒</i> Logout
+        </button>
       </nav>
     </div>
   );
 };
 
-export default Sidebar;
+export default SidebarCoordinador;

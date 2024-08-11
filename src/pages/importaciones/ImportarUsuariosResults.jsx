@@ -25,21 +25,21 @@ const ImportarUsuariosResults = ({ validRows, errors, successfulImports, totalRo
   };
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
-        <Button variant="contained" color="success" onClick={handleMostrarValidos}>
+        <Button variant="contained" color="success" onClick={handleMostrarValidos} style={{ marginRight: '10px' }}>
           Ver Válidos ({validRows.length})
         </Button>
-        <Button variant="contained" color="error" onClick={handleMostrarInvalidos} style={{ marginLeft: '10px' }}>
+        <Button variant="contained" color="error" onClick={handleMostrarInvalidos} style={{ marginRight: '10px' }}>
           Ver Inválidos ({errors.length})
         </Button>
-        <Button variant="contained" color="primary" onClick={handleMostrarImportados} style={{ marginLeft: '10px' }}>
+        <Button variant="contained" color="primary" onClick={handleMostrarImportados}>
           Ver Importados ({successfulImports})
         </Button>
       </div>
       
       {mostrarValidos && (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -64,7 +64,7 @@ const ImportarUsuariosResults = ({ validRows, errors, successfulImports, totalRo
       )}
 
       {mostrarInvalidos && (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -85,7 +85,7 @@ const ImportarUsuariosResults = ({ validRows, errors, successfulImports, totalRo
       )}
 
       {mostrarImportados && (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
           <Table>
             <TableHead>
               <TableRow>

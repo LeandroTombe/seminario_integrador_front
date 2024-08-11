@@ -1,7 +1,6 @@
-import Sidebar from "./SidebarCoordinador";
-import './Inicio.css';
+import Sidebar from "./SidebarAlumno";
 
-function Inicio() {
+function AlumnoTramites() {
 
     return (
       <div className="contenedor-principal">
@@ -13,5 +12,5 @@ function Inicio() {
   
 
 
-  export default Inicio
+  export default AlumnoTramites;
   

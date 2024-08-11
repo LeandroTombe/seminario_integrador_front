@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import ImportarUsuariosForm from './ImportarUsuariosForm.jsx';
 import ImportarUsuariosResults from './ImportarUsuariosResults.jsx';
-import Sidebar from '../../components/Sidebar.jsx';
+import Sidebar from '../coordinador/SidebarCoordinador.jsx';
 
 const ImportarUsuarios = () => {
   const [importData, setImportData] = useState(null);
@@ -25,8 +25,8 @@ const ImportarUsuarios = () => {
             <ImportarUsuariosResults
               validRows={importData.valid_rows || []}
               errors={importData.errors || []}
-              successfulImports={importData.successful_imports}
-              failedImports={importData.failed_imports}
+              successfulImports={importData.successful_imports || 0}
+              totalRows={importData.total_rows || 0}
             />
           )}
         </CardContent>

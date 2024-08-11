@@ -1,5 +1,5 @@
 import SeccionConfiguracion from "../../components/SeccionConfiguracion";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "./SidebarCoordinador";
 import ImportarUsuarios from "../importaciones/ImportarUsuarios";
 import './Configuracion.css'
 

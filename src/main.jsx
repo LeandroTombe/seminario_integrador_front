@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './utils/ProtectedRoute';
 import Login from './pages/cuentas/login/Login.jsx';
-import Sidebar from './components/Sidebar.jsx';
 
 /* Paginas de coordinador */ 
 import Configuracion from './pages/coordinador/Configuracion.jsx';
@@ -14,6 +13,7 @@ import Mensajes from './pages/coordinador/Mensajes.jsx';
 import Reportes from './pages/coordinador/Reportes.jsx';
 import RecuperarPass from './pages/cuentas/login/RecuperarPass.jsx';
 import VerificarNuevoPassword from './pages/cuentas/login/VerificarNuevoPassword.jsx';
+
 
 const App = () => {
   return (
@@ -28,6 +28,7 @@ const App = () => {
           <Route path="/coordinador/mensajes" element={<Mensajes />} />
           <Route path="/coordinador/reportes" element={<Reportes />} />
           <Route path="/coordinador/configuracion" element={<Configuracion />} />
+          <Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />
 
 
 

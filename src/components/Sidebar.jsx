@@ -20,6 +20,9 @@ const Sidebar = () => {
         <NavLink to="/coordinador/configuracion" className="sidebar-link" activeClassName="active">
           <i className="icon">⚙️</i> Configuración
         </NavLink>
+        <NavLink to="/coordinador/importaciones-validas" className="sidebar-link" activeClassName="active">
+          <i className="icon">⚙️</i> Importaciones
+        </NavLink>
       </nav>
     </div>
   );

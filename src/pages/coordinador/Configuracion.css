@@ -2,7 +2,7 @@
 .contentConfig {
     margin-left: 240px;
     padding: 20px;
-    width: calc(100% - 240px);
+    width: calc(100% - 100px);
     display: flex;
     justify-content: center;
 }

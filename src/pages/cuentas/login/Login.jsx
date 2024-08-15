@@ -18,7 +18,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <img className="loginLogo" src="/src/assets/tup_logo.jpg" alt="Login Logo" />
+      <img className="loginLogo" src="/src/assets/tup_logo.png" alt="Login Logo" />
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <label htmlFor="email">Email</label>

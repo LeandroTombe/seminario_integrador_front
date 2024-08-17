@@ -24,7 +24,7 @@ import Configuracion from './pages/coordinador/Configuracion.jsx';
 import Inicio from './pages/coordinador/Inicio.jsx';
 import Mensajes from './pages/coordinador/Mensajes.jsx';
 import Reportes from './pages/coordinador/Reportes.jsx';
-
+import ImportDataComponent from './pages/importaciones/ImportDataComponent.jsx';
 
 
 const App = () => {
@@ -37,6 +37,8 @@ const App = () => {
           <Route path="/alumno/inicio" element={<ProtectedRoute element={<AlumnoInicio />} roles={['Alumno']} />} />
           <Route path="/alumno/mensajes" element={<ProtectedRoute element={<AlumnoMensajes />} roles={['Alumno']} />} />
           <Route path="/alumno/tramites" element={<ProtectedRoute element={<AlumnoTramites />} roles={['Alumno']} />} />
+
+          <Route path="/importar_panda" element={<ImportDataComponent/>}/>
           
 
           {/* Paginas de coordinador */}
@@ -47,12 +49,13 @@ const App = () => {
           <Route path="/coordinador/mensajes" element={<Mensajes />} />
           <Route path="/coordinador/reportes" element={<Reportes />} />
           <Route path="/coordinador/configuracion" element={<Configuracion />} />
+          {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
           <Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />
           <Route path="/importar" element={ <ProtectedRoute> <ImportarUsuarios /> </ProtectedRoute>} />
 
 
           {/* Paginas de autorizacion */}
-         
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/recuperar-password" element={<RecuperarPass />} />
           <Route path="/verificar-nuevo-password" element={<VerificarNuevoPassword />} />

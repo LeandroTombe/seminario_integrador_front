@@ -33,9 +33,6 @@ const ImportarUsuariosResults = ({ validRows, errors, successfulImports, totalRo
         <Button variant="contained" color="error" onClick={handleMostrarInvalidos} style={{ marginRight: '10px' }}>
           Ver Inválidos ({errors.length})
         </Button>
-        <Button variant="contained" color="primary" onClick={handleMostrarImportados}>
-          Ver Importados ({successfulImports})
-        </Button>
       </div>
       
       {mostrarValidos && (

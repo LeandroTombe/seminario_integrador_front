@@ -6,15 +6,6 @@
     }
   
     /*Estilos básicos del cuerpo */
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #01161E, #124559, #81A4B1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      padding: 10px; /* Añadido para manejar márgenes en pantallas pequeñas */
-    }
 
   /* Contenedor principal de login */
   .login-container {

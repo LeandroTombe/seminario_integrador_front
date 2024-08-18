@@ -8,6 +8,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    font-family: Arial, Helvetica, sans-serif;
   }
   
   .sidebar-header {
@@ -20,6 +21,7 @@
     margin: 0;
     font-size: 20px;
     color: #333;
+    font-weight: bold;
   }
   
   .sidebar-nav {
@@ -48,4 +50,9 @@
   .sidebar-link.active {
     background-color: #ccc;
     font-weight: bold;
+  }
+
+  .sidebar-link .icon {
+    font-size: 22px; /* Ajusta el tamaño del ícono */
+    margin-right: 12px; /* Espacio entre el ícono y el texto */
   }

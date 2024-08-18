@@ -1,11 +1,16 @@
 
-.contentConfig {
-    margin-left: 240px;
+.h1 {
+    margin-left: 120px
+}
+
+contentConfig {
+    margin-left: 120px;
     padding: 20px;
     width: calc(100% - 100px);
     display: flex;
     justify-content: center;
 }
+
 .containerConfig {
     background-color: #ffffff;
     border-radius: 8px;
@@ -14,31 +19,5 @@
     width: 100%;
     max-width: 800px;
     margin: auto;
-    
-  }
+}
 
-.actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-.actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px;
-}
-.actions button:hover {
-    background-color: #218838;
-}
-.actions button:last-child {
-    margin-right: 0;
-    background-color: #17a2b8;
-}
-.actions button:last-child:hover {
-    background-color: #138496;
-}

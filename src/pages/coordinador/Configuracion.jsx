@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import SeccionConfiguracion from "../../components/SeccionConfiguracion";
 import Sidebar from "./SidebarCoordinador";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ImportarUsuarios from "../importaciones/ImportarUsuarios";
 import './Configuracion.css'
 
@@ -31,12 +32,12 @@ function Configuracion() {
 
     // A la SeccionConfiguracion se le tiene que pasar el valorInicial que es el valor que vamos a leer desde el servidor segun corresponda
     return (
-      <div>
+      <>
       <Sidebar/>
-      
-      <div className="contentConfig">
+      <div className="content">
+        <h1>Compromiso de pago Actual</h1>
+      </div>
         <div className="containerConfig">
-          <h2>Compromiso de pago Actual</h2>
           <br />
           <SeccionConfiguracion texto="Valor de matricula" valorInicial={data.map((item) => (<li key={item.id}>{item.importe_matricula}</li>))}/>
           <SeccionConfiguracion texto="Valor de cuota completa" valorInicial={data.map((item) => (<li key={item.id}>{item.importe_completo}</li>))}/>
@@ -45,13 +46,12 @@ function Configuracion() {
           <SeccionConfiguracion texto="Valor de segunda mora completa" valorInicial={data.map((item) => (<li key={item.id}>{item.importe_seg_venc_comp}</li>))}/>
           <SeccionConfiguracion texto="Valor de primer mora reducida" valorInicial={data.map((item) => (<li key={item.id}>{item.importe_pri_venc_red}</li>))}/>
           <SeccionConfiguracion texto="Valor de segunda mora reducida" valorInicial={data.map((item) => (<li key={item.id}>{item.importe_seg_venc_red}</li>))}/>
-          <button>Cargar nuevo compromiso de pago</button>
-          <br />
-          <button>Ver historial de compromisos de pago</button>
+          <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-primary me-3" type="button">Cargar nuevo compromiso de pago</button>
+            <button class="btn btn-primary" type="button">Ver historial de compromisos de pago</button>
+          </div>
         </div>
-        
-      </div>
-      </div>
+      </>
     )
   }
 

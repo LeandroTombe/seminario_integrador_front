@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from "./SidebarCoordinador";
-import './Inicio.css';
+import './Compromiso.css';
 
 function CargarCompromiso() {
   // Calcular el año actual y el semestre actual

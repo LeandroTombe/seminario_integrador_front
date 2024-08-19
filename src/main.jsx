@@ -26,6 +26,7 @@ import Mensajes from './pages/coordinador/Mensajes.jsx';
 import Reportes from './pages/coordinador/Reportes.jsx';
 import ImportDataComponent from './pages/importaciones/ImportDataComponent.jsx';
 import CargarCompromiso from './pages/coordinador/CargarCompromiso.jsx';
+import HistorialCompromiso from './pages/coordinador/HistorialCompromiso.jsx'
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/coordinador/reportes" element={<Reportes />} />
           <Route path="/coordinador/configuracion/compromiso" element={<Compromiso />} />
           <Route path="/coordinador/configuracion/cargar-compromiso" element={<CargarCompromiso />} />
+          <Route path="/coordinador/configuracion/historial-compromiso" element={<HistorialCompromiso />} />
           {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
           <Route path="/coordinador/configuracion/importaciones-validas" element={<ImportarUsuarios />} />
           <Route path="/importar" element={ <ProtectedRoute> <ImportarUsuarios /> </ProtectedRoute>} />

@@ -1,0 +1,16 @@
+/* Estilo para cambiar el fondo del header cuando se hace hover */
+.accordion-header:hover {
+    background-color: #f8f9fa; /* Cambia el color de fondo en hover */
+    cursor: pointer;
+  }
+  
+  /* Estilo para darle un borde más definido al accordion */
+  .accordion-card {
+    border: 1px solid #ddd; /* Añade un borde al card */
+    transition: transform 0.2s, box-shadow 0.2s; /* Transición para animar el hover */
+  }
+  
+  .accordion-card:hover {
+    transform: translateY(-5px); /* Hace que el card "salte" un poco al hacer hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añade sombra para un efecto de elevación */
+  }

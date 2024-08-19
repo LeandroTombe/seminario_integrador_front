@@ -1,5 +1,6 @@
 import List from "./List";
 import Carrusel from "./Carrusel";
+import Sidebar from "./SidebarCoordinador";
 
 function Inicio2() {
   const matriz = [
@@ -33,6 +34,8 @@ function Inicio2() {
   ];
   return (
     <>
+    <div>
+      <Sidebar/>
       <Carrusel />
       <List
         data={matriz}
@@ -46,6 +49,7 @@ function Inicio2() {
           "Estado",
         ]}
       />
+    </div>
     </>
   );
 }

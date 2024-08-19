@@ -47,6 +47,10 @@ function Compromiso() {
     navigate('/coordinador/configuracion/cargar-compromiso'); // Redirecciona a la página de carga
   };
 
+  const handleHistorialCompromiso = () => {
+    navigate('/coordinador/configuracion/historial-compromiso'); // Redirecciona a la página de carga
+  };
+
   return (
     <>
       <Sidebar/>
@@ -58,7 +62,7 @@ function Compromiso() {
           {data.length === 0 ? (
             <p>No existe un compromiso de pago cargado para el año y cuatrimestre actual.</p>
           ) : (
-            <div>
+            <div className='conteinerInfo'>
               <Badge bg="primary">Año: {data[0].año} Cuatrimestre: {data[0].cuatrimestre}</Badge>
               <SeccionCompromiso texto="Valor de matricula" valorInicial={data[0].importe_matricula} />
               <SeccionCompromiso texto="Valor de cuota completa" valorInicial={data[0].importe_completo} />
@@ -69,9 +73,9 @@ function Compromiso() {
               <SeccionCompromiso texto="Valor de segunda mora reducida" valorInicial={data[0].importe_seg_venc_red} />
             </div>
           )}
-          <div className="d-grid gap-2 d-md-block">
+          <div className="conteinerBotones">
             <button className="btn btn-primary me-3" type="button" onClick={handleCargarNuevoCompromiso}>Cargar nuevo compromiso de pago</button>
-            <button className="btn btn-primary" type="button">Ver historial de compromisos de pago</button>
+            <button className="btn btn-primary" type="button" onClick={handleHistorialCompromiso}>Ver historial de compromisos de pago</button>
           </div>
         </div>  
       </div>

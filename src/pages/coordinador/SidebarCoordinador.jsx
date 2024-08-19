@@ -1,11 +1,27 @@
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import './SidebarCoordinador.css';
 import { useAuth } from '../../context/AuthContext';
 import '../../assets/logout-button.css';
+import { FiHome, FiMail, FiBarChart2, FiSettings, FiLogOut } from 'react-icons/fi';
 
 const SidebarCoordinador = () => {
   const { logoutUser } = useAuth();
+  const location = useLocation();  // Hook para obtener la ubicación actual
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
 
+  // Efecto para manejar el estado de despliegue de la seccion configuracion basado en la ruta actual
+  useEffect(() => {
+    if (location.pathname.startsWith('/coordinador/configuracion')) {
+      setIsConfigOpen(true);
+    } else {
+      setIsConfigOpen(false);
+    }
+  }, [location.pathname]);
+
+  const toggleConfig = () => {
+    setIsConfigOpen(!isConfigOpen);
+  };
 
   return (
     <div className="sidebar">
@@ -14,22 +30,34 @@ const SidebarCoordinador = () => {
       </div>
       <nav className="sidebar-nav">
         <NavLink to="/coordinador/inicio" className="sidebar-link" activeClassName="active">
-          <i className="icon">🏠</i> Inicio
+          <FiHome className="icon" /> Inicio
         </NavLink>
         <NavLink to="/coordinador/mensajes" className="sidebar-link" activeClassName="active">
-          <i className="icon">📧</i> Mensajes
+          <FiMail className="icon" /> Mensajes
         </NavLink>
         <NavLink to="/coordinador/reportes" className="sidebar-link" activeClassName="active">
-          <i className="icon">📊</i> Reportes
+          <FiBarChart2 className="icon" /> Reportes
         </NavLink>
-        <NavLink to="/coordinador/configuracion" className="sidebar-link" activeClassName="active">
-          <i className="icon">⚙️</i> Configuración
-        </NavLink>
-        <NavLink to="/coordinador/importaciones-validas" className="sidebar-link" activeClassName="active">
-          <i className="icon">⚙️</i> Importaciones
-        </NavLink>
+        <div>
+          <button onClick={toggleConfig} className="sidebar-link">
+            <FiSettings className="icon" /> Configuración
+          </button>
+          {isConfigOpen && (
+            <div className="config-options">
+              <NavLink to="/coordinador/configuracion/compromiso" className="sidebar-link" activeClassName="active">
+                <FiSettings className="icon" /> Compromiso de Pago
+              </NavLink>
+              <NavLink to="/coordinador/configuracion/importaciones-validas" className="sidebar-link" activeClassName="active">
+                <FiSettings className="icon" /> Importar Alumnos
+              </NavLink>
+              <NavLink to="/coordinador/inicio" className="sidebar-link" activeClassName="active">
+                <FiSettings className="icon" /> Importar Pagos
+              </NavLink>
+            </div>
+          )}
+        </div>
         <button onClick={logoutUser} className="sidebar-link logout-button">
-          <i className="icon">🔒</i> Logout
+          <FiLogOut className="icon" /> Logout
         </button>
       </nav>
     </div>

@@ -20,11 +20,12 @@ import AlumnoMensajes from './pages/alumno/AlumnoMensajes.jsx';
 import AlumnoTramites from './pages/alumno/AlumnoTramites.jsx';
 
 /* Paginas de coordinador */ 
-import Configuracion from './pages/coordinador/Configuracion.jsx';
+import Compromiso from './pages/coordinador/Compromiso.jsx';
 import Inicio from './pages/coordinador/Inicio.jsx';
 import Mensajes from './pages/coordinador/Mensajes.jsx';
 import Reportes from './pages/coordinador/Reportes.jsx';
 import ImportDataComponent from './pages/importaciones/ImportDataComponent.jsx';
+import CargarCompromiso from './pages/coordinador/CargarCompromiso.jsx';
 
 
 const App = () => {
@@ -48,9 +49,10 @@ const App = () => {
           <Route path="/coordinador/inicio" element={<Inicio />} />
           <Route path="/coordinador/mensajes" element={<Mensajes />} />
           <Route path="/coordinador/reportes" element={<Reportes />} />
-          <Route path="/coordinador/configuracion" element={<Configuracion />} />
+          <Route path="/coordinador/configuracion/compromiso" element={<Compromiso />} />
+          <Route path="/coordinador/configuracion/cargar-compromiso" element={<CargarCompromiso />} />
           {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
-          <Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />
+          <Route path="/coordinador/configuracion/importaciones-validas" element={<ImportarUsuarios />} />
           <Route path="/importar" element={ <ProtectedRoute> <ImportarUsuarios /> </ProtectedRoute>} />
 
 

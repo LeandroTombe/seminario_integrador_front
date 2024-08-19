@@ -1,20 +1,24 @@
-
-.container-import {
+ .container-import {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    max-width: 400px;
-    margin: 0 auto;
+    margin-left: 120px;
+    margin-right: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
+    width: calc(100% - 140px); /* Ajusta el tamaño a la página menos los márgenes */
   }
   
   .heading-import {
     margin-bottom: 20px;
     color: #333;
+  }
+
+  .content{
+    margin-left: 120px;
   }
   
   .form-import {

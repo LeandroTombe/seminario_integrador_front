@@ -9,7 +9,6 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import List from "./List";
-import CardInicio from "./CardInicio";
 import Carrusel from "./Carrusel";
 import React from "react";
 

@@ -9,9 +9,6 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import List from "./List";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import CardInicio from "./CardInicio";
 
 // SIMULA ALUMNOS INSCRIPTOS

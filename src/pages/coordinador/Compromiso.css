@@ -1,16 +1,4 @@
 
-.h1 {
-    margin-left: 120px
-}
-
-contentConfig {
-    margin-left: 120px;
-    padding: 20px;
-    width: calc(100% - 100px);
-    display: flex;
-    justify-content: center;
-}
-
 .containerConfig {
     background-color: #ffffff;
     border-radius: 8px;

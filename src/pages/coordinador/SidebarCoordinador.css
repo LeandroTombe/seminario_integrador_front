@@ -56,3 +56,14 @@
     font-size: 22px; /* Ajusta el tamaño del ícono */
     margin-right: 12px; /* Espacio entre el ícono y el texto */
   }
+
+.config-options {
+    padding-left: 20px; /* Ajusta según sea necesario */
+    display: flex;
+    flex-direction: column;
+}
+  
+.config-options .sidebar-link {
+    padding: 10px;
+    font-size: 14px;
+}

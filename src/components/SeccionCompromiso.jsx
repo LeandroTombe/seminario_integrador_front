@@ -1,4 +1,4 @@
-import './SeccionConfiguracion.css'
+import './SeccionCompromiso.css'
 import React, { useState } from 'react';
 
 // Cuando se guarde un valor diferente hay que actualizar en la base de datos

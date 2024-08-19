@@ -10,7 +10,7 @@ const SidebarCoordinador = () => {
   const location = useLocation();  // Hook para obtener la ubicación actual
   const [isConfigOpen, setIsConfigOpen] = useState(false);
 
-  // Efecto para manejar el estado de despliegue basado en la ruta actual
+  // Efecto para manejar el estado de despliegue de la seccion configuracion basado en la ruta actual
   useEffect(() => {
     if (location.pathname.startsWith('/coordinador/configuracion')) {
       setIsConfigOpen(true);

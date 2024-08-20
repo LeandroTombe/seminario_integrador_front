@@ -1,28 +1,42 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from "./SidebarCoordinador";
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Sidebar from './SidebarCoordinador';
 import './Compromiso.css';
 
-function CargarCompromiso() {
-  // Calcular el año actual y el semestre actual
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth() + 1; // getMonth() devuelve el mes en base 0 (0=Enero)
-  const currentSemester = currentMonth <= 6 ? '1' : '2';
+function CompromisoEditar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const compromiso = location.state?.compromiso;
 
   const [formData, setFormData] = useState({
-    año: currentYear,
-    cuatrimestre: currentSemester,
+    año: '',
+    cuatrimestre: '',
     importe_matricula: '',
     importe_completo: '',
     importe_reducido: '',
     importe_pri_venc_comp: '',
     importe_seg_venc_comp: '',
     importe_pri_venc_red: '',
-    importe_seg_venc_red: ''
+    importe_seg_venc_red: '',
   });
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (compromiso) {
+      setFormData({
+        año: compromiso.año,
+        cuatrimestre: compromiso.cuatrimestre,
+        importe_matricula: compromiso.importe_matricula,
+        importe_completo: compromiso.importe_completo,
+        importe_reducido: compromiso.importe_reducido,
+        importe_pri_venc_comp: compromiso.importe_pri_venc_comp,
+        importe_seg_venc_comp: compromiso.importe_seg_venc_comp,
+        importe_pri_venc_red: compromiso.importe_pri_venc_red,
+        importe_seg_venc_red: compromiso.importe_seg_venc_red,
+      });
+    }
+  }, [compromiso]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,11 +55,11 @@ function CargarCompromiso() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     handleConfirm(
-      '¿Estás seguro de que deseas guardar el compromiso de pago?',
+      '¿Estás seguro de que deseas guardar los cambios en el compromiso de pago?',
       async () => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/parametrosCompromiso/', {
-            method: 'POST',
+          const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/parametrosCompromisoEditar/', {
+            method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -53,14 +67,13 @@ function CargarCompromiso() {
           });
 
           if (!response.ok) {
-            throw new Error('Error al guardar el compromiso de pago');
+            throw new Error('Error al actualizar el compromiso de pago');
           }
 
-          // Muestra el mensaje de éxito y redirige a la página de compromiso con el mensaje
-          setSuccessMessage('Compromiso cargado exitosamente');
+          setSuccessMessage('Compromiso actualizado con éxito');
           setError(null); // Limpiar cualquier mensaje de error
           
-          navigate('/coordinador/configuracion/compromiso/actual', { state: { successMessage: 'Compromiso cargado exitosamente' } });
+          navigate('/coordinador/configuracion/compromiso/actual', { state: { successMessage: 'Compromiso actualizado con éxito' } });
         } catch (error) {
           setError(error.message);
           setSuccessMessage(''); // Limpiar el mensaje de éxito si ocurre un error
@@ -78,36 +91,35 @@ function CargarCompromiso() {
 
   return (
     <>
-      <Sidebar/>
+      <Sidebar />
       <div className="content">
-        <h1>Nuevo Compromiso de Pago</h1>
+        <h1>Editar Compromiso de Pago</h1>
         <div className="containerConfig">
-          <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div className="row mb-3">
-              <div className="col-md-6">
-                <label htmlFor="año" className="form-label">Año</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="año"
-                  name="año"
-                  value={formData.año}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="cuatrimestre" className="form-label">Cuatrimestre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="cuatrimestre"
-                  name="cuatrimestre"
-                  value={formData.cuatrimestre}
-                  readOnly
-                />
-              </div>
-            </div>
+                <div className="col-md-6">
+                    <label htmlFor="año" className="form-label">Año</label>
+                    <input
+                    type="number"
+                    className="form-control"
+                    id="año"
+                    name="año"
+                    value={formData.año}
+                    readOnly
+                    />
+                </div>
+                <div className="col-md-6">
+                    <label htmlFor="cuatrimestre" className="form-label">Cuatrimestre</label>
+                    <input
+                    type="text"
+                    className="form-control"
+                    id="cuatrimestre"
+                    name="cuatrimestre"
+                    value={formData.cuatrimestre}
+                    readOnly
+                    />
+                </div>
+                </div>
             <div className="mb-3">
               <label htmlFor="importe_matricula" className="form-label">Valor de matrícula</label>
               <input
@@ -198,10 +210,11 @@ function CargarCompromiso() {
             </div>
           </form>
           {error && <div className="alert alert-danger mt-3">{error}</div>}
+          {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
         </div>
       </div>
     </>
   );
 }
 
-export default CargarCompromiso;
+export default CompromisoEditar;

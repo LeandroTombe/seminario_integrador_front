@@ -7,8 +7,8 @@ const SeccionConfiguracion = ({ texto, valorInicial }) => {
 
   return (
     <div className="item">
-      <label>{texto}</label>
-      <label>{valorInicial}</label>
+      <h5>{texto}</h5>
+      <h5>{valorInicial}</h5>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { Carousel } from "react-bootstrap";
 //import RowOfCards from "./RowOfCards";
 import React from "react";
-import Row from 'react-bootstrap/Row';
+import Row from "react-bootstrap/Row";
 
 function myCarousel() {
   return (

@@ -13,42 +13,12 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import CardInicio from "./CardInicio";
-import Carrusel from "./Carrusel";
 
 // SIMULA ALUMNOS INSCRIPTOS
 // NOTAS
 // falta un buscador en la lista
 // que se pueda seleccionar que columnas ver
 function Inicio() {
-  const matriz = [
-    [
-      "22345",
-      "desza joaquin",
-      "$ 10",
-      "123414",
-      "2356257",
-      "43784638",
-      "pendiente",
-    ],
-    [
-      "23453",
-      "ramon valdez",
-      "20040",
-      "1241514",
-      "4553767",
-      "348364838",
-      "pendiente",
-    ],
-    [
-      "12344",
-      "peter parker",
-      "$33123",
-      "544567",
-      "4374584368",
-      "346834883",
-      "pagado",
-    ],
-  ];
   return (
     <>
       <div>
@@ -67,7 +37,6 @@ function Inicio() {
           </div>
 
           <div className="conteiner-list">
-            <Carrusel />
             <h3>Estado de cuenta</h3>
             <List
               data={matriz}

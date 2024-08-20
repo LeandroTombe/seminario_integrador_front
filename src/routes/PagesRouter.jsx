@@ -1,35 +1,35 @@
 import React from "react";
-import ImportarUsuarios from "./pages/importaciones/ImportarUsuarios.jsx";
+import ImportarUsuarios from "../pages/importaciones/ImportarUsuarios.jsx";
 import { Routes, Route } from "react-router-dom";
 
 /* Paginas de autorizacion y autenticacion */
-import LogoutPage from "./utils/LogoutPage.jsx";
-import ProtectedRoute from "./utils/ProtectedRoute.jsx";
-import Login from "./pages/cuentas/login/Login.jsx";
-import Desautorizacion from "./utils/Desautorizacion.jsx";
-import RecuperarPass from "./pages/cuentas/login/RecuperarPass.jsx";
-import VerificarNuevoPassword from "./pages/cuentas/login/VerificarNuevoPassword.jsx";
+import LogoutPage from "../utils/LogoutPage.jsx";
+import ProtectedRoute from "../utils/ProtectedRoute.jsx";
+import Login from "../pages/cuentas/login/Login.jsx";
+import Desautorizacion from "../utils/Desautorizacion.jsx";
+import RecuperarPass from "../pages/cuentas/login/RecuperarPass.jsx";
+import VerificarNuevoPassword from "../pages/cuentas/login/VerificarNuevoPassword.jsx";
 
 /* Paginas de alumno */
-import AlumnoInicio from "./pages/alumno/AlumnoInicio.jsx";
-import AlumnoMensajes from "./pages/alumno/AlumnoMensajes.jsx";
-import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
+import AlumnoInicio from "../pages/alumno/AlumnoInicio.jsx";
+import AlumnoMensajes from "../pages/alumno/AlumnoMensajes.jsx";
+import AlumnoTramites from "../pages/alumno/AlumnoTramites.jsx";
 
 /* Paginas de coordinador */
-import Compromiso from "./pages/coordinador/Compromiso.jsx";
-import Inicio from "./pages/coordinador/Inicio.jsx";
-import AlumnosInhabilitados from "./pages/coordinador/AlumnosInhabilitados.jsx";
-import AlumnosEquivalencias from "./pages/coordinador/AlumnosEquivalencias.jsx";
-import AlumnosProrroga from "./pages/coordinador/AlumnosProrroga.jsx";
-import Pagos from "./pages/coordinador/Pagos.jsx";
-import PagosPendientes from "./pages/coordinador/PagosPendientes.jsx";
+import Compromiso from "../pages/coordinador/Compromiso.jsx";
+import Inicio from "../pages/coordinador/Inicio.jsx";
+import AlumnosInhabilitados from "../pages/coordinador/AlumnosInhabilitados.jsx";
+import AlumnosEquivalencias from "../pages/coordinador/AlumnosEquivalencias.jsx";
+import AlumnosProrroga from "../pages/coordinador/AlumnosProrroga.jsx";
+import Pagos from "../pages/coordinador/Pagos.jsx";
+import PagosPendientes from "../pages/coordinador/PagosPendientes.jsx";
 
-import Mensajes from "./pages/coordinador/Mensajes.jsx";
-import Reportes from "./pages/coordinador/Reportes.jsx";
-import ImportDataComponent from "./pages/importaciones/ImportDataComponent.jsx";
-import CargarCompromiso from "./pages/coordinador/CargarCompromiso.jsx";
-import HistorialCompromiso from "./pages/coordinador/HistorialCompromiso.jsx";
-import CompromisoEditar from "./pages/coordinador/CompromisoEditar.jsx";
+import Mensajes from "../pages/coordinador/Mensajes.jsx";
+import Reportes from "../pages/coordinador/Reportes.jsx";
+import ImportDataComponent from "../pages/importaciones/ImportDataComponent.jsx";
+import CargarCompromiso from "../pages/coordinador/CargarCompromiso.jsx";
+import HistorialCompromiso from "../pages/coordinador/HistorialCompromiso.jsx";
+import CompromisoEditar from "../pages/coordinador/CompromisoEditar.jsx";
 
 
 const PagesRouter = () => {

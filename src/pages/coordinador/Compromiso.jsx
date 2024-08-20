@@ -43,22 +43,19 @@ function Compromiso() {
     }
   */
 
-  const handleCargarNuevoCompromiso = () => {
-    navigate('/coordinador/configuracion/cargar-compromiso'); // Redirecciona a la página de carga
-  };
-
-  const handleHistorialCompromiso = () => {
-    navigate('/coordinador/configuracion/historial-compromiso'); // Redirecciona a la página de carga
+  const handleEditarCompromiso = () => {
+    navigate('/coordinador/configuracion/compromiso/actual/editar', {
+      state: { compromiso: data[0] }, // Pasa los datos del compromiso como estado
+    });
   };
 
   return (
     <>
       <Sidebar/>
       <div className="content">
-        <h1>Compromiso de pago</h1>
+        <h1>Compromiso de Pago Actual</h1>
         {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
         <div className="containerConfig">
-          <h1>Compromiso de pago actual</h1>
           {data.length === 0 ? (
             <p>No existe un compromiso de pago cargado para el año y cuatrimestre actual.</p>
           ) : (
@@ -74,8 +71,7 @@ function Compromiso() {
             </div>
           )}
           <div className="conteinerBotones">
-            <button className="btn btn-primary me-3" type="button" onClick={handleCargarNuevoCompromiso}>Cargar nuevo compromiso de pago</button>
-            <button className="btn btn-primary" type="button" onClick={handleHistorialCompromiso}>Ver historial de compromisos de pago</button>
+            <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Editar</button>
           </div>
         </div>  
       </div>

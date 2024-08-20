@@ -27,6 +27,7 @@ import Reportes from './pages/coordinador/Reportes.jsx';
 import ImportDataComponent from './pages/importaciones/ImportDataComponent.jsx';
 import CargarCompromiso from './pages/coordinador/CargarCompromiso.jsx';
 import HistorialCompromiso from './pages/coordinador/HistorialCompromiso.jsx'
+import CompromisoEditar from './pages/coordinador/CompromisoEditar.jsx'
 
 
 const App = () => {
@@ -50,9 +51,10 @@ const App = () => {
           <Route path="/coordinador/inicio" element={<Inicio />} />
           <Route path="/coordinador/mensajes" element={<Mensajes />} />
           <Route path="/coordinador/reportes" element={<Reportes />} />
-          <Route path="/coordinador/configuracion/compromiso" element={<Compromiso />} />
-          <Route path="/coordinador/configuracion/cargar-compromiso" element={<CargarCompromiso />} />
-          <Route path="/coordinador/configuracion/historial-compromiso" element={<HistorialCompromiso />} />
+          <Route path="/coordinador/configuracion/compromiso/actual" element={<Compromiso />} />
+          <Route path="/coordinador/configuracion/compromiso/cargar" element={<CargarCompromiso />} />
+          <Route path="/coordinador/configuracion/compromiso/historial" element={<HistorialCompromiso />} />
+          <Route path="/coordinador/configuracion/compromiso/actual/editar" element={<CompromisoEditar />} />
           {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
           <Route path="/coordinador/configuracion/importaciones-validas" element={<ImportarUsuarios />} />
           <Route path="/importar" element={ <ProtectedRoute> <ImportarUsuarios /> </ProtectedRoute>} />

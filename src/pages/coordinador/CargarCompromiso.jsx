@@ -60,7 +60,7 @@ function CargarCompromiso() {
           setSuccessMessage('Compromiso cargado exitosamente');
           setError(null); // Limpiar cualquier mensaje de error
           
-          navigate('/coordinador/configuracion/compromiso', { state: { successMessage: 'Compromiso cargado exitosamente' } });
+          navigate('/coordinador/configuracion/compromiso/actual', { state: { successMessage: 'Compromiso cargado exitosamente' } });
         } catch (error) {
           setError(error.message);
           setSuccessMessage(''); // Limpiar el mensaje de éxito si ocurre un error

@@ -68,11 +68,11 @@ function Compromiso() {
               <SeccionCompromiso texto="Valor de segunda mora completa" valorInicial={data[0].importe_seg_venc_comp} />
               <SeccionCompromiso texto="Valor de primer mora reducida" valorInicial={data[0].importe_pri_venc_red} />
               <SeccionCompromiso texto="Valor de segunda mora reducida" valorInicial={data[0].importe_seg_venc_red} />
+              <div className="conteinerBotones">
+                <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Editar</button>
+              </div>
             </div>
           )}
-          <div className="conteinerBotones">
-            <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Editar</button>
-          </div>
         </div>  
       </div>
     </>

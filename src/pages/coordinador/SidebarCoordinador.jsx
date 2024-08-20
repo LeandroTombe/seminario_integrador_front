@@ -40,13 +40,13 @@ const SidebarCoordinador = () => {
         <h3>Menú</h3>
       </div>
       <nav className="sidebar-nav">
-        <NavLink to="/coordinador/inicio" className="sidebar-link" activeClassName="active">
+        <NavLink to="/coordinador/inicio" className="sidebar-link" activeclassname="active">
           <FiHome className="icon" /> Inicio
         </NavLink>
-        <NavLink to="/coordinador/mensajes" className="sidebar-link" activeClassName="active">
+        <NavLink to="/coordinador/mensajes" className="sidebar-link" activeclassname="active">
           <FiMail className="icon" /> Mensajes
         </NavLink>
-        <NavLink to="/coordinador/reportes" className="sidebar-link" activeClassName="active">
+        <NavLink to="/coordinador/reportes" className="sidebar-link" activeclassname="active">
           <FiBarChart2 className="icon" /> Reportes
         </NavLink>
         <div>
@@ -60,21 +60,21 @@ const SidebarCoordinador = () => {
               </button>
               {isCompromisoOpen && (
                 <div className="compromiso-options">
-                  <NavLink to="/coordinador/configuracion/compromiso/actual" className="sidebar-link" activeClassName="active">
+                  <NavLink to="/coordinador/configuracion/compromiso/actual" className="sidebar-link" activeclassname="active">
                     <FiSettings className="icon" /> Compromiso Actual
                   </NavLink>
-                  <NavLink to="/coordinador/configuracion/compromiso/cargar" className="sidebar-link" activeClassName="active">
+                  <NavLink to="/coordinador/configuracion/compromiso/cargar" className="sidebar-link" activeclassname="active">
                     <FiSettings className="icon" /> Nuevo Compromiso
                   </NavLink>
-                  <NavLink to="/coordinador/configuracion/compromiso/historial" className="sidebar-link" activeClassName="active">
+                  <NavLink to="/coordinador/configuracion/compromiso/historial" className="sidebar-link" activeclassname="active">
                     <FiSettings className="icon" /> Historial de Compromisos
                   </NavLink>
                 </div>
               )}
-              <NavLink to="/coordinador/configuracion/importaciones-validas" className="sidebar-link" activeClassName="active">
+              <NavLink to="/coordinador/configuracion/importaciones-validas" className="sidebar-link" activeclassname="active">
                 <FiSettings className="icon" /> Importar Alumnos
               </NavLink>
-              <NavLink to="/coordinador/configuracion/importar-pagos" className="sidebar-link" activeClassName="active">
+              <NavLink to="/coordinador/configuracion/importar-pagos" className="sidebar-link" activeclassname="active">
                 <FiSettings className="icon" /> Importar Pagos
               </NavLink>
             </div>

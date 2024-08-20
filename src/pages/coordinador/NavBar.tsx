@@ -1,3 +1,5 @@
+import React from "react";
+
 function NavBar() {
   return (
     <ul className="nav nav-tabs bg-primary bg-dark.bg-gradient text-white">

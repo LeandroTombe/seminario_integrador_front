@@ -9,7 +9,6 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import List from "./List";
-import CardInicio from "./CardInicio";
 import Carrusel from "./Carrusel";
 import React from "react";
 
@@ -24,17 +23,14 @@ function Pagos() {
       <div>
         <Sidebar />
         <div className="content">
-          <h1>Bienvenido</h1>
-          <div className="search-bar">
-            <input type="text" id="search-input" placeholder="Buscar..." />
-            <button type="button">
-              <FontAwesomeIcon icon={faSearch} />
-            </button>
-          </div>
-
           <div>
-            <Carrusel />
-            <h3>Estado de cuenta</h3>
+            <Carrusel
+              alumnosEquivalencias="22"
+              alumnosInhabilitados="25"
+              alumnosTotal="47"
+              pagos="103"
+              pagosPendientes="43"
+            />
             <List
               data={matriz}
               headerL={[

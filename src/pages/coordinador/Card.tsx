@@ -4,12 +4,13 @@ import { NavLink } from "react-router-dom";
 interface Props {
   title: string;
   text: string;
+  destino: string;
 }
 
-function Card({ title, text }: Props) {
+function Card({ title, text, destino }: Props) {
   return (
     <NavLink
-      to={"/coordinador/" + text}
+      to={"/coordinador/" + destino}
       className="card"
       style={{
         width: "200px",

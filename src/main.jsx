@@ -70,20 +70,20 @@ const App = () => {
           />
           <Route path="/coordinador/inicio" element={<Inicio />} />
           <Route
-            path="/coordinador/AlumnosInhabilitados"
+            path="/coordinador/Alumnos Inhabilitados"
             element={<AlumnosInhabilitados />}
           />
           <Route
-            path="/coordinador/AlumnosProrroga"
+            path="/coordinador/Alumnos Prorroga"
             element={<AlumnosProrroga />}
           />
           <Route
-            path="/coordinador/AlumnosEquivalencias"
+            path="/coordinador/Alumnos Equivalencias"
             element={<AlumnosEquivalencias />}
           />
           <Route path="/coordinador/Pagos" element={<Pagos />} />
           <Route
-            path="/coordinador/PagosPendientes"
+            path="/coordinador/Pagos Pendientes"
             element={<PagosPendientes />}
           />
           <Route path="/coordinador/mensajes" element={<Mensajes />} />

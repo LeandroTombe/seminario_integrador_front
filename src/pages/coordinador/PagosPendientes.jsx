@@ -33,8 +33,13 @@ function PagosPendientes() {
           </div>
 
           <div>
-            <Carrusel />
-            <h3>Estado de cuenta</h3>
+            <Carrusel
+              alumnosEquivalencias="22"
+              alumnosInhabilitados="25"
+              alumnosTotal="47"
+              pagos="103"
+              pagosPendientes="43"
+            />
             <List
               data={matriz}
               headerL={[

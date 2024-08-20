@@ -73,3 +73,12 @@
     font-size: 14px;
     color: grey;
 }
+
+.conteiner-list{
+    margin-top: 40px;
+}
+
+.conteiner-cards{
+    margin-top: 40px;
+    text-align: center;
+}

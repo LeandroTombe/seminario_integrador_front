@@ -43,22 +43,23 @@ function Compromiso() {
     }
   */
 
-  const handleCargarNuevoCompromiso = () => {
-    navigate('/coordinador/configuracion/cargar-compromiso'); // Redirecciona a la página de carga
+  const handleEditarCompromiso = () => {
+    navigate('/coordinador/configuracion/compromiso/actual/editar', {
+      state: { compromiso: data[0] }, // Pasa los datos del compromiso como estado
+    });
   };
 
   return (
     <>
       <Sidebar/>
       <div className="content">
-        <h1>Compromiso de pago</h1>
+        <h1>Compromiso de Pago Actual</h1>
         {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
         <div className="containerConfig">
-          <h1>Compromiso de pago actual</h1>
           {data.length === 0 ? (
             <p>No existe un compromiso de pago cargado para el año y cuatrimestre actual.</p>
           ) : (
-            <div>
+            <div className='conteinerInfo'>
               <Badge bg="primary">Año: {data[0].año} Cuatrimestre: {data[0].cuatrimestre}</Badge>
               <SeccionCompromiso texto="Valor de matricula" valorInicial={data[0].importe_matricula} />
               <SeccionCompromiso texto="Valor de cuota completa" valorInicial={data[0].importe_completo} />
@@ -67,12 +68,11 @@ function Compromiso() {
               <SeccionCompromiso texto="Valor de segunda mora completa" valorInicial={data[0].importe_seg_venc_comp} />
               <SeccionCompromiso texto="Valor de primer mora reducida" valorInicial={data[0].importe_pri_venc_red} />
               <SeccionCompromiso texto="Valor de segunda mora reducida" valorInicial={data[0].importe_seg_venc_red} />
+              <div className="conteinerBotones">
+                <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Editar</button>
+              </div>
             </div>
           )}
-          <div className="d-grid gap-2 d-md-block">
-            <button className="btn btn-primary me-3" type="button" onClick={handleCargarNuevoCompromiso}>Cargar nuevo compromiso de pago</button>
-            <button className="btn btn-primary" type="button">Ver historial de compromisos de pago</button>
-          </div>
         </div>  
       </div>
     </>

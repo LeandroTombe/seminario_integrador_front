@@ -8,6 +8,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    font-family: Arial, Helvetica, sans-serif;
   }
   
   .sidebar-header {
@@ -20,6 +21,7 @@
     margin: 0;
     font-size: 20px;
     color: #333;
+    font-weight: bold;
   }
   
   .sidebar-nav {
@@ -49,3 +51,29 @@
     background-color: #ccc;
     font-weight: bold;
   }
+
+  .sidebar-link .icon {
+    font-size: 22px; /* Ajusta el tamaño del ícono */
+    margin-right: 12px; /* Espacio entre el ícono y el texto */
+  }
+
+.config-options {
+    padding-left: 20px; /* Ajusta según sea necesario */
+    display: flex;
+    flex-direction: column;
+}
+  
+.config-options .sidebar-link {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.compromiso-options {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.compromiso-options .sidebar-link {
+  padding: 10px;
+}

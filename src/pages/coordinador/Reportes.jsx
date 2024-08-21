@@ -5,7 +5,9 @@ function Reportes() {
     return (
       <>
       <Sidebar/>
-       <p>reportes desde coordinador</p>
+      <div className="content">
+        <h1>Reportes</h1>
+      </div>
       </>
     )
   }

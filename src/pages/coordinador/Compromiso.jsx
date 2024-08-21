@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate, useLocation } from 'react-router-dom';
 import SeccionCompromiso from "../../components/SeccionCompromiso";
 import Sidebar from "./SidebarCoordinador";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Badge from 'react-bootstrap/Badge';
-import './Compromiso.css'
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import './Compromiso.css';
 
 function Compromiso() {
   const [data, setData] = useState([]);
-  //const [loading, setLoading] = useState(true);
-  //const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Hook para redireccionar
+  const [pdfUrl, setPdfUrl] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
   const successMessage = location.state?.successMessage || '';
 
@@ -23,30 +25,29 @@ function Compromiso() {
         }
         const result = await response.json();
         setData(result);
+        if (result[0] && result[0].compromiso_contenido) {
+          setPdfUrl(result[0].compromiso_contenido);
+        }
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        console.error(error.message);
       }
     };
 
     fetchData();
   }, []);
 
-  /*
-  if (loading) {
-      return <div className="content"><p>Cargando...</p></div>;
-    }
-
-    if (error) {
-      return <div className="content"><p>Error: {error}</p></div>;
-    }
-  */
-
   const handleEditarCompromiso = () => {
     navigate('/coordinador/configuracion/compromiso/actual/editar', {
-      state: { compromiso: data[0] }, // Pasa los datos del compromiso como estado
+      state: { compromiso: data[0] },
     });
+  };
+
+  const handleVisualizarPDF = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -68,13 +69,49 @@ function Compromiso() {
               <SeccionCompromiso texto="Valor de segunda mora completa" valorInicial={data[0].importe_seg_venc_comp} />
               <SeccionCompromiso texto="Valor de primer mora reducida" valorInicial={data[0].importe_pri_venc_red} />
               <SeccionCompromiso texto="Valor de segunda mora reducida" valorInicial={data[0].importe_seg_venc_red} />
+
+              {pdfUrl && (
+                <div className="mt-3">
+                  <button 
+                    className="btn btn-secondary" 
+                    onClick={handleVisualizarPDF}
+                  >
+                    Visualizar PDF
+                  </button>
+                </div>
+              )}
+
               <div className="conteinerBotones">
-                <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Editar</button>
+                <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Modificar Compromiso de Pago</button>
               </div>
             </div>
           )}
         </div>  
       </div>
+
+      {/* Modal para mostrar el PDF */}
+      <Modal show={showModal} onHide={handleCloseModal} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Compromiso de Pago</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {pdfUrl ? (
+            <iframe 
+              src={`http://127.0.0.1:8000${pdfUrl}`} 
+              width="100%" 
+              height="500px" 
+              title="Compromiso de Pago PDF"
+            />
+          ) : (
+            <p>No se pudo cargar el PDF.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

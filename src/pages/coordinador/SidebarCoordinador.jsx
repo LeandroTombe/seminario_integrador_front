@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import './SidebarCoordinador.css';
 import { useAuth } from '../../context/AuthContext';
 import '../../assets/logout-button.css';
-import { FiHome, FiMail, FiBarChart2, FiSettings, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiMail, FiBarChart2, FiSettings, FiLogOut, FiChevronRight } from 'react-icons/fi';
 
 const SidebarCoordinador = () => {
   const { logoutUser } = useAuth();
@@ -37,7 +37,7 @@ const SidebarCoordinador = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h3>Menú</h3>
+        <h3>TUP</h3>
       </div>
       <nav className="sidebar-nav">
         <NavLink to="/coordinador/inicio" className="sidebar-link" activeclassname="active">
@@ -56,26 +56,26 @@ const SidebarCoordinador = () => {
           {isConfigOpen && (
             <div className="config-options">
               <button onClick={toggleCompromiso} className="sidebar-link">
-                <FiSettings className="icon" /> Compromiso de Pago
+                <FiChevronRight className="icon" /> Compromiso de Pago
               </button>
               {isCompromisoOpen && (
                 <div className="compromiso-options">
                   <NavLink to="/coordinador/configuracion/compromiso/actual" className="sidebar-link" activeclassname="active">
-                    <FiSettings className="icon" /> Compromiso Actual
+                    <FiChevronRight className="icon" /> Compromiso Actual
                   </NavLink>
                   <NavLink to="/coordinador/configuracion/compromiso/cargar" className="sidebar-link" activeclassname="active">
-                    <FiSettings className="icon" /> Nuevo Compromiso
+                    <FiChevronRight className="icon" /> Nuevo Compromiso
                   </NavLink>
                   <NavLink to="/coordinador/configuracion/compromiso/historial" className="sidebar-link" activeclassname="active">
-                    <FiSettings className="icon" /> Historial de Compromisos
+                    <FiChevronRight className="icon" /> Historial de Compromisos
                   </NavLink>
                 </div>
               )}
               <NavLink to="/coordinador/configuracion/importaciones-validas" className="sidebar-link" activeclassname="active">
-                <FiSettings className="icon" /> Importar Alumnos
+                <FiChevronRight className="icon" /> Importar Alumnos
               </NavLink>
               <NavLink to="/coordinador/configuracion/importar-pagos" className="sidebar-link" activeclassname="active">
-                <FiSettings className="icon" /> Importar Pagos
+                <FiChevronRight className="icon" /> Importar Pagos
               </NavLink>
             </div>
           )}

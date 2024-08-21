@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import DataTable from './DataTable'; // Ajusta la ruta según tu estructura de archivos
+import Swal from 'sweetalert2';
 import './importaDataComponent.css';
 
 const ImportDataComponent = () => {
@@ -14,9 +15,31 @@ const ImportDataComponent = () => {
 
     const handleUpload = async () => {
         if (!file) {
-            alert('Por favor, selecciona un archivo.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Advertencia',
+                text: 'Por favor, selecciona un archivo.',
+            });
             return;
         }
+
+        // Mostrar el mensaje de carga
+        const loadingToast = Swal.mixin({
+            toast: true,
+            position: 'middle',
+            showConfirmButton: false,
+            timer: 30000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        loadingToast.fire({
+            icon: 'info',
+            title: 'Subiendo archivo...',
+        });
 
         const formData = new FormData();
         formData.append('file', file);
@@ -28,8 +51,14 @@ const ImportDataComponent = () => {
                 },
             });
             setResponse(res.data);
+            loadingToast.close(); // Cerrar el mensaje de carga
         } catch (error) {
-            console.error('Error al subir el archivo:', error);
+            loadingToast.close(); // Cerrar el mensaje de carga
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al subir el archivo. Verifica la consola para más detalles.',
+            });
         }
     };
 
@@ -44,9 +73,15 @@ const ImportDataComponent = () => {
             {response && (
                 <div>
                     <div className="button-group">
-                        <button onClick={() => setView('actualizadas')}>Ver Actualizadas ({response.cantidad_filas_actualizadas})</button>
-                        <button onClick={() => setView('errores')}>Ver Errores ({response.cantidad_errores})</button>
-                        <button onClick={() => setView('correctas')}>Ver Correctas ({response.cantidad_filas_correctas})</button>
+                        <button onClick={() => setView('actualizadas')}>
+                            Ver Actualizadas ({response.cantidad_filas_actualizadas})
+                        </button>
+                        <button onClick={() => setView('errores')}>
+                            Ver Errores ({response.cantidad_errores})
+                        </button>
+                        <button onClick={() => setView('correctas')}>
+                            Ver Correctas ({response.cantidad_filas_correctas})
+                        </button>
                     </div>
 
                     {view === 'actualizadas' && (

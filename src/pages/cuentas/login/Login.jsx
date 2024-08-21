@@ -10,10 +10,10 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
+    const legajo = e.target.legajo.value;
     const password = e.target.password.value;
 
-    loginUser(email, password);
+    loginUser(legajo, password);
   };
 
   return (
@@ -21,11 +21,11 @@ const Login = () => {
       <img className="loginLogo" src="/src/assets/tup_logo.jpg" alt="Login Logo" />
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="legajo">legajo</label>
           <input
-            type="email"
-            id="email"
-            name="email"
+            type="legajo"
+            id="legajo"
+            name="legajo"
             required
           />
         </div>

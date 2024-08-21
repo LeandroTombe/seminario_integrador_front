@@ -9,6 +9,7 @@ function Inicio() {
     <>
       <Sidebar />
       <div className="content">
+        <h1>Inicio</h1>
         <Carrusel
           alumnosEquivalencias="22"
           alumnosInhabilitados="25"

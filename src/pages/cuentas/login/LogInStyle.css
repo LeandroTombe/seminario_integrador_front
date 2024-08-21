@@ -1,12 +1,3 @@
-/* Esto le daba estilo a todas las paginas. */
-  * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-  
-    /*Estilos básicos del cuerpo */
-
   /* Contenedor principal de login */
   .login-container {
     background-color: #fff;
@@ -16,7 +7,8 @@
     width: 100%;
     max-width: 400px; /* Aumentado para pantallas más grandes */
     text-align: center;
-    margin: 0 auto;
+    margin-top: 50px;
+    margin-left: 350px;
   }
 
   /* Estilo del encabezado */

@@ -23,58 +23,65 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
-    const loginUser = async (email, password) => {
+    const loginUser = async (legajo, password) => {
         let url = "http://127.0.0.1:8000/api/v1/auth/login/";
         const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ legajo, password })
         });
         const data = await response.json();
-
-        if (response.status === 200) {
-            setAuthTokens(data);
-            const decodedUser = jwtDecode(data.access);
-            setUser(decodedUser);
-            localStorage.setItem("authTokens", JSON.stringify(data));
-                        // Redirigir a la página según el rol del usuario
-            const userRole = decodedUser.role;
-            if (userRole === "Admin") {
-                navigate("/admin/inicio");
-            } else if (userRole === "Coordinador") {
-                navigate("/coordinador/inicio");
-            } else if (userRole === "Alumno") {
-                navigate("/alumno/inicio");
+        try {
+            if (response.status === 200) {
+                setAuthTokens(data);
+                const decodedUser = jwtDecode(data.access);
+                setUser(decodedUser);
+                localStorage.setItem("authTokens", JSON.stringify(data));
+                            // Redirigir a la página según el rol del usuario
+                const userRole = decodedUser.role;
+                if (userRole === "Admin") {
+                    navigate("/admin/inicio");
+                } else if (userRole === "Coordinador") {
+                    navigate("/coordinador/inicio");
+                } else if (userRole === "Alumno") {
+                    navigate("/alumno/inicio");
+                } else {
+                    navigate("/unauthorized");
+                }
+                swal.fire({
+                    title: "Sesión iniciada correctamente",
+                    icon: "success",
+                    toast: true,
+                    timer: 1300,
+                    position: 'top',
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
             } else {
-                navigate("/unauthorized");
+                console.log(response.status);
+                swal.fire({
+                    title: "El email no existe o el password es incorrecta",
+                    icon: "error",
+                    toast: true,
+                    timer: 6000,
+                    position: 'top',
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }} catch (error) {
+                Swal.fire({
+                    title: "Error de Conexión",
+                    text: "No se pudo conectar con el servidor. Por favor, intenta de nuevo más tarde.",
+                    icon: "error",
+                    confirmButtonText: "Aceptar"
+                });
             }
-            swal.fire({
-                title: "Sesión iniciada correctamente",
-                icon: "success",
-                toast: true,
-                timer: 1300,
-                position: 'top',
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        } else {
-            console.log(response.status);
-            swal.fire({
-                title: "El email no existe o el password es incorrecta",
-                icon: "error",
-                toast: true,
-                timer: 6000,
-                position: 'top',
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        }
     };
 
     const refreshToken = async () => {
-        let url = "http://127.0.0.1:8000/api/v1/auth/refresh/";
+        let url = "http://127.0.0.1:8000/api/v1/auth/login/";
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -86,7 +93,7 @@ export const AuthProvider = ({ children }) => {
 
         if (response.status === 200) {
             setAuthTokens(data);
-            setUser(jwtDecode(data.access));
+            setUser(jwtDecode(data.refresh));
             localStorage.setItem("authTokens", JSON.stringify(data));
         } else {
             logoutUser();

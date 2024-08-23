@@ -107,7 +107,7 @@ const App = () => {
           {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
           <Route
             path="/coordinador/configuracion/importaciones-validas"
-            element={<ImportarUsuarios />}
+            element={<ImportDataComponent />}
           />
           <Route
             path="/importar"

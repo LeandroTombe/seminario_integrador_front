@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import DataTable from './DataTable'; // Ajusta la ruta según tu estructura de archivos
+import DataTable from './DataTable'; 
 import Swal from 'sweetalert2';
 import './importaDataComponent.css';
+import Sidebar from '../coordinador/SidebarCoordinador';
 
 const ImportDataComponent = () => {
     const [file, setFile] = useState(null);
     const [response, setResponse] = useState(null);
-    const [view, setView] = useState(''); // Controla qué sección mostrar
+    const [view, setView] = useState('');
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -22,28 +23,23 @@ const ImportDataComponent = () => {
             });
             return;
         }
-
-        // Mostrar el mensaje de carga
-        const loadingToast = Swal.mixin({
-            toast: true,
-            position: 'middle',
-            showConfirmButton: false,
-            timer: 30000,
+    
+        // Mostrar el SweetAlert de carga
+        Swal.fire({
+            title: 'Subiendo archivo...',
+            text: 'Por favor, espera mientras se carga el archivo.',
+            icon: 'info',
+            allowOutsideClick: false,
             timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            timer: 30000,  // Temporizador de 3 segundos
+            didOpen: () => {
+                Swal.showLoading();
             }
         });
-
-        loadingToast.fire({
-            icon: 'info',
-            title: 'Subiendo archivo...',
-        });
-
+    
         const formData = new FormData();
         formData.append('file', file);
-
+    
         try {
             const res = await axios.post('http://127.0.0.1:8000/api/v1/auth/importar_usuarios/', formData, {
                 headers: {
@@ -51,69 +47,88 @@ const ImportDataComponent = () => {
                 },
             });
             setResponse(res.data);
-            loadingToast.close(); // Cerrar el mensaje de carga
+    
+            Swal.fire({
+                icon: 'success',
+                text: 'El archivo se ha procesado y subido correctamente.',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                timer: 3000,  // Temporizador de 3 segundos
+            });
         } catch (error) {
-            loadingToast.close(); // Cerrar el mensaje de carga
+            console.log(error.response.data),
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Hubo un error al subir el archivo. Verifica la consola para más detalles.',
+                text: error.response.data.error || 'Ocurrió un error al subir el archivo.',
             });
         }
     };
-
     return (
-        <div className="container">
-            <div className="header">
-                <h1>Importar Datos</h1>
-            </div>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Subir</button>
-
-            {response && (
-                <div>
-                    <div className="button-group">
-                        <button onClick={() => setView('actualizadas')}>
-                            Ver Actualizadas ({response.cantidad_filas_actualizadas})
-                        </button>
-                        <button onClick={() => setView('errores')}>
-                            Ver Errores ({response.cantidad_errores})
-                        </button>
-                        <button onClick={() => setView('correctas')}>
-                            Ver Correctas ({response.cantidad_filas_correctas})
-                        </button>
-                    </div>
-
-                    {view === 'actualizadas' && (
-                        <div>
-                            <h2>Registros Actualizados</h2>
-                            <DataTable data={response.actualizadas} columns={[{ Header: 'Mensaje', accessor: 'mensaje' }]} />
-                        </div>
-                    )}
-
-                    {view === 'errores' && (
-                        <div>
-                            <h2>Errores</h2>
-                            <DataTable data={response.errores} columns={[{ Header: 'Error', accessor: 'error' }]} />
-                        </div>
-                    )}
-
-                    {view === 'correctas' && (
-                        <div>
-                            <h2>Registros Correctos</h2>
-                            <DataTable
-                                data={response.correctas}
-                                columns={[
-                                    { Header: 'Legajo', accessor: 'legajo' },
-                                    { Header: 'Nombre', accessor: 'nombre' },
-                                    { Header: 'Apellido', accessor: 'apellido' },
-                                ]}
-                            />
-                        </div>
-                    )}
+        <>
+           <div className="sidebar">
+            <Sidebar />
+           </div>
+            <div className="container">
+                <div className="header">
+                    <h1>Importar Alumnos</h1>
                 </div>
-            )}
-        </div>
+                <input type="file" onChange={handleFileChange} />
+                <button onClick={handleUpload}>Subir archivo</button>
+
+                {response && (
+                    <div>
+                        <div className="button-group">
+                            <button onClick={() => setView('actualizadas')}>
+                                Ver Actualizadas ({response.cantidad_filas_actualizadas})
+                            </button>
+                            <button onClick={() => setView('errores')}>
+                                Ver Errores ({response.cantidad_errores})
+                            </button>
+                            <button onClick={() => setView('correctas')}>
+                                Ver Correctas ({response.cantidad_filas_correctas})
+                            </button>
+                        </div>
+
+                        {view === 'actualizadas' && (
+                            <div>
+                                <h2>Registros Actualizados</h2>
+                                <DataTable data={response.actualizadas} columns={[{ Header: 'Mensaje', accessor: 'mensaje' }]} />
+                            </div>
+                        )}
+
+                        {view === 'errores' && (
+                            <div>
+                                <h2>Errores</h2>
+                                <DataTable data={response.errores} columns={[{ Header: 'Error', accessor: 'error' }]} />
+                            </div>
+                        )}
+
+                        {view === 'correctas' && (
+                            <div>
+                                <h2>Registros Correctos</h2>
+                                <DataTable
+                                    data={response.correctas}
+                                    columns={[
+                                        { Header: 'Legajo', accessor: 'legajo' },
+                                        { Header: 'Nombre', accessor: 'nombre' },
+                                        { Header: 'Apellido', accessor: 'apellido' },
+                                    ]}
+                                />
+                            </div>
+                        )}
+                       <div className="total-registros">
+                            <div className="box">
+                                Total procesados: {response.total_procesadas}
+                            </div>
+                            <div className="box">
+                                Total de registros: {response.total}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
 

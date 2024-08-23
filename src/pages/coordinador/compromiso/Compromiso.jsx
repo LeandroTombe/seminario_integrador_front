@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import SeccionCompromiso from "../../components/SeccionCompromiso";
-import Sidebar from "./SidebarCoordinador";
+import SeccionCompromiso from "../../../components/SeccionCompromiso";
+import Sidebar from "../SidebarCoordinador";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import './Compromiso.css';
+import Layout from '../../../Layout'
 
 function Compromiso() {
   const [data, setData] = useState([]);
@@ -51,9 +52,7 @@ function Compromiso() {
   };
 
   return (
-    <>
-      <Sidebar/>
-      <div className="content">
+    <Layout>
         <h1>Compromiso de Pago Actual</h1>
         {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
         <div className="containerConfig">
@@ -86,8 +85,7 @@ function Compromiso() {
               </div>
             </div>
           )}
-        </div>  
-      </div>
+        </div>
 
       {/* Modal para mostrar el PDF */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
@@ -112,7 +110,7 @@ function Compromiso() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </Layout>
   );
 }
 

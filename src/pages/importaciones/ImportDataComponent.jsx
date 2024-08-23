@@ -3,7 +3,7 @@ import axios from 'axios';
 import DataTable from './DataTable'; 
 import Swal from 'sweetalert2';
 import './importaDataComponent.css';
-import Sidebar from '../coordinador/SidebarCoordinador';
+import Layout from '../../Layout'
 
 const ImportDataComponent = () => {
     const [file, setFile] = useState(null);
@@ -65,14 +65,9 @@ const ImportDataComponent = () => {
         }
     };
     return (
-        <>
-           <div className="sidebar">
-            <Sidebar />
-           </div>
-            <div className="container">
-                <div className="header">
-                    <h1>Importar Alumnos</h1>
-                </div>
+        <Layout>
+            <h1>Importar Alumnos</h1>
+            <div className="container-import">
                 <input type="file" onChange={handleFileChange} />
                 <button onClick={handleUpload}>Subir archivo</button>
 
@@ -128,7 +123,7 @@ const ImportDataComponent = () => {
                     </div>
                 )}
             </div>
-        </>
+        </Layout>
     );
 };
 

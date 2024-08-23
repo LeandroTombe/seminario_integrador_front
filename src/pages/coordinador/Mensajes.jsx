@@ -1,14 +1,12 @@
 import Sidebar from "./SidebarCoordinador";
+import Layout from '../../Layout'
 
 function Mensajes() {
 
     return (
-      <>
-      <Sidebar/>
-      <div className="content">
-      <h1>Mensajes</h1>
-      </div>
-      </>
+      <Layout>
+        <h1>Mensajes</h1>
+      </Layout>
     )
   }
   

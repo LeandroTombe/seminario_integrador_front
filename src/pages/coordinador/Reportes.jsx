@@ -1,14 +1,12 @@
 import Sidebar from "./SidebarCoordinador";
+import Layout from '../../Layout'
 
 function Reportes() {
 
     return (
-      <>
-      <Sidebar/>
-      <div className="content">
+      <Layout>
         <h1>Reportes</h1>
-      </div>
-      </>
+      </Layout>
     )
   }
   

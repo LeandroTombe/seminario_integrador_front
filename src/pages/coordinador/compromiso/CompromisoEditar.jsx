@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from './SidebarCoordinador';
+import Sidebar from '../SidebarCoordinador';
 import './Compromiso.css';
 import { Modal, Button } from 'react-bootstrap';
+import Layout from '../../../Layout'
 
 function CompromisoEditar() {
   const location = useLocation();
@@ -130,9 +131,7 @@ function CompromisoEditar() {
   };
 
   return (
-    <>
-      <Sidebar />
-      <div className="content">
+    <Layout>
         <h1>Editar Compromiso de Pago</h1>
         <div className="containerConfig">
         <form onSubmit={handleSubmit}>
@@ -291,7 +290,6 @@ function CompromisoEditar() {
           {error && <div className="alert alert-danger mt-3">{error}</div>}
           {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
         </div>
-      </div>
 
       {/* Modal para previsualizar el PDF */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
@@ -309,7 +307,7 @@ function CompromisoEditar() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </Layout>
   );
 }
 

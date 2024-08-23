@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from "./SidebarCoordinador";
+import Sidebar from "../SidebarCoordinador";
 import './Compromiso.css';
 import { Modal, Button } from 'react-bootstrap'; // Importa los componentes de Bootstrap
+import Layout from '../../../Layout'
 
 function CargarCompromiso() {
   const currentYear = new Date().getFullYear();
@@ -105,9 +106,7 @@ function CargarCompromiso() {
   };
 
   return (
-    <>
-      <Sidebar />
-      <div className="content">
+    <Layout>
         <h1>Nuevo Compromiso de Pago</h1>
         <div className="containerConfig">
           <form onSubmit={handleSubmit}>
@@ -276,8 +275,7 @@ function CargarCompromiso() {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
-    </>
+    </Layout>
   );
 }
 

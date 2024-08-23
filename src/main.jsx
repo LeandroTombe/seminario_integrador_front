@@ -18,7 +18,6 @@ import AlumnoMensajes from "./pages/alumno/AlumnoMensajes.jsx";
 import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
 
 /* Paginas de coordinador */
-import Compromiso from "./pages/coordinador/Compromiso.jsx";
 import Inicio from "./pages/coordinador/Inicio.jsx";
 import AlumnosInhabilitados from "./pages/coordinador/AlumnosInhabilitados.jsx";
 import AlumnosEquivalencias from "./pages/coordinador/AlumnosEquivalencias.jsx";
@@ -29,14 +28,14 @@ import PagosPendientes from "./pages/coordinador/PagosPendientes.jsx";
 import Mensajes from "./pages/coordinador/Mensajes.jsx";
 import Reportes from "./pages/coordinador/Reportes.jsx";
 import ImportDataComponent from "./pages/importaciones/ImportDataComponent.jsx";
-import CargarCompromiso from "./pages/coordinador/CargarCompromiso.jsx";
-import HistorialCompromiso from "./pages/coordinador/HistorialCompromiso.jsx";
-import CompromisoEditar from "./pages/coordinador/CompromisoEditar.jsx";
+import Compromiso from "./pages/coordinador/compromiso/Compromiso.jsx";
+import CargarCompromiso from "./pages/coordinador/compromiso/CargarCompromiso.jsx";
+import HistorialCompromiso from "./pages/coordinador/compromiso/HistorialCompromiso.jsx";
+import CompromisoEditar from "./pages/coordinador/compromiso/CompromisoEditar.jsx";
 
 const App = () => {
   return (
     <div className="app">
-      <div className="content">
         <Routes>
           {/* Paginas de alumno */}
           <Route
@@ -134,7 +133,6 @@ const App = () => {
           />
         </Routes>
       </div>
-    </div>
   );
 
 };

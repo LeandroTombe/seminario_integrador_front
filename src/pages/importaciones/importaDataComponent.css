@@ -4,16 +4,20 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.container {
+.container-import {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center; /* Centra el contenido verticalmente */
     padding: 20px;
-    background-color: #f9f9f9;
-    width: 75%; /* 100% del ancho de la ventana */
-    height: 90vh; /* 100% de la altura de la ventana */
+    background-color: #ffffff;
+    width: 100%; /* 100% del ancho de la ventana */
     box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
+    margin-top: 40px;
 
 }
 

@@ -5,7 +5,9 @@ function Mensajes() {
     return (
       <>
       <Sidebar/>
-       <p>Mensajes desde coordinador</p>
+      <div className="content">
+      <h1>Mensajes</h1>
+      </div>
       </>
     )
   }

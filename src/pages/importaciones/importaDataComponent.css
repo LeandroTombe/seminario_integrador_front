@@ -1,96 +1,88 @@
-
-/* Contenedor principal */
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
+body {
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
 }
 
-/* Encabezado principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centra el contenido verticalmente */
+    padding: 20px;
+    background-color: #f9f9f9;
+    width: 75%; /* 100% del ancho de la ventana */
+    height: 90vh; /* 100% de la altura de la ventana */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+
+}
+
 .header {
-    text-align: center;
     margin-bottom: 20px;
 }
 
-/* Estilo del input de archivo y botón */
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
 input[type="file"] {
-    margin: 10px 0;
+    margin-bottom: 10px;
 }
 
 button {
     background-color: #007bff;
-    color: white;
+    color: #fff;
     border: none;
     padding: 10px 20px;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
     margin: 5px;
     font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
     background-color: #0056b3;
-    transform: scale(1.05);
 }
 
-button.active {
+.button-group {
+    margin-bottom: 20px;
+}
+
+.button-group button {
+    margin: 0 10px;
+}
+
+.button-group button.active {
     background-color: #0056b3;
 }
 
-/* Estilo del grupo de botones */
-.button-group {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Estilo del encabezado de sección */
 h2 {
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
 }
 
-/* Estilo de las tablas */
-table {
+.data-table-container {
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    font-size: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Encabezado de tabla */
-th {
-    background-color: #007bff;
-    color: white;
-    padding: 12px;
-    text-align: left;
-}
-
-/* Celdas de tabla */
-td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-/* Filas alternas */
-tr:nth-child(even) {
+.total-registros {
+    display: flex;
+    justify-content: space-between; /* Distribuye el espacio entre los elementos */
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    margin-top: 20px;
+    padding: 10px;
     background-color: #f9f9f9;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Fila actual */
-tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Estilo para tabla vacía */
-.table-empty {
-    text-align: center;
-    font-style: italic;
-    color: #888;
-    padding: 20px;
+.total-registros .box {
+    padding: 10px;
+    background-color: #0056b3; /* Cambia el color de fondo si deseas */
+    border-radius: 5px;
 }

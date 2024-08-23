@@ -2,7 +2,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 const AuthContext = createContext();
 
@@ -24,22 +24,26 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const loginUser = async (legajo, password) => {
-        let url = "http://127.0.0.1:8000/api/v1/auth/login/";
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ legajo, password })
-        });
-        const data = await response.json();
         try {
+            let url = "http://127.0.0.1:8000/api/v1/auth/login/";
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ legajo, password })
+            });
+    
+            const data = await response.json();
+            console.log(data);
+    
             if (response.status === 200) {
                 setAuthTokens(data);
                 const decodedUser = jwtDecode(data.access);
                 setUser(decodedUser);
                 localStorage.setItem("authTokens", JSON.stringify(data));
-                            // Redirigir a la página según el rol del usuario
+                
+                // Redirigir a la página según el rol del usuario
                 const userRole = decodedUser.role;
                 if (userRole === "Admin") {
                     navigate("/admin/inicio");
@@ -50,7 +54,8 @@ export const AuthProvider = ({ children }) => {
                 } else {
                     navigate("/unauthorized");
                 }
-                swal.fire({
+                
+                Swal.fire({
                     title: "Sesión iniciada correctamente",
                     icon: "success",
                     toast: true,
@@ -59,26 +64,36 @@ export const AuthProvider = ({ children }) => {
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-            } else {
-                console.log(response.status);
-                swal.fire({
-                    title: "El email no existe o el password es incorrecta",
+            } else if (response.status === 404 || response.status === 400) {
+                Swal.fire({
+                    title: data.message,
                     icon: "error",
                     toast: true,
-                    timer: 6000,
+                    timer: 8000,
                     position: 'top',
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-            }} catch (error) {
+            }
+        } catch (error) {
+            // Verificar si el error es de conexión
+            if (error.message.includes('Failed to fetch') || error.message.includes('net::ERR_CONNECTION_REFUSED')) {
                 Swal.fire({
-                    title: "Error de Conexión",
-                    text: "No se pudo conectar con el servidor. Por favor, intenta de nuevo más tarde.",
-                    icon: "error",
-                    confirmButtonText: "Aceptar"
+                    title: 'Error de Conexión',
+                    text: 'No se pudo conectar al servidor. Por favor, inténtelo de nuevo más tarde.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                });
+            } else {
+                // Manejar otros errores aquí
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Se produjo un error inesperado. Por favor, inténtelo de nuevo.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
                 });
             }
-    };
+        }};
 
     const refreshToken = async () => {
         let url = "http://127.0.0.1:8000/api/v1/auth/login/";

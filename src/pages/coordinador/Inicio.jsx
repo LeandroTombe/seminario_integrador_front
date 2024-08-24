@@ -2,13 +2,12 @@ import Sidebar from "./SidebarCoordinador";
 import "./Inicio.css";
 import List from "./List";
 import Carrusel from "./Carrusel";
+import Layout from '../../Layout'
 // fecha y hora de ultima actualizacion
 // fecha y hora de eltimo refresco
 function Inicio() {
   return (
-    <>
-      <Sidebar />
-      <div className="content">
+    <Layout>
         <h1>Inicio</h1>
         <Carrusel
           alumnosEquivalencias="22"
@@ -57,8 +56,7 @@ function Inicio() {
             "Estado",
           ]}
         />
-      </div>
-    </>
+    </Layout>
   );
 }
 

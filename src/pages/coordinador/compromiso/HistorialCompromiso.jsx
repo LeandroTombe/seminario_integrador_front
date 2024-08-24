@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Form, Pagination, Accordion, Card, Modal } from 'react-bootstrap';
-import Sidebar from "./SidebarCoordinador";
+import Sidebar from "../SidebarCoordinador";
 import './HistorialCompromiso.css';
+import Layout from '../../../Layout'
 
 function HistorialCompromiso() {
   const [compromisos, setCompromisos] = useState([]);
@@ -66,9 +67,8 @@ function HistorialCompromiso() {
   };
 
   return (
-    <>
+    <Layout>
       <Sidebar/>
-      <div className="content">
         <h1>Historial de Compromisos de Pago</h1>
         <div className="containerConfig">
           <Form.Group controlId="sortOrder" style={{ maxWidth: '200px', marginBottom: '20px' }}>
@@ -126,7 +126,6 @@ function HistorialCompromiso() {
             </>
           )}
         </div>
-      </div>
 
       {/* Modal para mostrar el PDF */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
@@ -151,7 +150,7 @@ function HistorialCompromiso() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </Layout>
   );
 }
 

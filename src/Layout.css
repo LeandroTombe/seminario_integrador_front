@@ -1,6 +1,25 @@
- .main-content {
-    margin-left: 250px;
-    padding: 20px;
-    background-color: #ffffff;
-    min-height: 100vh;
-  }
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.logged-user {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.icono-usuario{
+  font-size: 30px;
+}
+

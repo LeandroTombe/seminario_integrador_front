@@ -37,7 +37,7 @@ const SidebarCoordinador = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <img className="logo" src="/src/assets/tup_logo.png" alt="Login Logo" />
+        <h4 className='h4-sidebar'>TUP</h4>
       </div>
       <nav className="sidebar-nav">
         <NavLink to="/coordinador/inicio" className="sidebar-link" activeclassname="active">

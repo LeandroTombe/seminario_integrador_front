@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
-    const loginUser = async (legajo, password) => {
+    const loginUser = async (usuario, password) => {
         try {
             let url = "http://127.0.0.1:8000/api/v1/auth/login/";
             const response = await fetch(url, {
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ legajo, password })
+                body: JSON.stringify({ usuario, password })
             });
     
             const data = await response.json();

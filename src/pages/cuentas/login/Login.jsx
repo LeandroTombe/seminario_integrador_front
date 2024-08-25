@@ -8,11 +8,12 @@ const Login = () => {
   const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
+    console.log(e.target.usuario.value);
     e.preventDefault();
-    const legajo = e.target.legajo.value;
+    const usuario = e.target.usuario.value;
     const password = e.target.password.value;
 
-    loginUser(legajo, password);
+    loginUser(usuario, password);
   };
 
   return (
@@ -26,12 +27,12 @@ const Login = () => {
                 <h3 className="mb-3">Iniciar Sesión</h3>
               </div>
               <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="legajo">
-                  <Form.Label>Legajo</Form.Label>
+                <Form.Group className="mb-3" controlId="usuario">
+                  <Form.Label>Usuario</Form.Label>
                   <Form.Control
                     type="text"
-                    name="legajo"
-                    placeholder="Ingrese su legajo"
+                    name="usuario"
+                    placeholder="Ingrese su usuario"
                     required
                   />
                 </Form.Group>

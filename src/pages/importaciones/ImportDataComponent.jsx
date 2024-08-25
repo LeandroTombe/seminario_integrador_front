@@ -106,7 +106,6 @@ const ImportDataComponent = () => {
                                     data={response.correctas}
                                     columns={[
                                         { Header: 'Legajo', accessor: 'legajo' },
-                                        { Header: 'Nombre', accessor: 'nombre' },
                                         { Header: 'Apellido', accessor: 'apellido' },
                                     ]}
                                 />

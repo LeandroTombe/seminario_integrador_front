@@ -19,7 +19,7 @@ interface Props {
 
 function List({ data, headerL, filter }: Props) {
   const dataFilter: string[][] = data.filter((el) =>
-    filter === undefined ? el : el[0] === filter
+    filter === "" ? el : el[0] === filter
   );
   return (
     <ul className="list-group list-group-flush">

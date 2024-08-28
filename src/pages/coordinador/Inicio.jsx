@@ -1,9 +1,6 @@
 import "./Inicio.css";
-import List from "./List";
-import ListFilter from "./ListFilter";
-
 import Carrusel from "./Carrusel";
-import SearchAndFilter from "./SearchAndFilter";
+import SearchAndFilter from "./ListFilterSearch";
 import Layout from "../../Layout";
 // fecha y hora de ultima actualizacion
 // fecha y hora de eltimo refresco
@@ -19,46 +16,6 @@ function Inicio() {
         pagosPendientes="43"
       />
       <SearchAndFilter />
-      <ListFilter
-        data={[
-          [
-            "25134",
-            "desza joaquin",
-            "$ 10",
-            "123414",
-            "2356257",
-            "43784638",
-            "pendiente",
-          ],
-          [
-            "23453",
-            "ramon valdez",
-            "20040",
-            "1241514",
-            "4553767",
-            "348364838",
-            "pendiente",
-          ],
-          [
-            "12344",
-            "peter parker",
-            "$33123",
-            "544567",
-            "4374584368",
-            "346834883",
-            "pagado",
-          ],
-        ]}
-        headerL={[
-          "Legajo",
-          "Nombre",
-          "Monto",
-          "Mora",
-          "Total",
-          "Pagado",
-          "Estado",
-        ]}
-      />
     </Layout>
   );
 }

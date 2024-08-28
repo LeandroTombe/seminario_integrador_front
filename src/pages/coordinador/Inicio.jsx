@@ -1,61 +1,64 @@
-import Sidebar from "./SidebarCoordinador";
 import "./Inicio.css";
 import List from "./List";
+import ListFilter from "./ListFilter";
+
 import Carrusel from "./Carrusel";
-import Layout from '../../Layout'
+import SearchAndFilter from "./SearchAndFilter";
+import Layout from "../../Layout";
 // fecha y hora de ultima actualizacion
 // fecha y hora de eltimo refresco
 function Inicio() {
   return (
     <Layout>
-        <h1>Inicio</h1>
-        <Carrusel
-          alumnosEquivalencias="22"
-          alumnosInhabilitados="25"
-          alumnosTotal="47"
-          pagos="103"
-          pagosPendientes="43"
-        />
-        <List
-          data={[
-            [
-              "22345",
-              "desza joaquin",
-              "$ 10",
-              "123414",
-              "2356257",
-              "43784638",
-              "pendiente",
-            ],
-            [
-              "23453",
-              "ramon valdez",
-              "20040",
-              "1241514",
-              "4553767",
-              "348364838",
-              "pendiente",
-            ],
-            [
-              "12344",
-              "peter parker",
-              "$33123",
-              "544567",
-              "4374584368",
-              "346834883",
-              "pagado",
-            ],
-          ]}
-          headerL={[
-            "Legajo",
-            "Nombre",
-            "Monto",
-            "Mora",
-            "Total",
-            "Pagado",
-            "Estado",
-          ]}
-        />
+      <h1>Inicio</h1>
+      <Carrusel
+        alumnosEquivalencias="22"
+        alumnosInhabilitados="25"
+        alumnosTotal="47"
+        pagos="103"
+        pagosPendientes="43"
+      />
+      <SearchAndFilter />
+      <ListFilter
+        data={[
+          [
+            "25134",
+            "desza joaquin",
+            "$ 10",
+            "123414",
+            "2356257",
+            "43784638",
+            "pendiente",
+          ],
+          [
+            "23453",
+            "ramon valdez",
+            "20040",
+            "1241514",
+            "4553767",
+            "348364838",
+            "pendiente",
+          ],
+          [
+            "12344",
+            "peter parker",
+            "$33123",
+            "544567",
+            "4374584368",
+            "346834883",
+            "pagado",
+          ],
+        ]}
+        headerL={[
+          "Legajo",
+          "Nombre",
+          "Monto",
+          "Mora",
+          "Total",
+          "Pagado",
+          "Estado",
+        ]}
+      />
     </Layout>
   );
 }

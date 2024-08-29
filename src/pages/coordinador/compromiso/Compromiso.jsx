@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import SeccionCompromiso from "../../../components/SeccionCompromiso";
+import InfoCompromiso from "../../../components/InfoCompromiso";
 import Sidebar from "../SidebarCoordinador";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Badge from 'react-bootstrap/Badge';
@@ -60,14 +60,7 @@ function Compromiso() {
             <p>No existe un compromiso de pago cargado para el año y cuatrimestre actual.</p>
           ) : (
             <div className='conteinerInfo'>
-              <Badge bg="primary">Año: {data[0].año} Cuatrimestre: {data[0].cuatrimestre}</Badge>
-              <SeccionCompromiso texto="Valor de matricula" valorInicial={data[0].importe_matricula} />
-              <SeccionCompromiso texto="Valor de cuota completa" valorInicial={data[0].importe_completo} />
-              <SeccionCompromiso texto="Valor de cuota reducida" valorInicial={data[0].importe_reducido} />
-              <SeccionCompromiso texto="Valor de primer mora completa" valorInicial={data[0].importe_pri_venc_comp} />
-              <SeccionCompromiso texto="Valor de segunda mora completa" valorInicial={data[0].importe_seg_venc_comp} />
-              <SeccionCompromiso texto="Valor de primer mora reducida" valorInicial={data[0].importe_pri_venc_red} />
-              <SeccionCompromiso texto="Valor de segunda mora reducida" valorInicial={data[0].importe_seg_venc_red} />
+              <InfoCompromiso compromiso={data[0]}/>
 
               {pdfUrl && (
                 <div className="mt-3">

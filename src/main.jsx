@@ -33,6 +33,10 @@ import CargarCompromiso from "./pages/coordinador/compromiso/CargarCompromiso.js
 import HistorialCompromiso from "./pages/coordinador/compromiso/HistorialCompromiso.jsx";
 import CompromisoEditar from "./pages/coordinador/compromiso/CompromisoEditar.jsx";
 
+import AlumnosFirmasCompromiso from "./pages/coordinador/AlumnosFirmasCompromiso.jsx";
+
+import FirmarCompromiso from "./pages/alumno/FirmarCompromiso.jsx"
+
 const App = () => {
   return (
     <div className="app">
@@ -54,6 +58,12 @@ const App = () => {
             path="/alumno/tramites"
             element={
               <ProtectedRoute element={<AlumnoTramites />} roles={["Alumno"]} />
+            }
+          />
+          <Route
+            path="/alumno/firmarCompromiso"
+            element={
+              <ProtectedRoute element={<FirmarCompromiso />} roles={["Alumno"]} />
             }
           />
           <Route path="/importar_panda" element={<ImportDataComponent />} />
@@ -84,6 +94,10 @@ const App = () => {
           <Route
             path="/coordinador/Pagos Pendientes"
             element={<PagosPendientes />}
+          />
+          <Route
+            path="/coordinador/AlumnosFirmasCompromiso"
+            element={<AlumnosFirmasCompromiso />}
           />
           <Route path="/coordinador/mensajes" element={<Mensajes />} />
           <Route path="/coordinador/reportes" element={<Reportes />} />

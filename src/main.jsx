@@ -36,6 +36,7 @@ import CompromisoEditar from "./pages/coordinador/compromiso/CompromisoEditar.js
 import AlumnosFirmasCompromiso from "./pages/coordinador/AlumnosFirmasCompromiso.jsx";
 
 import FirmarCompromiso from "./pages/alumno/FirmarCompromiso.jsx"
+import EstadoDeCuenta from "./pages/alumno/EstadoDeCuenta.jsx"
 
 const App = () => {
   return (
@@ -64,6 +65,12 @@ const App = () => {
             path="/alumno/firmarCompromiso"
             element={
               <ProtectedRoute element={<FirmarCompromiso />} roles={["Alumno"]} />
+            }
+          />
+          <Route
+            path="/alumno/estadoDeCuenta"
+            element={
+              <ProtectedRoute element={<EstadoDeCuenta />} roles={["Alumno"]} />
             }
           />
           <Route path="/importar_panda" element={<ImportDataComponent />} />

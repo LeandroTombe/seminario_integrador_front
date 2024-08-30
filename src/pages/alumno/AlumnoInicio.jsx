@@ -1,4 +1,5 @@
 import Sidebar from "./SidebarAlumno";
+import Layout from '../../Layout'
 
 function AlumnoInicio() {
 

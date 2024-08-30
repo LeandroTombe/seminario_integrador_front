@@ -19,6 +19,7 @@ import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
 
 /* Paginas de coordinador */
 import Inicio from "./pages/coordinador/Inicio.jsx";
+import PerfilAlumno from "./pages/coordinador/PerfilAlumno.jsx";
 import AlumnosInhabilitados from "./pages/coordinador/AlumnosInhabilitados.jsx";
 import AlumnosEquivalencias from "./pages/coordinador/AlumnosEquivalencias.jsx";
 import AlumnosProrroga from "./pages/coordinador/AlumnosProrroga.jsx";
@@ -41,121 +42,105 @@ import EstadoDeCuenta from "./pages/alumno/EstadoDeCuenta.jsx"
 const App = () => {
   return (
     <div className="app">
-        <Routes>
-          {/* Paginas de alumno */}
-          <Route
-            path="/alumno/inicio"
-            element={
-              <ProtectedRoute element={<AlumnoInicio />} roles={["Alumno"]} />
-            }
-          />
-          <Route
-            path="/alumno/mensajes"
-            element={
-              <ProtectedRoute element={<AlumnoMensajes />} roles={["Alumno"]} />
-            }
-          />
-          <Route
-            path="/alumno/tramites"
-            element={
-              <ProtectedRoute element={<AlumnoTramites />} roles={["Alumno"]} />
-            }
-          />
-          <Route
-            path="/alumno/firmarCompromiso"
-            element={
-              <ProtectedRoute element={<FirmarCompromiso />} roles={["Alumno"]} />
-            }
-          />
-          <Route
-            path="/alumno/estadoDeCuenta"
-            element={
-              <ProtectedRoute element={<EstadoDeCuenta />} roles={["Alumno"]} />
-            }
-          />
-          <Route path="/importar_panda" element={<ImportDataComponent />} />
-          {/* Paginas de coordinador */}
-          <Route
-            path="/estudiante"
-            element={
-              <ProtectedRoute
-                element={<Inicio />}
-                roles={["Admin", "Coordinador", "Alumno"]}
-              />
-            }
-          />
-          <Route path="/coordinador/inicio" element={<Inicio />} />
-          <Route
-            path="/coordinador/Alumnos Inhabilitados"
-            element={<AlumnosInhabilitados />}
-          />
-          <Route
-            path="/coordinador/Alumnos Prorroga"
-            element={<AlumnosProrroga />}
-          />
-          <Route
-            path="/coordinador/Alumnos Equivalencias"
-            element={<AlumnosEquivalencias />}
-          />
-          <Route path="/coordinador/Pagos" element={<Pagos />} />
-          <Route
-            path="/coordinador/Pagos Pendientes"
-            element={<PagosPendientes />}
-          />
-          <Route
-            path="/coordinador/AlumnosFirmasCompromiso"
-            element={<AlumnosFirmasCompromiso />}
-          />
-          <Route path="/coordinador/mensajes" element={<Mensajes />} />
-          <Route path="/coordinador/reportes" element={<Reportes />} />
-          <Route
-            path="/coordinador/configuracion/compromiso/actual"
-            element={<Compromiso />}
-          />
-          <Route
-            path="/coordinador/configuracion/compromiso/cargar"
-            element={<CargarCompromiso />}
-          />
-          <Route
-            path="/coordinador/configuracion/compromiso/historial"
-            element={<HistorialCompromiso />}
-          />
-          <Route
-            path="/coordinador/configuracion/compromiso/actual/editar"
-            element={<CompromisoEditar />}
-          />
-          {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
-          <Route
-            path="/coordinador/configuracion/importaciones-validas"
-            element={<ImportDataComponent />}
-          />
-          <Route
-            path="/importar"
-            element={
-              <ProtectedRoute>
-                {" "}
-                <ImportarUsuarios />{" "}
-              </ProtectedRoute>
-            }
-          />
-          {/* Paginas de autorizacion */}
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/recuperar-password" element={<RecuperarPass />} />
-          <Route
-            path="/verificar-nuevo-password"
-            element={<VerificarNuevoPassword />}
-          />
-          <Route path="/logout" element={<LogoutPage />} />{" "}
-          {/* Ruta para la página de logout */}
-          <Route
-            path="/unauthorized"
-            element={<ProtectedRoute element={<Desautorizacion />} />}
-          />
-        </Routes>
-      </div>
+      <Routes>
+        {/* Paginas de alumno */}
+        <Route
+          path="/alumno/inicio"
+          element={
+            <ProtectedRoute element={<AlumnoInicio />} roles={["Alumno"]} />
+          }
+        />
+        <Route
+          path="/alumno/mensajes"
+          element={
+            <ProtectedRoute element={<AlumnoMensajes />} roles={["Alumno"]} />
+          }
+        />
+        <Route
+          path="/alumno/tramites"
+          element={
+            <ProtectedRoute element={<AlumnoTramites />} roles={["Alumno"]} />
+          }
+        />
+        <Route path="/importar_panda" element={<ImportDataComponent />} />
+        {/* Paginas de coordinador */}
+        <Route
+          path="/estudiante"
+          element={
+            <ProtectedRoute
+              element={<Inicio />}
+              roles={["Admin", "Coordinador", "Alumno"]}
+            />
+          }
+        />
+        <Route path="/coordinador/inicio" element={<Inicio />} />
+        <Route path="/coordinador/Perfil Alumno" element={<PerfilAlumno />} />
+        <Route
+          path="/coordinador/Alumnos Inhabilitados"
+          element={<AlumnosInhabilitados />}
+        />
+        <Route
+          path="/coordinador/Alumnos Prorroga"
+          element={<AlumnosProrroga />}
+        />
+        <Route
+          path="/coordinador/Alumnos Equivalencias"
+          element={<AlumnosEquivalencias />}
+        />
+        <Route path="/coordinador/Pagos" element={<Pagos />} />
+        <Route
+          path="/coordinador/Pagos Pendientes"
+          element={<PagosPendientes />}
+        />
+        <Route path="/coordinador/mensajes" element={<Mensajes />} />
+        <Route path="/coordinador/reportes" element={<Reportes />} />
+        <Route
+          path="/coordinador/configuracion/compromiso/actual"
+          element={<Compromiso />}
+        />
+        <Route
+          path="/coordinador/configuracion/compromiso/cargar"
+          element={<CargarCompromiso />}
+        />
+        <Route
+          path="/coordinador/configuracion/compromiso/historial"
+          element={<HistorialCompromiso />}
+        />
+        <Route
+          path="/coordinador/configuracion/compromiso/actual/editar"
+          element={<CompromisoEditar />}
+        />
+        {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
+        <Route
+          path="/coordinador/configuracion/importaciones-validas"
+          element={<ImportDataComponent />}
+        />
+        <Route
+          path="/importar"
+          element={
+            <ProtectedRoute>
+              {" "}
+              <ImportarUsuarios />{" "}
+            </ProtectedRoute>
+          }
+        />
+        {/* Paginas de autorizacion */}
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/recuperar-password" element={<RecuperarPass />} />
+        <Route
+          path="/verificar-nuevo-password"
+          element={<VerificarNuevoPassword />}
+        />
+        <Route path="/logout" element={<LogoutPage />} />{" "}
+        {/* Ruta para la página de logout */}
+        <Route
+          path="/unauthorized"
+          element={<ProtectedRoute element={<Desautorizacion />} />}
+        />
+      </Routes>
+    </div>
   );
-
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(

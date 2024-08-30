@@ -34,6 +34,11 @@ import CargarCompromiso from "./pages/coordinador/compromiso/CargarCompromiso.js
 import HistorialCompromiso from "./pages/coordinador/compromiso/HistorialCompromiso.jsx";
 import CompromisoEditar from "./pages/coordinador/compromiso/CompromisoEditar.jsx";
 
+import AlumnosFirmasCompromiso from "./pages/coordinador/AlumnosFirmasCompromiso.jsx";
+
+import FirmarCompromiso from "./pages/alumno/FirmarCompromiso.jsx"
+import EstadoDeCuenta from "./pages/alumno/EstadoDeCuenta.jsx"
+
 const App = () => {
   return (
     <div className="app">

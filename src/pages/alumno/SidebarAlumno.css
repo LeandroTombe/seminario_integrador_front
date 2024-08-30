@@ -1,51 +1,56 @@
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-  }
-  
-  .sidebar-header {
-    padding: 20px;
-    background-color: #eee;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .sidebar-header h3 {
-    margin: 0;
-    font-size: 20px;
-    color: #333;
-  }
-  
-  .sidebar-nav {
-    flex: 1;
-    padding: 20px 0;
-  }
-  
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    color: #333;
-    text-decoration: none;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar-link .icon {
-    margin-right: 10px;
-  }
-  
-  .sidebar-link:hover {
-    background-color: #ddd;
-  }
-  
-  .sidebar-link.active {
-    background-color: #ccc;
-    font-weight: bold;
-  }
+.sidebar-alumno {
+  width: 250px;
+  height: 100vh;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  z-index: 2; 
+}
+
+.sidebar-header-alumno {
+  padding: 20px;
+  background-color: #eee;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar-nav-alumno {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.sidebar-link-alumno {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.sidebar-link-alumno .icon-alumno {
+  margin-right: 10px;
+}
+
+.sidebar-link-alumno:hover {
+  background-color: #ddd;
+}
+
+.sidebar-link-alumno.active {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+.sidebar-link-alumno .icon-alumno {
+  font-size: 22px; /* Ajusta el tamaño del ícono */
+  margin-right: 12px; /* Espacio entre el ícono y el texto */
+}
+
+.h4-sidebar-alumno{
+font-weight: bold;
+}

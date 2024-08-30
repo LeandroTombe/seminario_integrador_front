@@ -1,6 +1,6 @@
 import Sidebar from "./SidebarAlumno";
 
-function AlumnoTramites() {
+function AlumnoCompromiso() {
 
     return (
       <div className="contenedor-principal">
@@ -12,4 +12,5 @@ function AlumnoTramites() {
   
 
 
-  export default AlumnoTramites;
+  export default AlumnoCompromiso;
+  

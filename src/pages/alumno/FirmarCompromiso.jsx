@@ -3,20 +3,21 @@ import Layout from "../../LayoutAlumno";
 import { useAuth } from "../../context/AuthContext";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import InfoCompromiso from '../../components/InfoCompromiso'
+import InfoCompromiso from '../../components/InfoCompromiso';
 
 const FirmarCompromiso = () => {
-  const { authTokens } = useAuth(); // Acceder a la información del usuario y tokens
+  const { authTokens } = useAuth();
   const [pdfUrl, setPdfUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [compromiso, setCompromiso] = useState([]);
   const [isSigned, setIsSigned] = useState(false);
+  const [formData, setFormData] = useState({ nombre: '', apellido: '', dni: '' });
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     const fetchCompromiso = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/compromisoActual/', {
-        });
+        const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/compromisoActual/');
         const compromiso = await response.json();
         if (!response.ok) {
           throw new Error(response.error);
@@ -33,13 +34,24 @@ const FirmarCompromiso = () => {
     fetchCompromiso();
   }, [authTokens]);
 
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevFormData => {
+      const newFormData = { ...prevFormData, [name]: value };
+      // Validate the form
+      const isValid = Object.values(newFormData).every(field => field.trim() !== '');
+      setIsFormValid(isValid);
+      return newFormData;
+    });
+  };
+
   const handleSign = async () => {
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/firmaCompromiso/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authTokens.refresh}`, // Asegúrate de usar el token de acceso, no el de refresco
+          'Authorization': `Bearer ${authTokens.refresh}`,
         },
         body: JSON.stringify({
           año: compromiso[0].año,
@@ -47,11 +59,9 @@ const FirmarCompromiso = () => {
         }),
       });
   
-      // Leer la respuesta en formato JSON
       const data = await response.json();
   
       if (!response.ok) {
-        // Si la respuesta no es exitosa, lanza un error con el mensaje del backend
         throw new Error(data.error || 'Error al firmar el compromiso');
       }
   
@@ -59,11 +69,11 @@ const FirmarCompromiso = () => {
       alert('Compromiso firmado exitosamente');
     } catch (error) {
       console.error('Error:', error.message);
-      alert(`Error al firmar el compromiso: ${error.message}`); // Mostrar el mensaje de error al usuario
+      alert(`Error al firmar el compromiso: ${error.message}`);
     }
   };
 
-  const handleVisualizarPDF = () => {
+  const handleShowModal = () => {
     setShowModal(true);
   };
 
@@ -75,60 +85,92 @@ const FirmarCompromiso = () => {
     <Layout>
       <h1>Compromiso de Pago Actual</h1>
       <div className="containerConfig">
-      {compromiso.length > 0 ? (
-        <>
-          <InfoCompromiso compromiso={compromiso[0]} />
+        {compromiso.length > 0 ? (
+          <>
+            {pdfUrl && (
+              <div className="mb-3">
+                <iframe 
+                  src={`http://127.0.0.1:8000${pdfUrl}`} 
+                  width="100%" 
+                  height="600px" 
+                  title="Compromiso de Pago PDF"
+                />
+                <div className="mt-3 d-flex justify-content-center">
+                  <button 
+                    className="btn btn-secondary" 
+                    onClick={handleShowModal}
+                  >
+                    Ver resumen de valores
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            <h4 className="mt-4">Ingresa tus datos para realizar la firma del compromiso de pago</h4>
+            <form>
+              <div className="mb-3">
+                <label htmlFor="nombre" className="form-label">Nombre</label>
+                <input 
+                  type="text" 
+                  id="nombre" 
+                  name="nombre" 
+                  value={formData.nombre}
+                  onChange={handleFormChange}
+                  className="form-control" 
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="apellido" className="form-label">Apellido</label>
+                <input 
+                  type="text" 
+                  id="apellido" 
+                  name="apellido" 
+                  value={formData.apellido}
+                  onChange={handleFormChange}
+                  className="form-control" 
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="dni" className="form-label">DNI</label>
+                <input 
+                  type="text" 
+                  id="dni" 
+                  name="dni" 
+                  value={formData.dni}
+                  onChange={handleFormChange}
+                  className="form-control" 
+                />
+              </div>
+              <div>
+                <button 
+                  type="button" 
+                  className="btn btn-primary"
+                  onClick={handleSign}
+                  disabled={!isFormValid || isSigned} // Deshabilitar el botón si el formulario no está completo o ya está firmado
+                >
+                  Firmar Compromiso
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <p>No se ha encontrado ningún compromiso.</p>
+        )}
 
-          {pdfUrl && (
-            <div className="mt-3">
-              <button 
-                className="btn btn-secondary" 
-                onClick={handleVisualizarPDF}
-              >
-                Visualizar PDF
-              </button>
-            </div>
-          )}    
-
-          <div>
-            <input 
-              type="checkbox" 
-              id="firmarCompromiso" 
-              checked={isSigned} 
-              onChange={handleSign} 
-              disabled={isSigned} // Deshabilita la casilla si ya está firmada
-            />
-            <label htmlFor="firmarCompromiso"> Acepto los terminos y condiciones del compromiso de pago</label>
-          </div>
-
-        </>
-      ) : (
-        <p>No se ha encontrado ningún compromiso.</p>
-      )}
-
-      {/* Modal para mostrar el PDF */}
-      <Modal show={showModal} onHide={handleCloseModal} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Compromiso de Pago</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {pdfUrl ? (
-            <iframe 
-              src={`http://127.0.0.1:8000${pdfUrl}`} 
-              width="100%" 
-              height="500px" 
-              title="Compromiso de Pago PDF"
-            />
-          ) : (
-            <p>No se pudo cargar el PDF.</p>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        {/* Modal para mostrar el resumen de valores */}
+        <Modal show={showModal} onHide={handleCloseModal} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Resumen de Valores de Cuotas y Matriculas</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {compromiso.length > 0 && <InfoCompromiso compromiso={compromiso[0]} />}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Aceptar
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </Layout>
   );

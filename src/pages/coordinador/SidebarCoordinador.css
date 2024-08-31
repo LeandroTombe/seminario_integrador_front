@@ -13,7 +13,9 @@
   }
   
   .sidebar-header {
-    padding: 20px;
+    padding-bottom: 2px;
+    padding-top: 16px;
+    padding-left: 10px;
     background-color: #eee;
     border-bottom: 1px solid #ccc;
   }

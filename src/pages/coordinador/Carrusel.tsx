@@ -25,9 +25,9 @@ function myCarousel({
       "Alumnos inhabilitados",
     ],
     // listado de alumnos
-    [alumnosTotal, "alumnos total", "inicio"],
+    [alumnosTotal, "Total Alumnos", "inicio"],
     // listado de pagos realizados
-    [pagos, "pagos realizados", "pagos"],
+    [pagos, "Pagos Realizados", "pagos"],
   ];
 
   return (

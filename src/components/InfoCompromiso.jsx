@@ -8,6 +8,7 @@ const InfoCompromiso = ({ compromiso }) => {
       <Badge bg="primary" className="mb-3">
         Año: {compromiso.año} Cuatrimestre: {compromiso.cuatrimestre}
       </Badge>
+      <h2>Valores de cuotas y moras:</h2>
       <SeccionCompromiso texto="Valor de matrícula" valorInicial={compromiso.importe_matricula} />
       <SeccionCompromiso texto="Valor de cuota completa" valorInicial={compromiso.importe_completo} />
       <SeccionCompromiso texto="Valor de cuota reducida" valorInicial={compromiso.importe_reducido} />

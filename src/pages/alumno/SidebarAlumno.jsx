@@ -13,16 +13,16 @@ const SidebarAlumno = () => {
         <h4 className='h4-sidebar'>TUP</h4>
       </div>
       <nav className="sidebar-nav">
-        <NavLink to="/alumno/AlumnoInicio" className="sidebar-link" activeclassname="active">
+        <NavLink to="/alumno/inicio" className="sidebar-link" activeclassname="active">
           <FiHome className="icon" /> Inicio
         </NavLink>
-        <NavLink to="/alumno/AlumnoMensajes" className="sidebar-link" activeclassname="active">
+        <NavLink to="/alumno/mensajes" className="sidebar-link" activeclassname="active">
           <FiMail className="icon" /> Mensajes
         </NavLink>
-        <NavLink to="/alumno/FirmaCompromiso" className="sidebar-link" activeclassname="active">
+        <NavLink to="/alumno/firmarCompromiso" className="sidebar-link" activeclassname="active">
           <FiFileText className="icon" /> Compromiso de Pago
         </NavLink>
-        <NavLink to="/alumno/AlumnoTramites" className="sidebar-link" activeclassname="active">
+        <NavLink to="/alumno/tramites" className="sidebar-link" activeclassname="active">
           <FiGrid className="icon" /> Trámites
         </NavLink>
         <button onClick={logoutUser} className="sidebar-link logout-button">

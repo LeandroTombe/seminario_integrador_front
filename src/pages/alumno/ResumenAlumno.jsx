@@ -23,25 +23,24 @@ const ResumenAlumno = () => {
                 }
 
                 const data = await response.json();
-                console.log(data)
+                //console.log(data)
                 setSaldoVencido(data.saldoVencido); // Asegúrate de que esta clave exista en el JSON de respuesta
                 setProximoVencimiento(data.proximaFechaVencimiento)
-                if (saldoVencido > 0){
-                    setEstadoAlumno("Inhabilitado")
-                } else {
-                    setEstadoAlumno("Habilitado")
-                }
             } catch (err) {
                 console.error(err.message);
             }
         };
-
-        // Aquí irían las funciones para obtener el próximo vencimiento y el estado del alumno
-        // fetchProximoVencimiento();
-        // fetchEstadoAlumno();
-
         fetchSaldoVencido();
     }, [authTokens]);
+
+    // Este useEffect se ejecuta cada vez que cambia el saldoVencido
+    useEffect(() => {
+        if (saldoVencido > 0) {
+            setEstadoAlumno("Inhabilitado");
+        } else {
+            setEstadoAlumno("Habilitado");
+        }
+    }, [saldoVencido]);
 
     return (
         <>

@@ -205,7 +205,7 @@ function CargarCompromiso() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="importe_pri_venc_red" className="form-label">Valor de primer vencimiento completo</label>
+              <label htmlFor="importe_pri_venc_red" className="form-label">Valor de primer vencimiento reducido</label>
               <input
                 type="number"
                 className="form-control"
@@ -218,7 +218,7 @@ function CargarCompromiso() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="importe_seg_venc_red" className="form-label">Valor de segundo vencimiento completo</label>
+              <label htmlFor="importe_seg_venc_red" className="form-label">Valor de segundo vencimiento reducido</label>
               <input
                 type="number"
                 className="form-control"

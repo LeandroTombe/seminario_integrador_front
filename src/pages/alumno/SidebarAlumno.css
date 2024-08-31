@@ -1,4 +1,4 @@
-.sidebar-alumno {
+.sidebar {
   width: 250px;
   height: 100vh;
   background-color: #f4f4f4;
@@ -12,18 +12,27 @@
   z-index: 2; 
 }
 
-.sidebar-header-alumno {
-  padding: 20px;
+.sidebar-header {
+  padding-bottom: 2px;
+  padding-top: 16px;
+  padding-left: 10px;
   background-color: #eee;
   border-bottom: 1px solid #ccc;
 }
 
-.sidebar-nav-alumno {
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+.sidebar-nav {
   flex: 1;
   padding: 20px 0;
 }
 
-.sidebar-link-alumno {
+.sidebar-link {
   display: flex;
   align-items: center;
   padding: 15px 20px;
@@ -33,24 +42,25 @@
   transition: background-color 0.3s;
 }
 
-.sidebar-link-alumno .icon-alumno {
+.sidebar-link .icon {
   margin-right: 10px;
 }
 
-.sidebar-link-alumno:hover {
+.sidebar-link:hover {
   background-color: #ddd;
 }
 
-.sidebar-link-alumno.active {
+.sidebar-link.active {
   background-color: #ccc;
   font-weight: bold;
 }
 
-.sidebar-link-alumno .icon-alumno {
+.sidebar-link .icon {
   font-size: 22px; /* Ajusta el tamaño del ícono */
   margin-right: 12px; /* Espacio entre el ícono y el texto */
 }
 
-.h4-sidebar-alumno{
+.h4-sidebar{
 font-weight: bold;
 }
+

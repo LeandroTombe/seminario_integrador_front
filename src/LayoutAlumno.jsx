@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
       <Sidebar />
       <div className="main-content flex-grow-1">
         <div className="header d-flex justify-content-end align-items-center">
-          <span className="me-3">{user ? user.nombre : "Usuario Desconocido"}</span> {/* Muestra el nombre del usuario */}
+          <span className="me-3 user-name">{user ? user.nombre : "Usuario Desconocido"}</span> {/* Muestra el nombre del usuario */}
           <span className="logged-user"><FaRegCircleUser className='icono-usuario'/></span>
         </div>
         {children}

@@ -32,8 +32,8 @@ const EstadoDeCuenta = () => {
     }, [authTokens]);
 
     return (
-        <Layout>
-                <h1>Estado de cuenta</h1>
+        <>
+        <h2>Estado de cuenta</h2>
                 {error ? (
                     <p>{error}</p>
                 ) : cuotas.length === 0 ? (
@@ -42,7 +42,7 @@ const EstadoDeCuenta = () => {
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Nro</th>
+                                <th>Numero de Cuota</th>
                                 <th>Año</th>
                                 <th>Importe</th>
                                 <th>Mora</th>
@@ -66,7 +66,7 @@ const EstadoDeCuenta = () => {
                         </tbody>
                     </Table>
                 )}
-        </Layout>
+        </>
     );
 };
 

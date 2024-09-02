@@ -43,6 +43,10 @@ function Compromiso() {
     });
   };
 
+  const handleCargarCompromiso = () => {
+    navigate('/coordinador/configuracion/compromiso/cargar')
+  };
+
   const handleVisualizarPDF = () => {
     setShowModal(true);
   };
@@ -53,11 +57,16 @@ function Compromiso() {
 
   return (
     <Layout>
-        <h1>Compromiso de Pago Actual</h1>
+        <h1>Valores y Compromiso de Pago Actual</h1>
         {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
         <div className="containerConfig">
           {data.length === 0 ? (
-            <p>No existe un compromiso de pago cargado para el año y cuatrimestre actual.</p>
+            <>
+              <p>No existe un compromiso de pago para el año y cuatrimestre actual.</p>
+              <div className="conteinerBotones">
+                <button className="btn btn-primary me-3" type="button" onClick={handleCargarCompromiso}>Cargar Compromiso</button>
+              </div>
+            </>
           ) : (
             <div className='conteinerInfo'>
               <InfoCompromiso compromiso={data[0]}/>
@@ -74,7 +83,7 @@ function Compromiso() {
               )}
 
               <div className="conteinerBotones">
-                <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Modificar Compromiso de Pago</button>
+                <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Modificar Valores</button>
               </div>
             </div>
           )}

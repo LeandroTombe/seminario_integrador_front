@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Form, Pagination, Accordion, Card, Modal } from 'react-bootstrap';
+import { Table, Button, Form, Pagination, Modal } from 'react-bootstrap';
 import Sidebar from "../SidebarCoordinador";
 import './HistorialCompromiso.css';
-import Layout from '../../../Layout'
+import Layout from '../../../Layout';
+import InfoCompromiso from '../../../components/InfoCompromiso';
 
 function HistorialCompromiso() {
   const [compromisos, setCompromisos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortOrder, setSortOrder] = useState('desc'); // 'desc' para mostrar primero los más nuevos
+  const [sortOrder, setSortOrder] = useState('desc');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(4); // Número de elementos por página
+  const [itemsPerPage] = useState(4);
 
   const [showModal, setShowModal] = useState(false);
+  const [selectedCompromiso, setSelectedCompromiso] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {
@@ -63,74 +65,89 @@ function HistorialCompromiso() {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setPdfUrl(null);
+    setTimeout(() => {
+      setSelectedCompromiso(null);
+      setPdfUrl(null);
+    }, 300); // Se agrega un pequeño delay para asegurar que el modal se cierra completamente antes de resetear el estado
+  };
+
+  const handleRowClick = (compromiso) => {
+    setSelectedCompromiso(compromiso);
+    setShowModal(true);
   };
 
   return (
     <Layout>
-      <Sidebar/>
-        <h1>Historial de Compromisos de Pago</h1>
-        <div className="containerConfig">
-          <Form.Group controlId="sortOrder" style={{ maxWidth: '200px', marginBottom: '20px' }}>
-            <Form.Label>Ordenar por</Form.Label>
-            <Form.Control as="select" value={sortOrder} onChange={handleSortChange}>
-              <option value="desc">Más nuevos primero</option>
-              <option value="asc">Más antiguos primero</option>
-            </Form.Control>
-          </Form.Group>
+      <Sidebar />
+      <h1>Historial de Valores y Compromisos de Pago</h1>
+      <div className="containerConfig">
+        <Form.Group controlId="sortOrder" style={{ maxWidth: '200px', marginBottom: '20px' }}>
+          <Form.Label>Ordenar por</Form.Label>
+          <Form.Control as="select" value={sortOrder} onChange={handleSortChange}>
+            <option value="desc">Más nuevos primero</option>
+            <option value="asc">Más antiguos primero</option>
+          </Form.Control>
+        </Form.Group>
 
-          {loading ? (
-            <p>Cargando...</p>
-          ) : error ? (
-            <p>{error}</p>
-          ) : (
-            <>
-              <div>
+        {loading ? (
+          <p>Cargando...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <>
+            <p>Selecciona una fila para visualizar el detalle</p>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Año</th>
+                  <th>Cuatrimestre</th>
+                  <th>Matrícula</th>
+                  <th>Cuota Completa</th>
+                  <th>Cuota Reducida</th>
+                  <th>PDF</th>
+                </tr>
+              </thead>
+              <tbody>
                 {currentItems.map((compromiso, index) => (
-                  <Accordion key={index} defaultActiveKey="0" className="">
-                    <Accordion.Header className="">
-                      <div style={{ display: 'flex', justifyContent: 'space-between', width: '50%' }}>
-                        <span>Año: {compromiso.año}</span>
-                        <span>Cuatrimestre: {compromiso.cuatrimestre}</span>
-                      </div>
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <p><strong>Valor de Matrícula:</strong> {compromiso.importe_matricula}</p>
-                      <p><strong>Valor de Cuota Reducida:</strong> {compromiso.importe_reducido}</p>
-                      <p><strong>Valor de Cuota Completa:</strong> {compromiso.importe_completo}</p>
-                      <p><strong>Valor de Primer Mora Completa:</strong> {compromiso.importe_pri_venc_comp}</p>
-                      <p><strong>Valor de Primer Mora Reducida:</strong> {compromiso.importe_pri_venc_red}</p>
-                      <p><strong>Valor de Segunda Mora Completa:</strong> {compromiso.importe_seg_venc_comp}</p>
-                      <p><strong>Valor de Segunda Mora Reducida:</strong> {compromiso.importe_seg_venc_red}</p>
+                  <tr key={index} onClick={() => handleRowClick(compromiso)}>
+                    <td>{compromiso.año}</td>
+                    <td>{compromiso.cuatrimestre}</td>
+                    <td>{compromiso.importe_matricula}</td>
+                    <td>{compromiso.importe_completo}</td>
+                    <td>{compromiso.importe_reducido}</td>
+                    <td>
                       {compromiso.compromiso_contenido && (
-                        <Button 
-                          variant="secondary" 
-                          onClick={() => handleVisualizarPDF(compromiso.compromiso_contenido)}
-                          className="mt-3"
+                        <span
+                          style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Evita que el click en el texto active el click de la fila
+                            handleVisualizarPDF(compromiso.compromiso_contenido);
+                          }}
                         >
                           Visualizar PDF
-                        </Button>
+                        </span>
                       )}
-                    </Accordion.Body>
-                  </Accordion>
+                    </td>
+                  </tr>
                 ))}
-              </div>
+              </tbody>
+            </Table>
 
-              <Pagination>
-                {[...Array(totalPages).keys()].map((number) => (
-                  <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
-                    {number + 1}
-                  </Pagination.Item>
-                ))}
-              </Pagination>
-            </>
-          )}
-        </div>
+            <Pagination>
+              {[...Array(totalPages).keys()].map((number) => (
+                <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
+                  {number + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          </>
+        )}
+      </div>
 
-      {/* Modal para mostrar el PDF */}
+      {/* Modal para mostrar el compromiso o el PDF */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Compromiso de Pago PDF</Modal.Title>
+          <Modal.Title>{pdfUrl ? "Compromiso de Pago PDF" : "Detalle del Compromiso"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {pdfUrl ? (
@@ -141,7 +158,7 @@ function HistorialCompromiso() {
               title="Compromiso de Pago PDF"
             />
           ) : (
-            <p>No se pudo cargar el PDF.</p>
+            selectedCompromiso && <InfoCompromiso compromiso={selectedCompromiso} />
           )}
         </Modal.Body>
         <Modal.Footer>

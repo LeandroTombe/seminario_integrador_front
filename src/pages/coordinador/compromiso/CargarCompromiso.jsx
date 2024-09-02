@@ -107,7 +107,7 @@ function CargarCompromiso() {
 
   return (
     <Layout>
-        <h1>Nuevo Compromiso de Pago</h1>
+        <h1>Nuevos Valores y Compromiso de Pago</h1>
         <div className="containerConfig">
           <form onSubmit={handleSubmit}>
           <div className="row mb-3">

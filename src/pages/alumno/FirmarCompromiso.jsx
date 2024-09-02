@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 import Layout from "../../LayoutAlumno";
 import { useAuth } from "../../context/AuthContext";
 import Modal from 'react-bootstrap/Modal';
@@ -7,12 +8,14 @@ import InfoCompromiso from '../../components/InfoCompromiso';
 
 const FirmarCompromiso = () => {
   const { authTokens } = useAuth();
+  const navigate = useNavigate(); // Define navigate para redirigir
   const [pdfUrl, setPdfUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [compromiso, setCompromiso] = useState([]);
   const [isSigned, setIsSigned] = useState(false);
   const [formData, setFormData] = useState({ nombre: '', apellido: '', dni: '' });
   const [isFormValid, setIsFormValid] = useState(false);
+  const [existeFirma, setExisteFirma] = useState([]);
 
   useEffect(() => {
     const fetchCompromiso = async () => {
@@ -34,11 +37,33 @@ const FirmarCompromiso = () => {
     fetchCompromiso();
   }, [authTokens]);
 
+  useEffect(() => {
+    const fetchExisteFirmaCompromiso = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/existenciaFirmaAlumnoCompromisoActual/', {
+          headers: {
+              'Authorization': `Bearer ${authTokens.refresh}`, 
+          },
+      });
+        
+        if (!response.ok) {
+          throw new Error(response.error);
+        }
+        const existeFirma = await response.json();
+        setExisteFirma(existeFirma);
+        console.log(existeFirma.firmado)
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchExisteFirmaCompromiso();
+  }, [authTokens]);
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevFormData => {
       const newFormData = { ...prevFormData, [name]: value };
-      // Validate the form
       const isValid = Object.values(newFormData).every(field => field.trim() !== '');
       setIsFormValid(isValid);
       return newFormData;
@@ -67,6 +92,8 @@ const FirmarCompromiso = () => {
   
       setIsSigned(true);
       alert('Compromiso firmado exitosamente');
+
+      navigate('/alumno/inicio', { state: { successMessage: "Compromiso de pago firmado exitosamente" } });
     } catch (error) {
       console.error('Error:', error.message);
       alert(`Error al firmar el compromiso: ${error.message}`);
@@ -106,58 +133,65 @@ const FirmarCompromiso = () => {
               </div>
             )}
             
-            <h4 className="mt-4">Ingresa tus datos para realizar la firma del compromiso de pago</h4>
-            <form>
-              <div className="mb-3">
-                <label htmlFor="nombre" className="form-label">Nombre</label>
-                <input 
-                  type="text" 
-                  id="nombre" 
-                  name="nombre" 
-                  value={formData.nombre}
-                  onChange={handleFormChange}
-                  className="form-control" 
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="apellido" className="form-label">Apellido</label>
-                <input 
-                  type="text" 
-                  id="apellido" 
-                  name="apellido" 
-                  value={formData.apellido}
-                  onChange={handleFormChange}
-                  className="form-control" 
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="dni" className="form-label">DNI</label>
-                <input 
-                  type="text" 
-                  id="dni" 
-                  name="dni" 
-                  value={formData.dni}
-                  onChange={handleFormChange}
-                  className="form-control" 
-                />
-              </div>
-              <div>
-                <button 
-                  type="button" 
-                  className="btn btn-primary"
-                  onClick={handleSign}
-                  disabled={!isFormValid || isSigned} // Deshabilitar el botón si el formulario no está completo o ya está firmado
-                >
-                  Firmar Compromiso
-                </button>
-              </div>
-            </form>
+            <br />
+            <h4>Firma del compromiso de pago:</h4>
+            {existeFirma.firmado ? (
+              <p>Ya has firmado el compromiso de pago.</p>
+            ) : (
+              <>
+                <p className="mt-4">Ingresa tus datos para realizar la firma del compromiso de pago</p>
+                <form>
+                  <div className="mb-3">
+                    <label htmlFor="nombre" className="form-label">Nombre</label>
+                    <input 
+                      type="text" 
+                      id="nombre" 
+                      name="nombre" 
+                      value={formData.nombre}
+                      onChange={handleFormChange}
+                      className="form-control" 
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="apellido" className="form-label">Apellido</label>
+                    <input 
+                      type="text" 
+                      id="apellido" 
+                      name="apellido" 
+                      value={formData.apellido}
+                      onChange={handleFormChange}
+                      className="form-control" 
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="dni" className="form-label">DNI</label>
+                    <input 
+                      type="text" 
+                      id="dni" 
+                      name="dni" 
+                      value={formData.dni}
+                      onChange={handleFormChange}
+                      className="form-control" 
+                    />
+                  </div>
+                  <div>
+                    <button 
+                      type="button" 
+                      className="btn btn-primary"
+                      onClick={handleSign}
+                      disabled={!isFormValid || isSigned} 
+                    >
+                      Firmar Compromiso
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
           </>
         ) : (
           <p>No se ha encontrado ningún compromiso.</p>
         )}
 
-        {/* Modal para mostrar el resumen de valores */}
         <Modal show={showModal} onHide={handleCloseModal} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>Resumen de Valores de Cuotas y Matriculas</Modal.Title>

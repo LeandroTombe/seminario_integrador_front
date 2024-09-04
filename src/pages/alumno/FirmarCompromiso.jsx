@@ -108,6 +108,15 @@ const FirmarCompromiso = () => {
     setShowModal(false);
   };
 
+    // Función para formatear fechas a solo mes y día
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    // Ajustar la fecha para evitar el desfase de zona horaria
+    const adjustedDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+    return adjustedDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
   return (
     <Layout>
       <h1>Compromiso de Pago Actual</h1>
@@ -136,7 +145,7 @@ const FirmarCompromiso = () => {
             <br />
             <h4>Firma del compromiso de pago:</h4>
             {existeFirma.firmado ? (
-              <p>Ya has firmado el compromiso de pago.</p>
+                <p>Ya has firmado el compromiso de pago. Fecha de firma: {formatDate(existeFirma.firmado)}</p>
             ) : (
               <>
                 <p className="mt-4">Ingresa tus datos para realizar la firma del compromiso de pago</p>

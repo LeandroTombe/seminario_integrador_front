@@ -9,23 +9,29 @@ const CuotasActuales = (authTokens) => {
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Numero de Cuota</th>
+                                <th>Cuota</th>
                                 <th>Año</th>
                                 <th>Importe</th>
                                 <th>Mora</th>
                                 <th>Total</th>
-                                <th>Vencimiento</th>
                                 <th>Importe Pagado</th>
                             </tr>
                         </thead>
                         <tbody>
+                                <tr>
+                                    <td>0</td>
+                                    <td>2024</td>
+                                    <td>25000</td>
+                                    <td>0</td>
+                                    <td>20000</td>
+                                    <td>20000</td>
+                                </tr>
                                 <tr>
                                     <td>3</td>
                                     <td>2024</td>
                                     <td>20000</td>
                                     <td>0</td>
                                     <td>20000</td>
-                                    <td>2024-03-10</td>
                                     <td>20000</td>
                                 </tr>
                                 <tr>
@@ -34,7 +40,6 @@ const CuotasActuales = (authTokens) => {
                                     <td>20000</td>
                                     <td>0</td>
                                     <td>20000</td>
-                                    <td>2024-04-10</td>
                                     <td>20000</td>
                                 </tr>
                                 <tr>
@@ -43,7 +48,22 @@ const CuotasActuales = (authTokens) => {
                                     <td>20000</td>
                                     <td>0</td>
                                     <td>20000</td>
-                                    <td>2024-05-10</td>
+                                    <td>20000</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>2024</td>
+                                    <td>20000</td>
+                                    <td>0</td>
+                                    <td>20000</td>
+                                    <td>20000</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>2024</td>
+                                    <td>20000</td>
+                                    <td>0</td>
+                                    <td>20000</td>
                                     <td>20000</td>
                                 </tr>
                         </tbody>

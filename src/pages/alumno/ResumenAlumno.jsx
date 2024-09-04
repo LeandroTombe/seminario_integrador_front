@@ -42,6 +42,17 @@ const ResumenAlumno = () => {
         }
     }, [saldoVencido]);
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+    
+        const dia = date.getUTCDate().toString().padStart(2, '0');
+        const mes = (date.getUTCMonth() + 1).toString().padStart(2, '0'); // Los meses son de 0 a 11, por eso sumamos 1
+        const año = date.getUTCFullYear();
+    
+        return `${dia}/${mes}/${año}`; // Retorna en formato dd/mm/yyyy
+    };
+
     return (
         <>
             <Row>
@@ -49,7 +60,7 @@ const ResumenAlumno = () => {
                     <Card className="text-center bg-light">
                         <Card.Body>
                             <Card.Title>$ {saldoVencido}</Card.Title>
-                            <Card.Text>
+                            <Card.Text className="text-secondary">
                                 Saldo Vencido
                             </Card.Text>
                         </Card.Body>
@@ -58,8 +69,8 @@ const ResumenAlumno = () => {
                 <Col xs={12} md={4}>
                     <Card>
                         <Card.Body className="text-center bg-light">
-                            <Card.Title>{proximoVencimiento || "No disponible"}</Card.Title>
-                            <Card.Text>
+                            <Card.Title>{formatDate(proximoVencimiento) || "No disponible"}</Card.Title>
+                            <Card.Text className="text-secondary">
                                 Próximo Vencimiento
                             </Card.Text>
                         </Card.Body>
@@ -69,7 +80,7 @@ const ResumenAlumno = () => {
                     <Card>
                         <Card.Body className="text-center bg-light">
                             <Card.Title>{estadoAlumno || "No disponible"}</Card.Title>
-                            <Card.Text>
+                            <Card.Text className="text-secondary">
                                 Estado
                             </Card.Text>
                         </Card.Body>

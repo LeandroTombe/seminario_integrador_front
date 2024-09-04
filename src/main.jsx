@@ -68,12 +68,6 @@ const App = () => {
             <ProtectedRoute element={<FirmarCompromiso />} roles={["Alumno"]} />
           }
         />
-        <Route
-          path="/alumno/estadoDeCuenta"
-          element={
-            <ProtectedRoute element={<EstadoDeCuenta />} roles={["Alumno"]} />
-          }
-        />
         <Route path="/importar_panda" element={<ImportDataComponent />} />
         {/* Paginas de coordinador */}
         <Route

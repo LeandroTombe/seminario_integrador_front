@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Container, Tabs, Tab } from 'react-bootstrap';
-import Layout from '../../LayoutAlumno';
 import { useAuth } from "../../context/AuthContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CuotasActuales from '../alumno/EstadoDeCuenta/CuotasActuales'
@@ -22,14 +21,11 @@ const EstadoDeCuenta = () => {
         <>
             <h2>Estado de cuenta al {obtenerFechaActual()}</h2>
             <Tabs defaultActiveKey="actuales" id="estado-de-cuenta-tabs" className="mb-3">
-                <Tab eventKey="actuales" title="Cuotas Activas">
+                <Tab eventKey="actuales" title="Cuotas del Cuatrimestre Actual">
                     <CuotasActuales authTokens={authTokens}/>
                 </Tab>
                 <Tab eventKey="pagadas" title="Historial de Cuotas">
                     <HistorialCuotas authTokens={authTokens}/>
-                </Tab>
-                <Tab eventKey="todas" title="Historial de Pagos">
-                    
                 </Tab>
             </Tabs>
         </>

@@ -44,9 +44,12 @@ const CuotasActuales = (authTokens) => {
     const formatDate = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
-        // Ajustar la fecha para evitar el desfase de zona horaria
-        const adjustedDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
-        return adjustedDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
+    
+        const dia = date.getUTCDate().toString().padStart(2, '0');
+        const mes = (date.getUTCMonth() + 1).toString().padStart(2, '0'); // Los meses son de 0 a 11, por eso sumamos 1
+        const año = date.getUTCFullYear();
+    
+        return `${dia}/${mes}/${año}`; // Retorna en formato dd/mm/yyyy
     };
 
     return (
@@ -54,7 +57,7 @@ const CuotasActuales = (authTokens) => {
             {error ? (
                 <p>{error}</p>
             ) : cuotas.length === 0 ? (
-                <p>No existen cuotas asignadas para este cuatrimestre</p>
+                <p>No tienes cuotas correspondientes al cuatrimestre actual.</p>
             ) : (
                 <Table striped bordered hover>
                     {console.log(cuotas)}

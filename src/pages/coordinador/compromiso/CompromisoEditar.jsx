@@ -132,7 +132,7 @@ function CompromisoEditar() {
 
   return (
     <Layout>
-        <h1>Editar Compromiso de Pago</h1>
+        <h1>Modificar Valores y Compromiso de Pago</h1>
         <div className="containerConfig">
         <form onSubmit={handleSubmit}>
             <div className="row mb-3">
@@ -168,7 +168,6 @@ function CompromisoEditar() {
                 name="importe_matricula"
                 value={formData.importe_matricula}
                 onChange={handleChange}
-                min="0"
                 required
               />
             </div>

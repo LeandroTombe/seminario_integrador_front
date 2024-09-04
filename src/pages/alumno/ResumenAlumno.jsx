@@ -60,7 +60,7 @@ const ResumenAlumno = () => {
                     <Card className="text-center bg-light">
                         <Card.Body>
                             <Card.Title>$ {saldoVencido}</Card.Title>
-                            <Card.Text>
+                            <Card.Text className="text-secondary">
                                 Saldo Vencido
                             </Card.Text>
                         </Card.Body>
@@ -70,7 +70,7 @@ const ResumenAlumno = () => {
                     <Card>
                         <Card.Body className="text-center bg-light">
                             <Card.Title>{formatDate(proximoVencimiento) || "No disponible"}</Card.Title>
-                            <Card.Text>
+                            <Card.Text className="text-secondary">
                                 Próximo Vencimiento
                             </Card.Text>
                         </Card.Body>
@@ -80,7 +80,7 @@ const ResumenAlumno = () => {
                     <Card>
                         <Card.Body className="text-center bg-light">
                             <Card.Title>{estadoAlumno || "No disponible"}</Card.Title>
-                            <Card.Text>
+                            <Card.Text className="text-secondary">
                                 Estado
                             </Card.Text>
                         </Card.Body>

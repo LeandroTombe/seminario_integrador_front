@@ -25,6 +25,7 @@ import AlumnosEquivalencias from "./pages/coordinador/AlumnosEquivalencias.jsx";
 import AlumnosProrroga from "./pages/coordinador/AlumnosProrroga.jsx";
 import Pagos from "./pages/coordinador/Pagos.jsx";
 import PagosPendientes from "./pages/coordinador/PagosPendientes.jsx";
+import HistorialImportaciones from "./pages/importaciones/HistorialImportaciones.jsx";
 
 import Mensajes from "./pages/coordinador/Mensajes.jsx";
 import Reportes from "./pages/coordinador/Reportes.jsx";
@@ -121,6 +122,7 @@ const App = () => {
           path="/coordinador/configuracion/importaciones-validas"
           element={<ImportDataComponent />}
         />
+        <Route path="/historial" element={<HistorialImportaciones />} />
         <Route
           path="/importar"
           element={

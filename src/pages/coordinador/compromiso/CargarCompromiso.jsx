@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from "../SidebarCoordinador";
 import './Compromiso.css';
+import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap'; // Importa los componentes de Bootstrap
 import Layout from '../../../Layout'
 
@@ -28,6 +29,41 @@ function CargarCompromiso() {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
+  const [valoresExistentes, setValoresExistentes] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+    const verificarValores = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/v1/estudiantes/parametrosCompromiso/', {
+          params: {
+            año: encodeURIComponent(currentYear),  // Codifica el valor del año
+            cuatrimestre: currentSemester,
+          }
+        });
+        console.log("Funciona");
+        setValoresExistentes(response.data);  // Si existen, lo estableces
+      } catch (error) {
+      }
+      setLoading(false);
+    };
+
+    verificarValores();
+  }, []);  // Asegúrate de que solo se ejecute una vez al montar el componente
+
+  useEffect(() => {
+    if (valoresExistentes) {
+      // Redireccionar después de 5 segundos si los valores ya existen
+      const timer = setTimeout(() => {
+        navigate('/coordinador/configuracion/compromiso/actual'); // Redirigir usando useNavigate
+      }, 5000);
+
+      // Limpiar el temporizador si el componente se desmonta
+      return () => clearTimeout(timer);
+    }
+  }, [valoresExistentes, navigate]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -105,6 +141,40 @@ function CargarCompromiso() {
     handleConfirm('¿Estás seguro de que deseas cancelar?', () => navigate('/coordinador/configuracion/compromiso/actual'));
   };
 
+  if (loading) return (
+    <Layout>
+      <h1>Nuevos Valores y Compromiso de Pago</h1>
+
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',  // 100% del alto de la pantalla
+        textAlign: 'center'
+      }}>
+        Cargando...
+
+      </div>
+    </Layout>)
+
+  if (valoresExistentes) {
+      return (
+      <Layout>
+        <h1>Nuevos Valores y Compromiso de Pago</h1>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',  // 100% del alto de la pantalla
+          textAlign: 'center'
+        }}>
+          Ya hay valores cargados para el año {currentYear} y cuatrimestre {currentSemester}. redirigiendo a los valores cargados en 5 segundos...
+
+        </div>
+      </Layout>
+      )
+
+  }
   return (
     <Layout>
         <h1>Nuevos Valores y Compromiso de Pago</h1>

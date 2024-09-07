@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ImportarUsuarios from "./pages/importaciones/ImportarUsuarios.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -26,6 +25,7 @@ import AlumnosProrroga from "./pages/coordinador/AlumnosProrroga.jsx";
 import Pagos from "./pages/coordinador/Pagos.jsx";
 import PagosPendientes from "./pages/coordinador/PagosPendientes.jsx";
 import HistorialImportaciones from "./pages/importaciones/HistorialImportaciones.jsx";
+import ImportarPago from "./pages/importaciones/ImportarPago.jsx";
 
 import Mensajes from "./pages/coordinador/Mensajes.jsx";
 import Reportes from "./pages/coordinador/Reportes.jsx";
@@ -69,8 +69,6 @@ const App = () => {
             <ProtectedRoute element={<FirmarCompromiso />} roles={["Alumno"]} />
           }
         />
-        <Route path="/importar_panda" element={<ImportDataComponent />} />
-        {/* Paginas de coordinador */}
         <Route
           path="/estudiante"
           element={
@@ -80,6 +78,14 @@ const App = () => {
             />
           }
         />
+        <Route path="/importar_panda" element={<ImportDataComponent />} />
+        
+        
+        {/* PAGINAS DE COORDINADOR */}
+
+
+
+        
         <Route path="/coordinador/inicio" element={<Inicio />} />
         <Route path="/coordinador/Perfil Alumno" element={<PerfilAlumno />} />
         <Route
@@ -114,25 +120,24 @@ const App = () => {
           element={<HistorialCompromiso />}
         />
         <Route
-          path="/coordinador/configuracion/compromiso/actual/editar"
-          element={<CompromisoEditar />}
+          path="/coordinador/configuracion/importar-pagos"
+          element={<ImportarPago/>}
         />
-        {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
         <Route
           path="/coordinador/configuracion/importaciones-validas"
           element={<ImportDataComponent />}
         />
         <Route path="/historial" element={<HistorialImportaciones />} />
+
+        <Route path="/historial" element={<HistorialImportaciones />} />
+        
         <Route
-          path="/importar"
-          element={
-            <ProtectedRoute>
-              {" "}
-              <ImportarUsuarios />{" "}
-            </ProtectedRoute>
-          }
+          path="/coordinador/configuracion/compromiso/actual/editar"
+          element={<CompromisoEditar/>}
         />
-        {/* Paginas de autorizacion */}
+
+
+        {/* PAGINAS DE AUTORIZACION */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/recuperar-password" element={<RecuperarPass />} />

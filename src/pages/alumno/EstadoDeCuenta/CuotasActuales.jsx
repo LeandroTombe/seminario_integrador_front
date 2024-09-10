@@ -2,18 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CuotasActuales = (authTokens) => {
+const CuotasActuales = ({ authTokens, alumno }) => {
     const [cuotas, setCuotas] = useState([]);
     const [error, setError] = useState(null); // Para manejar posibles errores
 
     useEffect(() => {
         const fetchCuotas = async () => {
+            let url = 'http://127.0.0.1:8000/api/v1/estudiantes/estadoDeCuentaAlumno/';
+            let options = {
+                headers: {
+                    'Authorization': `Bearer ${authTokens.refresh}`, // Usar el token de acceso
+                },
+            };
+
+            if (alumno) {
+                // Si hay un alumno, hacer una solicitud POST
+                options.method = 'POST';
+                options.headers['Content-Type'] = 'application/json';
+                options.body = JSON.stringify({ alumno: alumno.id }); // Enviar el ID del alumno
+            } else {
+                // Si no hay alumno, hacer una solicitud GET
+                options.method = 'GET';
+            }
+
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/estadoDeCuentaAlumno/', {
-                    headers: {
-                      'Authorization': `Bearer ${authTokens.authTokens.refresh}`, // Usar el token de acceso
-                    },
-                });
+                const response = await fetch(url, options);
                 if (!response.ok) {
                     throw new Error('Error al obtener los datos');
                 }
@@ -25,17 +38,20 @@ const CuotasActuales = (authTokens) => {
         };
 
         fetchCuotas();
-    }, [authTokens]);
+    }, [authTokens, alumno]); // Dependencias de useEffect
 
     const getEstado = (cuota) => {
         const today = new Date();
         const fechaVencimiento = new Date(cuota.fechaPrimerVencimiento);
-
-        // Verificar si la cuota está vencida
-        if (today > fechaVencimiento && cuota.importePagado < cuota.total) {
+    
+        // Calcular el último día del mes de la fecha de vencimiento
+        const ultimoDiaMes = new Date(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth() + 1, 0);
+    
+        // Si la fecha actual es mayor o igual al primer día del mes siguiente y la cuota no está pagada
+        if (today >= new Date(ultimoDiaMes.getFullYear(), ultimoDiaMes.getMonth() + 1, 1) && cuota.importePagado < cuota.total) {
             return 'Vencida';
         }
-
+    
         // Comparar importe pagado con el total
         return cuota.importePagado >= cuota.total ? 'Pagado' : 'Pendiente';
     };
@@ -59,8 +75,7 @@ const CuotasActuales = (authTokens) => {
             ) : cuotas.length === 0 ? (
                 <p>No tienes cuotas correspondientes al cuatrimestre actual.</p>
             ) : (
-                <Table striped bordered hover>
-                    {console.log(cuotas)}
+                <Table bordered hover>
                     <thead>
                         <tr>
                             <th>Cuota</th>
@@ -78,7 +93,7 @@ const CuotasActuales = (authTokens) => {
                         {cuotas.map(cuota => {
                             const estado = getEstado(cuota);
                             return (
-                            <tr key={cuota.nroCuota} className={estado === 'Vencida' ? 'table-danger' : ''}>
+                            <tr key={cuota.nroCuota} className={estado === 'Vencida' ? 'table-danger' : estado=== 'Pagado' ? 'table-success' :''}>
                                 <td>{cuota.nroCuota}</td>
                                 <td>{cuota.año}</td>
                                 <td>$ {cuota.importe}</td>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Pagination, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AlumnosCuatrimestre = () => {
@@ -8,6 +9,8 @@ const AlumnosCuatrimestre = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6);
+
+    const navigate = useNavigate(); // Hook para redirigir
 
     useEffect(() => {
         const fetchFirmantes = async () => {
@@ -43,6 +46,12 @@ const AlumnosCuatrimestre = () => {
       setCurrentPage(pageNumber);
     };
 
+    // Función que se ejecuta al hacer clic en una fila
+    const handleRowClick = (firmante) => {
+        // Aquí puedes pasar firmante.legajo o firmante.id si necesitas pasarlo en la URL
+        navigate('/coordinador/perfilAlumno', { state: { firmante: firmante } });
+    };
+
     return (
         <>
             {error ? (
@@ -75,7 +84,7 @@ const AlumnosCuatrimestre = () => {
                         </thead>
                         <tbody>
                             {currentItems.map(firmante => (
-                                <tr key={firmante.id}>
+                                <tr key={firmante.id} onClick={() => handleRowClick(firmante)} style={{ cursor: 'pointer' }}>
                                     <td>{firmante.legajo}</td>
                                     <td>{firmante.dni}</td>
                                     <td>{firmante.apellido}</td>

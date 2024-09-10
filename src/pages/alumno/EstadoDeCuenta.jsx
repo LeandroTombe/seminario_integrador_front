@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CuotasActuales from '../alumno/EstadoDeCuenta/CuotasActuales'
 import HistorialCuotas from '../alumno/EstadoDeCuenta/HistorialCuotas'
 
-const EstadoDeCuenta = () => {
+const EstadoDeCuenta = ({alumno}) => {
     const { authTokens } = useAuth(); // Acceder a la información del usuario y tokens
 
     const obtenerFechaActual = () => {
@@ -22,10 +22,10 @@ const EstadoDeCuenta = () => {
             <h2>Estado de cuenta al {obtenerFechaActual()}</h2>
             <Tabs defaultActiveKey="actuales" id="estado-de-cuenta-tabs" className="mb-3">
                 <Tab eventKey="actuales" title="Cuotas del Cuatrimestre Actual">
-                    <CuotasActuales authTokens={authTokens}/>
+                    <CuotasActuales authTokens={authTokens} alumno={alumno}/>
                 </Tab>
                 <Tab eventKey="pagadas" title="Historial de Cuotas">
-                    <HistorialCuotas authTokens={authTokens}/>
+                    <HistorialCuotas authTokens={authTokens} alumno={alumno}/>
                 </Tab>
             </Tabs>
         </>

@@ -12,9 +12,6 @@ const FirmarCompromiso = () => {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [compromiso, setCompromiso] = useState([]);
-  const [isSigned, setIsSigned] = useState(false);
-  const [formData, setFormData] = useState({ nombre: '', apellido: '', dni: '' });
-  const [isFormValid, setIsFormValid] = useState(false);
   const [existeFirma, setExisteFirma] = useState([]);
 
   useEffect(() => {
@@ -60,17 +57,12 @@ const FirmarCompromiso = () => {
     fetchExisteFirmaCompromiso();
   }, [authTokens]);
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevFormData => {
-      const newFormData = { ...prevFormData, [name]: value };
-      const isValid = Object.values(newFormData).every(field => field.trim() !== '');
-      setIsFormValid(isValid);
-      return newFormData;
-    });
-  };
-
   const handleSign = async () => {
+    const confirmed = window.confirm("¿Estás seguro de firmar el compromiso de pago?");
+    if (!confirmed) {
+      return;
+    }
+
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/firmaCompromiso/`, {
         method: 'POST',
@@ -90,7 +82,6 @@ const FirmarCompromiso = () => {
         throw new Error(data.error || 'Error al firmar el compromiso');
       }
   
-      setIsSigned(true);
       alert('Compromiso firmado exitosamente');
 
       navigate('/alumno/inicio', { state: { successMessage: "Compromiso de pago firmado exitosamente" } });
@@ -108,7 +99,7 @@ const FirmarCompromiso = () => {
     setShowModal(false);
   };
 
-    // Función para formatear fechas a solo mes y día
+  // Función para formatear fechas a solo mes y día
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -148,58 +139,21 @@ const FirmarCompromiso = () => {
                 <p>Ya has firmado el compromiso de pago. Fecha de firma: {formatDate(existeFirma.firmado)}</p>
             ) : (
               <>
-                <p className="mt-4">Ingresa tus datos para realizar la firma del compromiso de pago</p>
-                <form>
-                  <div className="mb-3">
-                    <label htmlFor="nombre" className="form-label">Nombre</label>
-                    <input 
-                      type="text" 
-                      id="nombre" 
-                      name="nombre" 
-                      value={formData.nombre}
-                      onChange={handleFormChange}
-                      className="form-control" 
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="apellido" className="form-label">Apellido</label>
-                    <input 
-                      type="text" 
-                      id="apellido" 
-                      name="apellido" 
-                      value={formData.apellido}
-                      onChange={handleFormChange}
-                      className="form-control" 
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="dni" className="form-label">DNI</label>
-                    <input 
-                      type="text" 
-                      id="dni" 
-                      name="dni" 
-                      value={formData.dni}
-                      onChange={handleFormChange}
-                      className="form-control" 
-                    />
-                  </div>
-                  <div>
                     <button 
                       type="button" 
                       className="btn btn-primary"
                       onClick={handleSign}
-                      disabled={!isFormValid || isSigned} 
                     >
                       Firmar Compromiso
                     </button>
-                  </div>
-                </form>
               </>
             )}
           </>
         ) : (
           <p>No se ha encontrado ningún compromiso.</p>
         )}
+        <br /><br />
+        
 
         <Modal show={showModal} onHide={handleCloseModal} size="lg">
           <Modal.Header closeButton>

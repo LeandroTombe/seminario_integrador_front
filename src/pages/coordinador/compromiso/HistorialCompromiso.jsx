@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Form, Pagination, Modal } from 'react-bootstrap';
 import Sidebar from "../SidebarCoordinador";
-import './HistorialCompromiso.css';
 import Layout from '../../../Layout';
 import InfoCompromiso from '../../../components/InfoCompromiso';
 
@@ -68,10 +67,10 @@ function HistorialCompromiso() {
     setTimeout(() => {
       setSelectedCompromiso(null);
       setPdfUrl(null);
-    }, 300); // Se agrega un pequeño delay para asegurar que el modal se cierra completamente antes de resetear el estado
+    }, 300); // Pequeño delay para asegurar que el modal se cierra antes de resetear el estado
   };
 
-  const handleRowClick = (compromiso) => {
+  const handleVerDetalle = (compromiso) => {
     setSelectedCompromiso(compromiso);
     setShowModal(true);
   };
@@ -95,7 +94,6 @@ function HistorialCompromiso() {
           <p>{error}</p>
         ) : (
           <>
-            <p>Selecciona una fila para visualizar el detalle</p>
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -105,11 +103,12 @@ function HistorialCompromiso() {
                   <th>Cuota Completa</th>
                   <th>Cuota Reducida</th>
                   <th>PDF</th>
+                  <th>Detalle</th>
                 </tr>
               </thead>
               <tbody>
                 {currentItems.map((compromiso, index) => (
-                  <tr key={index} onClick={() => handleRowClick(compromiso)}>
+                  <tr key={index}>
                     <td>{compromiso.año}</td>
                     <td>{compromiso.cuatrimestre}</td>
                     <td>{compromiso.importe_matricula}</td>
@@ -120,13 +119,18 @@ function HistorialCompromiso() {
                         <span
                           style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
                           onClick={(e) => {
-                            e.stopPropagation(); // Evita que el click en el texto active el click de la fila
                             handleVisualizarPDF(compromiso.compromiso_contenido);
-                          }}
-                        >
-                          Visualizar PDF
+                          }}>
+                          Ver PDF
                         </span>
                       )}
+                    </td>
+                    <td>
+                      <span
+                        style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                        onClick={() => handleVerDetalle(compromiso)}>
+                        Ver Detalle
+                      </span>
                     </td>
                   </tr>
                 ))}

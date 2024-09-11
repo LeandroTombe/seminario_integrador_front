@@ -1,0 +1,49 @@
+/* Estilos base para el carrusel */
+.carousel {
+    display: flex;
+    overflow-x: auto; /* Desplazamiento horizontal */
+    scroll-snap-type: x mandatory; /* Scroll snapping para ajustarse a las tarjetas */
+    -webkit-overflow-scrolling: touch; /* Suaviza el desplazamiento en dispositivos móviles */
+  }
+  
+  .carousel-track {
+    display: flex;
+    width: 100%;
+     /* Espacio entre las tarjetas */
+  }
+  
+  .card {
+    flex: 0 0 calc(33.33% - 16px); /* 3 tarjetas visibles por fila en pantallas grandes */
+    background-color: #f0f0f0;
+    padding: 16px;
+    border-radius: 8px;
+    scroll-snap-align: center; /* Cada tarjeta se alinea en el centro al desplazarse */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: calc(33.33% - 16px); /* Asegura que las tarjetas ocupen 1/3 del espacio en pantallas grandes */
+  }
+  
+  /* Carrusel para pantallas con un ancho máximo de 1024px: 2 tarjetas visibles */
+  @media (max-width: 1024px) {
+    .card {
+      flex: 0 0 calc(50% - 16px); /* 2 tarjetas visibles por fila */
+      min-width: calc(50% - 16px); /* Ajusta el tamaño mínimo de la tarjeta al 50% */
+    }
+  }
+  
+  /* Carrusel para pantallas con un ancho máximo de 720px: 1 tarjeta visible */
+  @media (max-width: 1023px) {
+    .card {
+      flex: 0 0 100%; /* Una tarjeta visible por fila */
+      min-width: 100%; /* La tarjeta ocupa el 100% del contenedor */
+    }
+  }
+  
+  
+  /* Carrusel para pantallas móviles */
+  @media (max-width: 600px) {
+    .card {
+      flex: 0 0 100%; /* Una tarjeta visible por fila */
+      min-width: 100%; /* La tarjeta ocupa el 100% del contenedor */
+    }
+  }
+  

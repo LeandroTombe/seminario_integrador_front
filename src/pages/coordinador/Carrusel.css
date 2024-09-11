@@ -21,6 +21,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     min-width: calc(33.33% - 16px); /* Asegura que las tarjetas ocupen 1/3 del espacio en pantallas grandes */
   }
+
+  @media (min-width:1024px) {
+    .card {
+        flex: 0 0 calc(33.33% - 16px); /* 3 tarjetas visibles por fila */
+        background-color: #f0f0f0;
+        padding: 16px;
+        border-radius: 8px;
+        scroll-snap-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        min-width: 300px; /* Asegura un tamaño mínimo de la tarjeta */
+      }
+  }
   
   /* Carrusel para pantallas con un ancho máximo de 1024px: 2 tarjetas visibles */
   @media (max-width: 1024px) {

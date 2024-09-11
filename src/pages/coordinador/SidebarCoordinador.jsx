@@ -37,9 +37,11 @@ const SidebarCoordinador = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h4 className='h4-sidebar'>TUP</h4>
+        <h4 className='h4-sidebar'>TUP
+        <button class="toggle-btn" onclick="toggleNavbar()">☰</button>
+        </h4>
       </div>
-      <nav className="sidebar-nav">
+      <nav className="sidebar-nav navbar-menu">
         <NavLink to="/coordinador/inicio" className="sidebar-link" activeclassname="active">
           <FiHome className="icon" /> Inicio
         </NavLink>
@@ -87,5 +89,10 @@ const SidebarCoordinador = () => {
     </div>
   );
 };
+
+function toggleNavbar() {
+  var navbarMenu = document.getElementById("navbar-menu");
+  navbarMenu.classList.toggle("active"); // Alterna la clase 'active' para mostrar u ocultar el menú
+}
 
 export default SidebarCoordinador;

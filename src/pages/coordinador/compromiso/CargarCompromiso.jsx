@@ -161,13 +161,7 @@ function CargarCompromiso() {
       return (
       <Layout>
         <h1>Nuevos Valores y Compromiso de Pago</h1>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',  // 100% del alto de la pantalla
-          textAlign: 'center'
-        }}>
+        <div className='containerConfig'>
           Ya hay valores cargados para el año {currentYear} y cuatrimestre {currentSemester}. redirigiendo a los valores cargados en 5 segundos...
 
         </div>

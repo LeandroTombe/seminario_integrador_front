@@ -15,6 +15,7 @@ import VerificarNuevoPassword from "./pages/cuentas/login/VerificarNuevoPassword
 import AlumnoInicio from "./pages/alumno/AlumnoInicio.jsx";
 import AlumnoMensajes from "./pages/alumno/AlumnoMensajes.jsx";
 import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
+import AlumnoPago from "./pages/alumno/AlumnoPago.jsx";
 
 /* Paginas de coordinador */
 import Inicio from "./pages/coordinador/Inicio.jsx";
@@ -80,6 +81,7 @@ const App = () => {
         />
         <Route path="/importar_panda" element={<ImportDataComponent />} />
         
+        <Route path="/alumno/pagar" element={<AlumnoPago />} />
         
         {/* PAGINAS DE COORDINADOR */}
 

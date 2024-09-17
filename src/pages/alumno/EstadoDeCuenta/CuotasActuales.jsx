@@ -75,8 +75,9 @@ const CuotasActuales = ({ authTokens, alumno }) => {
         if (today >= new Date(ultimoDiaMes.getFullYear(), ultimoDiaMes.getMonth() + 1, 1) && cuota.importePagado < cuota.total) {
             return 'Vencida';
         }
-
-        return cuota.importePagado >= cuota.total ? 'Pagado' : 'Pendiente';
+    
+        // Comparar importe pagado con el total
+        return parseFloat(cuota.importePagado) >= parseFloat(cuota.total) ? 'Pagado' : 'Pendiente';
     };
 
     const formatDate = (dateString) => {

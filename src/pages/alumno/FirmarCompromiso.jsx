@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 import Layout from "../../LayoutAlumno";
 import { useAuth } from "../../context/AuthContext";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import InfoCompromiso from '../../components/InfoCompromiso';
+import Table from 'react-bootstrap/Table';
 
 const FirmarCompromiso = () => {
   const { authTokens } = useAuth();
   const navigate = useNavigate(); // Define navigate para redirigir
   const [pdfUrl, setPdfUrl] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [compromiso, setCompromiso] = useState([]);
   const [existeFirma, setExisteFirma] = useState([]);
 
@@ -91,14 +89,6 @@ const FirmarCompromiso = () => {
     }
   };
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   // Función para formatear fechas a solo mes y día
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -122,16 +112,50 @@ const FirmarCompromiso = () => {
                   height="600px" 
                   title="Compromiso de Pago PDF"
                 />
-                <div className="mt-3 d-flex justify-content-center">
-                  <button 
-                    className="btn btn-secondary" 
-                    onClick={handleShowModal}
-                  >
-                    Ver resumen de valores
-                  </button>
-                </div>
               </div>
             )}
+
+            {/* Resumen de valores en una tabla */}
+            <h2>Resumen de valores</h2>
+            <Table bordered>
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Matrícula</td>
+                  <td>$ {compromiso[0].importe_matricula}</td>
+                </tr>
+                <tr>
+                  <td>Cuota Completa</td>
+                  <td>$ {compromiso[0].importe_completo}</td>
+                </tr>
+                <tr>
+                  <td>Cuota Reducida</td>
+                  <td>$ {compromiso[0].importe_reducido}</td>
+                </tr>
+                <tr>
+                  <td>Primer Vencimiento Completo</td>
+                  <td>$ {compromiso[0].importe_pri_venc_comp}</td>
+                </tr>
+                <tr>
+                  <td>Segundo Vencimiento Completo</td>
+                  <td>$ {compromiso[0].importe_seg_venc_comp}</td>
+                </tr>
+                <tr>
+                  <td>Primer Vencimiento Reducido</td>
+                  <td>$ {compromiso[0].importe_pri_venc_red}</td>
+                </tr>
+                <tr>
+                  <td>Segundo Vencimiento Reducido</td>
+                  <td>$ {compromiso[0].importe_seg_venc_red}</td>
+                </tr>
+                {/* Agrega más filas según los detalles necesarios */}
+              </tbody>
+            </Table>
             
             <br />
             <h4>Firma del compromiso de pago:</h4>
@@ -139,35 +163,20 @@ const FirmarCompromiso = () => {
                 <p>Ya has firmado el compromiso de pago. Fecha de firma: {formatDate(existeFirma.firmado)}</p>
             ) : (
               <>
-                    <button 
-                      type="button" 
-                      className="btn btn-primary"
-                      onClick={handleSign}
-                    >
-                      Firmar Compromiso
-                    </button>
+                <button 
+                  type="button" 
+                  className="btn btn-primary"
+                  onClick={handleSign}
+                >
+                  Firmar Compromiso
+                </button>
               </>
             )}
           </>
         ) : (
-          <p>No se ha encontrado ningún compromiso.</p>
+          <p>No se ha encontrado un compromiso para el año y cuatrimestre actual</p>
         )}
         <br /><br />
-        
-
-        <Modal show={showModal} onHide={handleCloseModal} size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>Resumen de Valores de Cuotas y Matriculas</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {compromiso.length > 0 && <InfoCompromiso compromiso={compromiso[0]} />}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Aceptar
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </div>
     </Layout>
   );

@@ -53,7 +53,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
         }
     
         // Comparar importe pagado con el total
-        return cuota.importePagado >= cuota.total ? 'Pagado' : 'Pendiente';
+        return parseFloat(cuota.importePagado) >= parseFloat(cuota.total) ? 'Pagado' : 'Pendiente';
     };
 
     // Función para formatear fechas a solo mes y día

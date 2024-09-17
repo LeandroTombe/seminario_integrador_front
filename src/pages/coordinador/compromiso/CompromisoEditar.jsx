@@ -139,23 +139,25 @@ function CompromisoEditar() {
                 <div className="col-md-6">
                     <label htmlFor="año" className="form-label">Año</label>
                     <input
-                    type="number"
-                    className="form-control"
-                    id="año"
-                    name="año"
-                    value={formData.año}
-                    readOnly
+                        type="number"
+                        className="form-control"
+                        id="año"
+                        name="año"
+                        value={formData.año}
+                        readOnly
+                        style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                     />
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="cuatrimestre" className="form-label">Cuatrimestre</label>
                     <input
-                    type="text"
-                    className="form-control"
-                    id="cuatrimestre"
-                    name="cuatrimestre"
-                    value={formData.cuatrimestre}
-                    readOnly
+                        type="text"
+                        className="form-control"
+                        id="cuatrimestre"
+                        name="cuatrimestre"
+                        value={formData.cuatrimestre}
+                        readOnly
+                        style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                     />
                 </div>
             </div>
@@ -171,85 +173,90 @@ function CompromisoEditar() {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_completo" className="form-label">Valor de cuota completa</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_completo"
-                name="importe_completo"
-                value={formData.importe_completo}
-                onChange={handleChange}
-                min="0"
-                required
-              />
+            <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="importe_completo" className="form-label">Valor de cuota completa</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_completo"
+                    name="importe_completo"
+                    value={formData.importe_completo}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="importe_reducido" className="form-label">Valor de cuota reducida</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_reducido"
+                    name="importe_reducido"
+                    value={formData.importe_reducido}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_reducido" className="form-label">Valor de cuota reducida</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_reducido"
-                name="importe_reducido"
-                value={formData.importe_reducido}
-                onChange={handleChange}
-                min="0"
-                required
-              />
+            <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="importe_pri_venc_comp" className="form-label">Valor de primer mora completa</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_pri_venc_comp"
+                    name="importe_pri_venc_comp"
+                    value={formData.importe_pri_venc_comp}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                <label htmlFor="importe_pri_venc_red" className="form-label">Valor de primer mora reducida</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_pri_venc_red"
+                    name="importe_pri_venc_red"
+                    value={formData.importe_pri_venc_red}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_pri_venc_comp" className="form-label">Valor de primer mora completa</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_pri_venc_comp"
-                name="importe_pri_venc_comp"
-                value={formData.importe_pri_venc_comp}
-                onChange={handleChange}
-                min="0"
-                required
-              />
+            <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="importe_seg_venc_comp" className="form-label">Valor de segunda mora completa</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="importe_seg_venc_comp"
+                      name="importe_seg_venc_comp"
+                      value={formData.importe_seg_venc_comp}
+                      onChange={handleChange}
+                      min="0"
+                      required
+                    />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="importe_seg_venc_red" className="form-label">Valor de segunda mora reducida</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_seg_venc_red"
+                    name="importe_seg_venc_red"
+                    value={formData.importe_seg_venc_red}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_seg_venc_comp" className="form-label">Valor de segunda mora completa</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_seg_venc_comp"
-                name="importe_seg_venc_comp"
-                value={formData.importe_seg_venc_comp}
-                onChange={handleChange}
-                min="0"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="importe_pri_venc_red" className="form-label">Valor de primer mora reducida</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_pri_venc_red"
-                name="importe_pri_venc_red"
-                value={formData.importe_pri_venc_red}
-                onChange={handleChange}
-                min="0"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="importe_seg_venc_red" className="form-label">Valor de segunda mora reducida</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_seg_venc_red"
-                name="importe_seg_venc_red"
-                value={formData.importe_seg_venc_red}
-                onChange={handleChange}
-                min="0"
-                required
-              />
-            </div>
-
             {/* Botón para visualizar el PDF original si existe */}
             {pdfPreview && (
               <div className="mt-3">

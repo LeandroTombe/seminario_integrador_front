@@ -21,6 +21,7 @@
     "date-fns": "^3.6.0",
     "jwt-decode": "^4.0.0",
     "prop-types": "^15.8.1",
+    "proyectofront": "file:",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-datepicker": "^7.3.0",

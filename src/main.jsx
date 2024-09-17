@@ -16,6 +16,7 @@ import AlumnoInicio from "./pages/alumno/AlumnoInicio.jsx";
 import AlumnoMensajes from "./pages/alumno/AlumnoMensajes.jsx";
 import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
 import AlumnoPago from "./pages/alumno/AlumnoPago.jsx";
+import BaseNotificacion from "./pages/notificacion/BaseNotificacion.jsx";
 
 /* Paginas de coordinador */
 import Inicio from "./pages/coordinador/Inicio.jsx";
@@ -41,10 +42,24 @@ import AlumnosFirmasCompromiso from "./pages/coordinador/AlumnosFirmasCompromiso
 import FirmarCompromiso from "./pages/alumno/FirmarCompromiso.jsx"
 import EstadoDeCuenta from "./pages/alumno/EstadoDeCuenta.jsx"
 
+/* Paginas de admin */
+import AdminInicio from "./pages/admin/AdminInicio.jsx";
+
+
 const App = () => {
   return (
     <div className="app">
       <Routes>
+        
+        {/* Admin */}
+
+        <Route
+          path="/admin/inicio"
+          element={
+            <ProtectedRoute element={<AdminInicio />} roles={["Admin"]} />
+          }
+        />
+
         {/* Paginas de alumno */}
         <Route
           path="/alumno/inicio"
@@ -55,7 +70,7 @@ const App = () => {
         <Route
           path="/alumno/mensajes"
           element={
-            <ProtectedRoute element={<AlumnoMensajes />} roles={["Alumno"]} />
+            <ProtectedRoute element={<BaseNotificacion />} roles={["Alumno"]} />
           }
         />
         <Route
@@ -79,6 +94,7 @@ const App = () => {
             />
           }
         />
+
         <Route path="/importar_panda" element={<ImportDataComponent />} />
         
         <Route path="/alumno/pagar" element={<AlumnoPago />} />

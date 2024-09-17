@@ -42,10 +42,24 @@ import AlumnosFirmasCompromiso from "./pages/coordinador/AlumnosFirmasCompromiso
 import FirmarCompromiso from "./pages/alumno/FirmarCompromiso.jsx"
 import EstadoDeCuenta from "./pages/alumno/EstadoDeCuenta.jsx"
 
+/* Paginas de admin */
+import AdminInicio from "./pages/admin/AdminInicio.jsx";
+
+
 const App = () => {
   return (
     <div className="app">
       <Routes>
+        
+        {/* Admin */}
+
+        <Route
+          path="/admin/inicio"
+          element={
+            <ProtectedRoute element={<AdminInicio />} roles={["Admin"]} />
+          }
+        />
+
         {/* Paginas de alumno */}
         <Route
           path="/alumno/inicio"

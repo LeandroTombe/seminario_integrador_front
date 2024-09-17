@@ -21,7 +21,7 @@ function AdminInicio() {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>Este contenido aun se encuentra disponible, pero podemos mostrarte las demas funciones ya implementadas.  </p>
+                    <p>Este contenido aun no se encuentra disponible, pero podemos mostrarte las demas funciones ya implementadas.  </p>
                 </Modal.Body>
 
                 <Modal.Footer>

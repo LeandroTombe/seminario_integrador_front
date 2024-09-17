@@ -114,48 +114,7 @@ const FirmarCompromiso = () => {
                 />
               </div>
             )}
-
-            {/* Resumen de valores en una tabla */}
-            <h2>Resumen de valores</h2>
-            <Table bordered>
-              <thead>
-                <tr>
-                  <th>Concepto</th>
-                  <th>Valor</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Matrícula</td>
-                  <td>$ {compromiso[0].importe_matricula}</td>
-                </tr>
-                <tr>
-                  <td>Cuota Completa</td>
-                  <td>$ {compromiso[0].importe_completo}</td>
-                </tr>
-                <tr>
-                  <td>Cuota Reducida</td>
-                  <td>$ {compromiso[0].importe_reducido}</td>
-                </tr>
-                <tr>
-                  <td>Primer Vencimiento Completo</td>
-                  <td>$ {compromiso[0].importe_pri_venc_comp}</td>
-                </tr>
-                <tr>
-                  <td>Segundo Vencimiento Completo</td>
-                  <td>$ {compromiso[0].importe_seg_venc_comp}</td>
-                </tr>
-                <tr>
-                  <td>Primer Vencimiento Reducido</td>
-                  <td>$ {compromiso[0].importe_pri_venc_red}</td>
-                </tr>
-                <tr>
-                  <td>Segundo Vencimiento Reducido</td>
-                  <td>$ {compromiso[0].importe_seg_venc_red}</td>
-                </tr>
-                {/* Agrega más filas según los detalles necesarios */}
-              </tbody>
-            </Table>
+            <InfoCompromiso compromiso = {compromiso[0]}/>
             
             <br />
             <h4>Firma del compromiso de pago:</h4>

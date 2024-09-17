@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CuotasActuales = ({ authTokens, alumno }) => {
     const [cuotas, setCuotas] = useState([]);
     const [error, setError] = useState(null);
     const [alumnos, setAlumnos] = useState(null);
+    const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState([]);
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/perfil/`, {
@@ -30,9 +31,11 @@ const CuotasActuales = ({ authTokens, alumno }) => {
     }
 
     const manejoForm = () => {
-        const fechaHoy = tratarfechaForm();
-        const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSd2MWAkLz3BYEFIzFJDy9up1lGKuNACe1oOKLZ4p7Jhs-osVA/viewform?usp=pp_url&entry.1981210019=${alumnos.apellido},+${alumnos.nombre}&entry.246393120=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.528240021=${alumnos.dni}&entry.1687154301=${fechaHoy}`;
-        window.location.href = googleFormUrl;
+        if (!alumno) {
+            const fechaHoy = tratarfechaForm();
+            const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSd2MWAkLz3BYEFIzFJDy9up1lGKuNACe1oOKLZ4p7Jhs-osVA/viewform?usp=pp_url&entry.1981210019=${alumnos.apellido},+${alumnos.nombre}&entry.246393120=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.528240021=${alumnos.dni}&entry.1687154301=${fechaHoy}`;
+            window.open(googleFormUrl, '_blank');
+        }
     };
 
     useEffect(() => {
@@ -76,7 +79,6 @@ const CuotasActuales = ({ authTokens, alumno }) => {
             return 'Vencida';
         }
     
-        // Comparar importe pagado con el total
         return parseFloat(cuota.importePagado) >= parseFloat(cuota.total) ? 'Pagado' : 'Pendiente';
     };
 
@@ -90,30 +92,72 @@ const CuotasActuales = ({ authTokens, alumno }) => {
     };
 
     const handlePago = async () => {
-        console.log(alumnos);
-        // Primero enviamos la notificación al backend
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/notificaciones/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authTokens.refresh}`
-                },
-                body: JSON.stringify({
-                    alumno: alumnos.id,
-                    mensaje: `Se ha pagado correctamente la cuota`,
-                })
-            });
-
-            if (response.ok) {
-                manejoForm(); // Luego redirigimos al formulario de Google
-            } else {
-                console.error('Error al enviar la notificación');
+        if (!alumno){
+            console.log(alumnos);
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/notificaciones/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authTokens.refresh}`
+                    },
+                    body: JSON.stringify({
+                        alumno: alumnos.id,
+                        mensaje: `Se ha pagado correctamente la cuota`,
+                    })
+                });
+    
+                if (response.ok) {
+                    manejoForm();
+                } else {
+                    console.error('Error al enviar la notificación');
+                }
+            } catch (error) {
+                console.error('Error al procesar el pago:', error);
             }
-        } catch (error) {
-            console.error('Error al procesar el pago:', error);
         }
     };
+
+    const handleSeleccionCuota = (nroCuota) => {
+        setCuotasSeleccionadas((prevSeleccionadas) => {
+            if (prevSeleccionadas.includes(nroCuota)) {
+                // Si ya está seleccionada, desmarcar esta cuota y todas las posteriores
+                return prevSeleccionadas.filter(cuota => cuota < nroCuota);
+            } else {
+                // Si no está seleccionada, añadir esta cuota y permitir seleccionar posteriores
+                const nuevasSeleccionadas = [...prevSeleccionadas, nroCuota];
+                nuevasSeleccionadas.sort((a, b) => a - b); // Ordenar para mantener el orden correcto
+                return nuevasSeleccionadas;
+            }
+        });
+    };
+
+    const isCheckboxDisabled = (cuota) => {
+        const estado = getEstado(cuota);
+    
+        if (estado === 'Pagado') {
+            return true; // No permitir seleccionar cuotas ya pagadas
+        }
+    
+        // Obtener la primera cuota que no esté pagada
+        const primeraCuotaPendiente = cuotas.find(c => getEstado(c) !== 'Pagado')?.nroCuota || 0;
+    
+        // Permitir seleccionar la primera cuota pendiente
+        if (cuota.nroCuota === primeraCuotaPendiente) {
+            return false;
+        }
+    
+        // Verificar si todas las cuotas anteriores están seleccionadas o pagadas
+        for (let i = primeraCuotaPendiente; i < cuota.nroCuota; i++) {
+            const cuotaAnterior = cuotas.find(c => c.nroCuota === i);
+            if (!cuotasSeleccionadas.includes(i) && getEstado(cuotaAnterior) !== 'Pagado') {
+                return true; // Deshabilitar la cuota si alguna anterior no está seleccionada ni pagada
+            }
+        }
+    
+        return false; // Permitir seleccionar la cuota
+    };
+
 
     return (
         <>
@@ -122,48 +166,62 @@ const CuotasActuales = ({ authTokens, alumno }) => {
             ) : cuotas.length === 0 ? (
                 <p>No tienes cuotas correspondientes al cuatrimestre actual.</p>
             ) : (
-                <Table bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Cuota</th>
-                            <th>Año</th>
-                            <th>Importe</th>
-                            <th>Primer vencimiento</th>
-                            <th>Segundo vencimiento</th>
-                            <th>Mora aplicada</th>
-                            <th>Total</th>
-                            <th>Importe Pagado</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cuotas.map(cuota => {
-                            const estado = getEstado(cuota);
-                            return (
-                                <tr key={cuota.nroCuota} className={estado === 'Vencida' ? 'table-danger' : estado === 'Pagado' ? 'table-success' : ''}>
-                                    <td>{cuota.nroCuota}</td>
-                                    <td>{cuota.año}</td>
-                                    <td>$ {cuota.importe}</td>
-                                    <td>{formatDate(cuota.fechaPrimerVencimiento)}</td>
-                                    <td>{formatDate(cuota.fechaSegundoVencimiento)}</td>
-                                    <td>$ {(parseFloat(cuota.moraSegundoVencimiento) + parseFloat(cuota.moraPrimerVencimiento)).toFixed(2)}</td>
-                                    <td>$ {cuota.total}</td>
-                                    <td>$ {cuota.importePagado}</td>
-                                    <td>{estado}</td>
-                                    {estado === "Pendiente" && (
-                                        <td>
-                                            <button onClick={() => handlePago()}>Pagar</button>
-                                        </td>
-                                    )}
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </Table>
+                <>
+                    <Table bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Cuota</th>
+                                <th>Año</th>
+                                <th>Importe</th>
+                                <th>Primer vencimiento</th>
+                                <th>Segundo vencimiento</th>
+                                <th>Mora aplicada</th>
+                                <th>Total</th>
+                                <th>Importe Pagado</th>
+                                <th>Estado</th>
+                                {(!alumno) && (
+                                    <th>Pagar</th>
+                                )}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cuotas.map(cuota => {
+                                const estado = getEstado(cuota);
+                                return (
+                                    <tr key={cuota.nroCuota} className={estado === 'Vencida' ? 'table-danger' : estado === 'Pagado' ? 'table-success' : ''}>
+                                        <td>{cuota.nroCuota}</td>
+                                        <td>{cuota.año}</td>
+                                        <td>$ {cuota.importe}</td>
+                                        <td>{formatDate(cuota.fechaPrimerVencimiento)}</td>
+                                        <td>{formatDate(cuota.fechaSegundoVencimiento)}</td>
+                                        <td>$ {(parseFloat(cuota.moraSegundoVencimiento) + parseFloat(cuota.moraPrimerVencimiento)).toFixed(2)}</td>
+                                        <td>$ {cuota.total}</td>
+                                        <td>$ {cuota.importePagado}</td>
+                                        <td>{estado}</td>
+                                        {(!alumno) && (
+                                            <td className="text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    disabled={isCheckboxDisabled(cuota)}
+                                                    checked={estado === 'Pagado' || cuotasSeleccionadas.includes(cuota.nroCuota)}
+                                                    onChange={() => handleSeleccionCuota(cuota.nroCuota)}
+                                                />
+                                            </td>
+                                        )}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                    {cuotasSeleccionadas.length > 0 && (
+                        <Button variant="primary" onClick={() => handlePago()}>
+                            Informar Pago
+                        </Button>
+                    )}
+                </>
             )}
         </>
     );
-}
+};
 
 export default CuotasActuales;

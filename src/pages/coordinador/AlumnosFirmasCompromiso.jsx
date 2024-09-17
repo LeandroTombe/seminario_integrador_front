@@ -57,6 +57,7 @@ const AlumnosFirmasCompromiso = () => {
 
     return (
         <>
+            {console.log(firmantes)}
             <h2>Total de alumnos firmantes: {totalFirmantes} | No firmantes: {totalNoFirmantes}</h2>
 
             {/* Filtros de búsqueda y firma de compromiso alineados en la misma fila */}

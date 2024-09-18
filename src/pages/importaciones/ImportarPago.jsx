@@ -97,10 +97,11 @@ const ImportDataComponent = () => {
                                 <DataTable
                                     data={response.pagos}
                                     columns={[
-                                        { Header: 'nombre', accessor: 'nombre' },
-                                        { Header: 'Apellido', accessor: 'apellido' },
-                                        { Header: 'monto', accessor: 'monto' },
-                                        { Header: 'medio de pago', accessor: 'medio_pago' },
+                                        { Header: 'Apellido', accessor: 'nombre' },
+                                        { Header: 'Nombre', accessor: 'apellido' },
+                                        { Header: 'Nro Recibo', accessor: 'numero_recibo' },
+                                        { Header: 'Monto', accessor: 'monto' },
+                                        { Header: 'Medio de pago', accessor: 'medio_pago' },
                                     ]}
                                 />
                             </div>

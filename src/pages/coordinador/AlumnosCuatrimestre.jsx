@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Pagination, Form } from 'react-bootstrap';
+import { Table, Pagination, Form, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -68,18 +68,36 @@ const AlumnosCuatrimestre = () => {
     return (
         <>
             {error ? (
-                <p>{error}</p>
+                <p>No se ha podido cargar los datos</p>
             ) : (
                 <>
-                    <h3>Totales</h3>
-                    <h4>Alumnos cursantes del cuatrimestre actual: {firmantes.length}</h4>
-                    <h4>Alumnos firmantes del compromiso de pago actual: {totalFirmantes} | No firmantes: {totalNoFirmantes}</h4>
+                    <Row className="justify-content-center">
+                        <Col xs={12} md={4}>
+                            <Card className="text-center bg-light">
+                                <Card.Body>
+                                    <Card.Title>{firmantes.length}</Card.Title>
+                                    <Card.Text className="text-secondary">
+                                        Total de alumnos inscriptos en el cuatrimestre
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <Card className="text-center bg-light">
+                                <Card.Body>
+                                    <Card.Title>{totalFirmantes} / {firmantes.length}</Card.Title>
+                                    <Card.Text className="text-secondary">
+                                        Total de alumnos firmantes del compromiso actual
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
                     <br />
-                    <h3>Filtros</h3>
                     <Form className="d-flex justify-content-between mb-3">
                         {/* Filtro de búsqueda */}
                         <Form.Group controlId="search" className="w-50 me-2">
-                            <Form.Label>Buscar Estudiante</Form.Label>
+                            <Form.Label>Buscar alumno</Form.Label>
                             <Form.Control 
                                 type="text" 
                                 placeholder="Buscar por apellido o legajo" 

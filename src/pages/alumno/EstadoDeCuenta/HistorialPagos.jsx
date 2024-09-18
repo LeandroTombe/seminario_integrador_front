@@ -45,7 +45,7 @@ const HistorialPagos = ({ authTokens, alumno }) => {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                    <th>ID Pago</th>
+                    <th>Nro Recibo</th>
                     <th>Monto Pagado</th>
                     <th>Forma de Pago</th>
                     <th>Concepto de Pago</th>
@@ -54,7 +54,7 @@ const HistorialPagos = ({ authTokens, alumno }) => {
                 <tbody>
                     {pagos.map(pago => (
                     <tr key={pago.id}>
-                        <td>{pago.id}</td>
+                        <td>{pago.numero_recibo}</td>
                         <td>{pago.monto_confirmado}</td>
                         <td>{pago.forma_pago}</td>
                         <td>

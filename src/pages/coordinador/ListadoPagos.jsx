@@ -252,7 +252,7 @@ const ListadoPagos = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ID Pago</th>
+            <th>Nro Recibo</th>
             <th>Legajo</th>
             <th>DNI</th>
             <th>Nombre</th>
@@ -265,7 +265,7 @@ const ListadoPagos = () => {
         <tbody>
           {currentItems.map((pago) => (
             <tr key={pago.id}>
-              <td>{pago.id}</td>
+              <td>{pago.numero_recibo}</td>
               <td>{pago.alumno.legajo}</td>
               <td>{pago.alumno.dni}</td>
               <td>{pago.alumno.apellido} {pago.alumno.nombre}</td>

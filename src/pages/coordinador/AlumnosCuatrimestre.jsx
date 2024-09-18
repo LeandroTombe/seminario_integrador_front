@@ -83,8 +83,8 @@ const AlumnosCuatrimestre = () => {
                             </Card>
                         </Col>
                         <Col xs={12} md={4}>
-                            <Card>
-                                <Card.Body className="text-center bg-light">
+                            <Card className="text-center bg-light">
+                                <Card.Body>
                                     <Card.Title>{totalFirmantes} / {firmantes.length}</Card.Title>
                                     <Card.Text className="text-secondary">
                                         Total de alumnos firmantes del compromiso actual

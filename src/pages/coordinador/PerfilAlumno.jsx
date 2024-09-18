@@ -56,7 +56,6 @@ const PerfilAlumno = () => {
             <Accordion.Item eventKey="0">
               <Accordion.Header>Datos Personales</Accordion.Header>
               <Accordion.Body>
-                <Card className="mb-4">
                   <ListGroup variant="flush">
                   <ListGroup.Item><strong>Nombre completo:</strong> {firmante.apellido} {firmante.nombre}</ListGroup.Item>
                     <ListGroup.Item><strong>DNI:</strong> {firmante.dni}</ListGroup.Item>
@@ -64,7 +63,6 @@ const PerfilAlumno = () => {
                     <ListGroup.Item><strong>Teléfono:</strong> {firmante.telefono}</ListGroup.Item>
                     <ListGroup.Item><strong>Email:</strong> {firmante.email}</ListGroup.Item>
                   </ListGroup>
-                </Card>
               </Accordion.Body>
             </Accordion.Item>
 

@@ -67,8 +67,8 @@ const ResumenAlumno = () => {
                     </Card>
                 </Col>
                 <Col xs={12} md={4}>
-                    <Card>
-                        <Card.Body className="text-center bg-light">
+                    <Card className="text-center bg-light">
+                        <Card.Body>
                             <Card.Title>{formatDate(proximoVencimiento) || "No disponible"}</Card.Title>
                             <Card.Text className="text-secondary">
                                 Próximo Vencimiento
@@ -77,8 +77,8 @@ const ResumenAlumno = () => {
                     </Card>
                 </Col>
                 <Col xs={12} md={4}>
-                    <Card>
-                        <Card.Body className="text-center bg-light">
+                    <Card className="text-center bg-light">
+                        <Card.Body>
                             <Card.Title>{estadoAlumno || "No disponible"}</Card.Title>
                             <Card.Text className="text-secondary">
                                 Estado

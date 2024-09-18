@@ -317,8 +317,8 @@ function CargarCompromiso() {
               )}
             </div>
             
-            <div className="d-grid gap-2 d-md-block">
-              <button type="submit" className="btn btn-success">Guardar</button>
+            <div className="d-grid gap-2 d-md-block mt-2">
+              <button type="submit" className="btn btn-success m-2 mt-0 mb-0">Guardar</button>
               <button type="button" className="btn btn-danger" onClick={handleCancel}>Cancelar</button>
             </div>
           </form>

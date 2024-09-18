@@ -1,0 +1,141 @@
+import React, { useEffect, useState } from 'react';
+import { Table, Pagination, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const AlumnosCuatrimestre = () => {
+    const [firmantes, setFirmantes] = useState([]);
+    const [error, setError] = useState(null); // Manejo de errores
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(6);
+    const [filterFirmo, setFilterFirmo] = useState('todos'); // Estado para el filtro de firma de compromiso
+
+    const navigate = useNavigate(); // Hook para redirigir
+
+    useEffect(() => {
+        const fetchFirmantes = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listadoFirmaCompromisoActual/');
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos');
+                }
+                const data = await response.json();
+                setFirmantes(data);
+            } catch (err) {
+                setError(err.message);
+            }
+        };
+
+        fetchFirmantes();
+    }, []);
+
+    // Filtrar los firmantes en función del término de búsqueda y si firmaron o no
+    const filteredFirmantes = firmantes.filter(firmante => {
+        const matchesSearch = 
+            firmante.alumno.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            firmante.alumno.legajo.toString().includes(searchTerm);
+
+        const matchesFirmoFilter = 
+            filterFirmo === 'todos' || 
+            (filterFirmo === 'firmo' && firmante.firmo_compromiso) ||
+            (filterFirmo === 'noFirmo' && !firmante.firmo_compromiso);
+
+        return matchesSearch && matchesFirmoFilter;
+    });
+
+    // Contar el total de firmantes y no firmantes
+    const totalFirmantes = firmantes.filter(firmante => firmante.firmo_compromiso).length;
+    const totalNoFirmantes = firmantes.length - totalFirmantes;
+
+    // Para la paginacion
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredFirmantes.slice(indexOfFirstItem, indexOfLastItem);
+  
+    const totalPages = Math.ceil(filteredFirmantes.length / itemsPerPage);
+  
+    const handlePageChange = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    };
+
+    // Función que se ejecuta al hacer clic en una fila
+    const handleRowClick = (firmante) => {
+        // Aquí puedes pasar firmante.legajo o firmante.id si necesitas pasarlo en la URL
+        navigate('/coordinador/perfilAlumno', { state: { firmante: firmante } });
+    };
+
+    return (
+        <>
+            {error ? (
+                <p>{error}</p>
+            ) : (
+                <>
+                    <h3>Totales</h3>
+                    <h4>Alumnos cursantes del cuatrimestre actual: {firmantes.length}</h4>
+                    <h4>Alumnos firmantes del compromiso de pago actual: {totalFirmantes} | No firmantes: {totalNoFirmantes}</h4>
+                    <br />
+                    <h3>Filtros</h3>
+                    <Form className="d-flex justify-content-between mb-3">
+                        {/* Filtro de búsqueda */}
+                        <Form.Group controlId="search" className="w-50 me-2">
+                            <Form.Label>Buscar Estudiante</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Buscar por apellido o legajo" 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </Form.Group>
+
+                        {/* Filtro de firma */}
+                        <Form.Group controlId="firmoFilter" className="w-50 ms-2">
+                            <Form.Label>Firma del Compromiso</Form.Label>
+                            <Form.Select value={filterFirmo} onChange={(e) => setFilterFirmo(e.target.value)}>
+                                <option value="todos">Todos</option>
+                                <option value="firmo">Firmó</option>
+                                <option value="noFirmo">No firmó</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Form>
+                    <br />
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Legajo</th>
+                                <th>DNI</th>
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Cantidad de Materias</th>
+                                <th>Compromiso Firmado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentItems.map(firmante => (
+                                <tr key={firmante.alumno.id} onClick={() => handleRowClick(firmante.alumno)} style={{ cursor: 'pointer' }}>
+                                    <td>{firmante.alumno.legajo}</td>
+                                    <td>{firmante.alumno.dni}</td>
+                                    <td>{firmante.alumno.apellido}</td>
+                                    <td>{firmante.alumno.nombre}</td>
+                                    <td>{firmante.alumno.email}</td>
+                                    <td>{firmante.alumno.materias.length}</td>
+                                    <td>{firmante.firmo_compromiso ? 'SI' : 'NO'}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </>
+            )}
+            <Pagination>
+              {[...Array(totalPages).keys()].map((number) => (
+                <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
+                  {number + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+        </>
+    );
+};
+
+export default AlumnosCuatrimestre;

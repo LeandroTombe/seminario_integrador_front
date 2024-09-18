@@ -1,12 +1,13 @@
 import Sidebar from "./SidebarAlumno";
+import Layout from "../../LayoutAlumno";
+
 
 function AlumnoMensajes() {
 
     return (
-      <>
-      <Sidebar/>
-       <p>Mensajes desde alumno</p>
-      </>
+      <Layout>
+       <h1>Mensajes</h1>
+      </Layout>
     )
   }
   

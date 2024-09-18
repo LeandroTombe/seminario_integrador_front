@@ -61,13 +61,13 @@ const SidebarCoordinador = () => {
               {isCompromisoOpen && (
                 <div className="compromiso-options">
                   <NavLink to="/coordinador/configuracion/compromiso/actual" className="sidebar-link" activeclassname="active">
-                    <FiChevronRight className="icon" /> Compromiso Actual
+                    <FiChevronRight className="icon" /> Valores y Compromiso de Pago Actual
                   </NavLink>
                   <NavLink to="/coordinador/configuracion/compromiso/cargar" className="sidebar-link" activeclassname="active">
-                    <FiChevronRight className="icon" /> Nuevo Compromiso
+                    <FiChevronRight className="icon" /> Nuevos Valores y Compromiso de Pago
                   </NavLink>
                   <NavLink to="/coordinador/configuracion/compromiso/historial" className="sidebar-link" activeclassname="active">
-                    <FiChevronRight className="icon" /> Historial de Compromisos
+                    <FiChevronRight className="icon" /> Historial de Valores y Compromisos de Pago
                   </NavLink>
                 </div>
               )}

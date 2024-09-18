@@ -1,6 +1,6 @@
 .main-content {
-  margin-left: 250px;
-  padding: 20px;
+  margin-left: 260px;
+  padding: 6px;
   background-color: #ffffff;
   min-height: 100vh;
   display: flex;
@@ -14,9 +14,13 @@
 }
 
 .logged-user {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: bold;
   margin-right: 20px;
+}
+
+.user-name{
+  font-size: 16px;
 }
 
 .icono-usuario{

@@ -7,6 +7,7 @@ import Layout from "../../Layout";
 function Inicio() {
   return (
     <Layout>
+      <h1>Inicio</h1>
       <Carrusel
         alumnosEquivalencias="22"
         alumnosInhabilitados="25"

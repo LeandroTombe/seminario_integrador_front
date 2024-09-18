@@ -1,11 +1,14 @@
 import Sidebar from "./SidebarAlumno";
+import Layout from "../../LayoutAlumno"
 
 function AlumnoTramites() {
 
     return (
+      <Layout>
       <div className="contenedor-principal">
-        <Sidebar/>
+        <h1>Tramites</h1>
       </div>
+      </Layout>
       
     )
   }
@@ -13,4 +16,3 @@ function AlumnoTramites() {
 
 
   export default AlumnoTramites;
-  

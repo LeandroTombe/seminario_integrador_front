@@ -36,7 +36,7 @@ const ResumenAlumno = () => {
     // Este useEffect se ejecuta cada vez que cambia el saldoVencido
     useEffect(() => {
         if (saldoVencido > 0) {
-            setEstadoAlumno("Inhabilitado");
+            setEstadoAlumno("Habilitado");
         } else {
             setEstadoAlumno("Habilitado");
         }

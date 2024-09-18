@@ -77,7 +77,7 @@ const AlumnosCuatrimestre = () => {
                                 <Card.Body>
                                     <Card.Title>{firmantes.length}</Card.Title>
                                     <Card.Text className="text-secondary">
-                                        Alumnos Inscriptos en el Cuatrimestre
+                                        Total de alumnos inscriptos en el cuatrimestre
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -87,17 +87,17 @@ const AlumnosCuatrimestre = () => {
                                 <Card.Body className="text-center bg-light">
                                     <Card.Title>{totalFirmantes} / {firmantes.length}</Card.Title>
                                     <Card.Text className="text-secondary">
-                                        Alumnos firmantes del compromiso actual
+                                        Total de alumnos firmantes del compromiso actual
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
                     </Row>
-                    <h3>Filtros</h3>
+                    <br />
                     <Form className="d-flex justify-content-between mb-3">
                         {/* Filtro de búsqueda */}
                         <Form.Group controlId="search" className="w-50 me-2">
-                            <Form.Label>Buscar Estudiante</Form.Label>
+                            <Form.Label>Buscar alumno</Form.Label>
                             <Form.Control 
                                 type="text" 
                                 placeholder="Buscar por apellido o legajo" 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CuotasActuales = ({ authTokens, alumno }) => {
@@ -7,21 +7,22 @@ const CuotasActuales = ({ authTokens, alumno }) => {
     const [error, setError] = useState(null);
     const [alumnos, setAlumnos] = useState(null);
     const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState([]);
+    const [montoAPagar, setMontoAPagar] = useState('0.00');
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/perfil/`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authTokens.refresh}` 
-          }
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authTokens.refresh}` 
+            }
         })
-          .then(response => response.json())
-          .then(data => setAlumnos(data))
-          .catch(error => console.error('Error al obtener los datos del alumno:', error));
+            .then(response => response.json())
+            .then(data => setAlumnos(data))
+            .catch(error => console.error('Error al obtener los datos del alumno:', error));
     }, [authTokens.refresh]);
 
-    function tratarfechaForm() {
+    const tratarfechaForm = () => {
         const date = new Date();
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -78,7 +79,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
         if (today >= new Date(ultimoDiaMes.getFullYear(), ultimoDiaMes.getMonth() + 1, 1) && cuota.importePagado < cuota.total) {
             return 'Vencida';
         }
-    
+
         return parseFloat(cuota.importePagado) >= parseFloat(cuota.total) ? 'Pagado' : 'Pendiente';
     };
 
@@ -92,8 +93,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
     };
 
     const handlePago = async () => {
-        if (!alumno){
-            console.log(alumnos);
+        if (!alumno) {
             try {
                 const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/notificaciones/', {
                     method: 'POST',
@@ -106,7 +106,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                         mensaje: `Se ha pagado correctamente la cuota`,
                     })
                 });
-    
+
                 if (response.ok) {
                     manejoForm();
                 } else {
@@ -120,44 +120,46 @@ const CuotasActuales = ({ authTokens, alumno }) => {
 
     const handleSeleccionCuota = (nroCuota) => {
         setCuotasSeleccionadas((prevSeleccionadas) => {
-            if (prevSeleccionadas.includes(nroCuota)) {
-                // Si ya está seleccionada, desmarcar esta cuota y todas las posteriores
-                return prevSeleccionadas.filter(cuota => cuota < nroCuota);
-            } else {
-                // Si no está seleccionada, añadir esta cuota y permitir seleccionar posteriores
-                const nuevasSeleccionadas = [...prevSeleccionadas, nroCuota];
-                nuevasSeleccionadas.sort((a, b) => a - b); // Ordenar para mantener el orden correcto
-                return nuevasSeleccionadas;
-            }
+            const nuevasSeleccionadas = prevSeleccionadas.includes(nroCuota)
+                ? prevSeleccionadas.filter(cuota => cuota < nroCuota)
+                : [...prevSeleccionadas, nroCuota].sort((a, b) => a - b);
+
+            // Calcular el monto total a pagar considerando pagos parciales
+            const montoTotal = cuotas
+                .filter(cuota => nuevasSeleccionadas.includes(cuota.nroCuota))
+                .reduce((total, cuota) => {
+                    const montoPendiente = parseFloat(cuota.total) - parseFloat(cuota.importePagado);
+                    return total + Math.max(montoPendiente, 0);
+                }, 0);
+
+            setMontoAPagar(montoTotal.toFixed(2));
+
+            return nuevasSeleccionadas;
         });
     };
 
     const isCheckboxDisabled = (cuota) => {
         const estado = getEstado(cuota);
-    
+
         if (estado === 'Pagado') {
-            return true; // No permitir seleccionar cuotas ya pagadas
+            return true;
         }
-    
-        // Obtener la primera cuota que no esté pagada
+
         const primeraCuotaPendiente = cuotas.find(c => getEstado(c) !== 'Pagado')?.nroCuota || 0;
-    
-        // Permitir seleccionar la primera cuota pendiente
+
         if (cuota.nroCuota === primeraCuotaPendiente) {
             return false;
         }
-    
-        // Verificar si todas las cuotas anteriores están seleccionadas o pagadas
+
         for (let i = primeraCuotaPendiente; i < cuota.nroCuota; i++) {
             const cuotaAnterior = cuotas.find(c => c.nroCuota === i);
             if (!cuotasSeleccionadas.includes(i) && getEstado(cuotaAnterior) !== 'Pagado') {
-                return true; // Deshabilitar la cuota si alguna anterior no está seleccionada ni pagada
+                return true;
             }
         }
-    
-        return false; // Permitir seleccionar la cuota
-    };
 
+        return false;
+    };
 
     return (
         <>
@@ -214,9 +216,20 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                         </tbody>
                     </Table>
                     {cuotasSeleccionadas.length > 0 && (
-                        <Button variant="primary" onClick={() => handlePago()}>
-                            Informar Pago
-                        </Button>
+                        <Form.Group className="mt-3">
+                            <div className="d-flex align-items-center">
+                                <Form.Label className="mb-0 me-2">Monto a pagar: </Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    value={montoAPagar}
+                                    onChange={(e) => setMontoAPagar(e.target.value)} // Actualiza el estado cuando cambia el valor
+                                    style={{ maxWidth: '150px' }}
+                                />
+                                <Button className="ms-2" onClick={handlePago}>
+                                    Informar Pago
+                                </Button>
+                            </div>
+                        </Form.Group>
                     )}
                 </>
             )}

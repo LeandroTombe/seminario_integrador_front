@@ -162,7 +162,7 @@ function CargarCompromiso() {
       <Layout>
         <h1>Nuevos Valores y Compromiso de Pago</h1>
         <div className='containerConfig'>
-          Ya hay valores cargados para el año {currentYear} y cuatrimestre {currentSemester}. redirigiendo a los valores cargados en 5 segundos...
+          Ya hay valores cargados para el año {currentYear} y cuatrimestre {currentSemester}. Redirigiendo a los valores cargados en 5 segundos...
 
         </div>
       </Layout>

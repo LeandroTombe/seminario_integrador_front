@@ -108,11 +108,11 @@ const AlumnosCuatrimestre = () => {
 
                         {/* Filtro de firma */}
                         <Form.Group controlId="firmoFilter" className="w-50 ms-2">
-                            <Form.Label>Firma del Compromiso</Form.Label>
+                            <Form.Label>Compromiso Firmado</Form.Label>
                             <Form.Select value={filterFirmo} onChange={(e) => setFilterFirmo(e.target.value)}>
                                 <option value="todos">Todos</option>
-                                <option value="firmo">Firmó</option>
-                                <option value="noFirmo">No firmó</option>
+                                <option value="firmo">SI</option>
+                                <option value="noFirmo">NO</option>
                             </Form.Select>
                         </Form.Group>
                     </Form>

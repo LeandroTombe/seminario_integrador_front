@@ -3,6 +3,8 @@ import Table from 'react-bootstrap/Table';
 import { Form, Row, Col, Pagination } from 'react-bootstrap';
 import { useAuth } from '../../../context/AuthContext';
 import Swal from 'sweetalert2';
+import { Card } from 'react-bootstrap';
+import { id } from 'date-fns/locale';
 
 const GestionHabilitacionAlumno = () => {
   const { authTokens } = useAuth();
@@ -11,28 +13,30 @@ const GestionHabilitacionAlumno = () => {
   const [filtroVencido, setFiltroVencido] = useState('todos');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(3);
+  const [firmantes, setFirmantes] = useState([]);
+  const [inhabilitados, setInhabilitados] = useState([]);
+  const [error, setError] = useState(null);
+  const [mes, setMes] = useState([]);
 
-  useEffect(() => {
-    // Hacemos la petición al endpoint que devuelve el perfil del alumno autenticado
-    fetch(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/habilitaciones`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(response => response.json())
-      .then(data => setAlumnos(data))
-      .catch(error => console.error('Error al obtener los datos de los alumnos:', error));
+
+
+    useEffect(() => {
+      const fetchultimacuotapagada = async () => {
+          try {
+              const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/alumno/ultimacuotapagada/');
+              if (!response.ok) {
+                  throw new Error('Error al obtener los datos');
+              }
+              const data = await response.json();
+              setAlumnos(data);
+          } catch (err) {
+              setError(err.message);
+          }
+      };
+
+      fetchultimacuotapagada();
   }, []);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const dia = date.getUTCDate().toString().padStart(2, '0');
-    const mes = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-    const año = date.getUTCFullYear();
-    return `${dia}/${mes}/${año}`;
-  };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -104,20 +108,90 @@ const GestionHabilitacionAlumno = () => {
     setCurrentPage(pageNumber);
   };
 
+  // Total de alumnos con cuotas vencidas
+    useEffect(() => {
+      const fetchFirmantes = async () => {
+          try {
+              const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listadoFirmaCompromisoActual/');
+              if (!response.ok) {
+                  throw new Error('Error al obtener los datos');
+              }
+              const data = await response.json();
+              setFirmantes(data);
+          } catch (err) {
+              setError(err.message);
+          }
+      };
+
+      fetchFirmantes();
+  }, []);
+
+   // tomar el mes de ultimo pago
+   useEffect(() => {
+    const mespagado = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/ultimacuotapagada/`);
+            if (!response.ok) {
+                throw new Error('Error al obtener los datos');
+            }
+            const data = await response.json();
+            setMes(data);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    mespagado();
+}, []);
+
+
+
+  useEffect(() => {
+    const fetchInhabilitados = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/alumno/ihhabilitados/');
+            if (!response.ok) {
+                throw new Error('Error al obtener los datos');
+            }
+            const data = await response.json();
+            setInhabilitados(data);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    fetchInhabilitados();
+}, []);
+
+  const totalFirmantes = firmantes.filter(firmante => firmante.firmo_compromiso).length;
+
+
   return (
     <div>
         <h3>Alumnos que tienen coutas vencidas</h3>
-      
-
+        <Row className="justify-content-center">
+            <Col xs={12} md={4}>
+                <Card className="text-center bg-light">
+                    <Card.Body>
+                        <Card.Title>{inhabilitados} / {totalFirmantes}</Card.Title>
+                        <Card.Text className="text-secondary">
+                            Total de alumno que están inhabilitados sobre los que firmaron compromiso este año
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+        </Row>
+        <hr/>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>Legajo</th>
             <th>DNI</th>
-            <th>Nombre</th>
+            <th>Nombre completo</th>
             <th>Email</th>
-            <th>Estado de Pago</th>
-            <th>Estados</th>
+            <th>Estado actual</th>
+            <th>ultimo mes pagado</th>
+            <th>cambiar estado</th>
           </tr>
         </thead>
         <tbody>
@@ -127,14 +201,15 @@ const GestionHabilitacionAlumno = () => {
               <td>{item.dni}</td>
               <td>{`${item.apellido} ${item.nombre}`}</td>
               <td>{item.email}</td>
-              <td>{item.pago_al_dia ? 'Habilitado' : 'Vencida'}</td>
+              <td>{item.pago_al_dia ? 'Habilitado' : 'Inhabilitado'}</td>
+              <td>{item.ultima_cuota_pagada}</td>
               <td>
                 {item.pago_al_dia ? (
                 <button
                   className="btn btn-warning"
                   onClick={() => handleCambiarEstado(item.id)}
                 >
-                  Cambiar a Vencida
+                  Cambiar a Inhabilitado
                 </button>) : (
                 <button
                   className="btn btn-success"

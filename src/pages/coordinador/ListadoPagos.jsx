@@ -177,7 +177,7 @@ const ListadoPagos = () => {
             <Card.Body>
               <Card.Title>$ {totalRecaudadoMesActual}</Card.Title>
               <Card.Text className="text-secondary">
-                Total recaudado en el mes
+                Total recaudado en el cuatrimestre
               </Card.Text>
             </Card.Body>
           </Card>
@@ -187,7 +187,7 @@ const ListadoPagos = () => {
             <Card.Body>
               <Card.Title>$ {totalRecaudadoMesCuota}</Card.Title>
               <Card.Text className="text-secondary">
-                Total recaudado del mes
+                Total recaudado en el mes actual
               </Card.Text>
             </Card.Body>
           </Card>

@@ -7,6 +7,7 @@ const ResumenAlumno = () => {
     const [saldoVencido, setSaldoVencido] = useState(0);
     const [estadoAlumno, setEstadoAlumno] = useState(''); // Este valor se obtiene de otro endpoint
     const [proximoVencimiento, setProximoVencimiento] = useState(''); // Este valor lo obtendrás luego
+    const [alumno, setAlumno] = useState(null);
 
     useEffect(() => {
         // Obtener el saldo vencido
@@ -33,14 +34,32 @@ const ResumenAlumno = () => {
         fetchSaldoVencido();
     }, [authTokens]);
 
-    // Este useEffect se ejecuta cada vez que cambia el saldoVencido
-    useEffect(() => {
-        if (saldoVencido > 0) {
-            setEstadoAlumno("Habilitado");
-        } else {
-            setEstadoAlumno("Habilitado");
+       // Este useEffect se ejecuta cada vez que cambia el saldoVencido
+       useEffect(() => {
+
+        // Hacemos la petición al endpoint que devuelve el perfil del alumno autenticado
+        fetch(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/perfil/`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authTokens.refresh}` // Pasamos el token de acceso
+          }
+        })
+          .then(response => response.json())
+          .then(data => setAlumno(data))
+          .catch(error => console.error('Error al obtener los datos del alumno:', error));
+      }, [authTokens.refresh]); // El token de acceso es la dependencia
+
+      useEffect(() => {
+        if (alumno) {
+            if (alumno.pago_al_dia) {
+                setEstadoAlumno("Habilitado");
+            } else {
+                setEstadoAlumno("Inhabilitado");
+            }
         }
-    }, [saldoVencido]);
+    }, [alumno]); 
+
 
     const formatDate = (dateString) => {
         if (!dateString) return '';

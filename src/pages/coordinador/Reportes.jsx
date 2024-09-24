@@ -5,6 +5,7 @@ import Layout from '../../Layout';
 import FirmantesCompromiso from './AlumnosFirmasCompromiso'
 import AlumnosCuatrimestre from './AlumnosCuatrimestre'
 import ListadoPagos from './ListadoPagos'
+import GestionHabilitacionAlumno from "./habilitacionAlumno/GestionHabilitacionAlumno";
 
 function Reportes() {
     return (
@@ -16,6 +17,9 @@ function Reportes() {
                 </Tab>
                 <Tab eventKey="reporte2" title="Historial de Pagos">
                     <ListadoPagos/>
+                </Tab>
+                <Tab eventKey="reporte3" title="Gestion habilitacion" >
+                    <GestionHabilitacionAlumno/>
                 </Tab>
             </Tabs>
         </Layout>

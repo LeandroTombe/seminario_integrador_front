@@ -18,7 +18,7 @@ function Reportes() {
                 <Tab eventKey="reporte2" title="Historial de Pagos">
                     <ListadoPagos/>
                 </Tab>
-                <Tab eventKey="reporte3" title="Gestion habilitacion" >
+                <Tab eventKey="reporte3" title="Gestión de inhabilitaciones" >
                     <GestionHabilitacionAlumno/>
                 </Tab>
             </Tabs>

@@ -5,9 +5,7 @@ import SeccionCompromiso from './SeccionCompromiso'; // Asegúrate de tener este
 const InfoCompromiso = ({ compromiso }) => {
   return (
     <div className="conteinerInfo">
-      <Badge bg="primary" className="mb-3">
-        Año: {compromiso.año} Cuatrimestre: {compromiso.cuatrimestre}
-      </Badge>
+      <h3>Año {compromiso.año} Cuatrimestre {compromiso.cuatrimestre}</h3>
       <h2>Valores de cuotas y moras:</h2>
       <SeccionCompromiso texto="Valor de matrícula" valorInicial={compromiso.importe_matricula} />
       <SeccionCompromiso texto="Valor de cuota completa" valorInicial={compromiso.importe_completo} />

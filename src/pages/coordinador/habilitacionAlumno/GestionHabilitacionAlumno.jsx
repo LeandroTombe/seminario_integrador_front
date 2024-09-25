@@ -168,30 +168,29 @@ const GestionHabilitacionAlumno = () => {
 
   return (
     <div>
-        <h3>Alumnos que tienen coutas vencidas</h3>
         <Row className="justify-content-center">
-            <Col xs={12} md={4}>
+            <Col xs={12} md={5}>
                 <Card className="text-center bg-light">
                     <Card.Body>
                         <Card.Title>{inhabilitados} / {totalFirmantes}</Card.Title>
                         <Card.Text className="text-secondary">
-                            Total de alumno que están inhabilitados sobre los que firmaron compromiso este año
+                            Total de alumnos inhabilitados sobre total de alumnos firmantes del compromiso actual
                         </Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
         </Row>
-        <hr/>
+        <br />
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>Legajo</th>
             <th>DNI</th>
-            <th>Nombre completo</th>
+            <th>Nombre</th>
             <th>Email</th>
             <th>Estado actual</th>
-            <th>ultimo mes pagado</th>
-            <th>cambiar estado</th>
+            <th>Ultimo Mes Pagado</th>
+            <th>Cambiar Estado</th>
           </tr>
         </thead>
         <tbody>
@@ -209,13 +208,13 @@ const GestionHabilitacionAlumno = () => {
                   className="btn btn-warning"
                   onClick={() => handleCambiarEstado(item.id)}
                 >
-                  Cambiar a Inhabilitado
+                  Inhabilitar
                 </button>) : (
                 <button
                   className="btn btn-success"
                   onClick={() => handleCambiarEstado(item.id)}
                 >
-                    Cambiar a Habilitado
+                  Habilitar
                 </button>
                 )}
               </td>

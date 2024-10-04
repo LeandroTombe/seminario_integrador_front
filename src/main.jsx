@@ -16,6 +16,7 @@ import AlumnoInicio from "./pages/alumno/AlumnoInicio.jsx";
 import AlumnoMensajes from "./pages/alumno/AlumnoMensajes.jsx";
 import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
 import AlumnoPago from "./pages/alumno/AlumnoPago.jsx";
+import BaseNotificacion from "./pages/notificacion/BaseNotificacion.jsx";
 
 /* Paginas de coordinador */
 import Inicio from "./pages/coordinador/Inicio.jsx";
@@ -69,7 +70,7 @@ const App = () => {
         <Route
           path="/alumno/mensajes"
           element={
-            <ProtectedRoute element={<AlumnoMensajes />} roles={["Alumno"]} />
+            <ProtectedRoute element={<BaseNotificacion />} roles={["Alumno"]} />
           }
         />
         <Route
@@ -93,6 +94,7 @@ const App = () => {
             />
           }
         />
+
         <Route path="/importar_panda" element={<ImportDataComponent />} />
         
         <Route path="/alumno/pagar" element={<AlumnoPago />} />

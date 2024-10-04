@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CuotasActuales from '../alumno/EstadoDeCuenta/CuotasActuales'
 import HistorialCuotas from '../alumno/EstadoDeCuenta/HistorialCuotas'
+import HistorialPagos from '../alumno/EstadoDeCuenta/HistorialPagos'
 
 const EstadoDeCuenta = ({alumno}) => {
     const { authTokens } = useAuth(); // Acceder a la información del usuario y tokens
@@ -26,6 +27,9 @@ const EstadoDeCuenta = ({alumno}) => {
                 </Tab>
                 <Tab eventKey="pagadas" title="Historial de Cuotas">
                     <HistorialCuotas authTokens={authTokens} alumno={alumno}/>
+                </Tab>
+                <Tab eventKey="pagos" title="Historial de Pagos">
+                    <HistorialPagos authTokens={authTokens} alumno={alumno}/>
                 </Tab>
             </Tabs>
         </>

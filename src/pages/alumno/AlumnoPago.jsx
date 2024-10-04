@@ -20,12 +20,23 @@ const AlumnoPago = () => {
       .catch(error => console.error('Error al obtener los datos del alumno:', error));
   }, [authTokens.refresh]); // El token de acceso es la dependencia
 
+  function fecha() {
+    const date = new Date();
+  
+    const day = String(date.getDate()).padStart(2, '0'); // día
+    const month = String(date.getMonth() + 1).padStart(2, '0'); //  mes
+    const year = String(date.getFullYear()) // año
+  
+    return `${year}-${month}-${day}`;
+  }
+
+  const fechaHoy = fecha();
+
   if (!alumno) {
     return <div>Cargando...</div>;
   }
-
   // Genera la URL pre-rellena del formulario de Google Forms
-  const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSd2MWAkLz3BYEFIzFJDy9up1lGKuNACe1oOKLZ4p7Jhs-osVA/viewform?usp=pp_url&entry.1981210019=${alumno.apellido},+${alumno.nombre}`;
+  const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSd2MWAkLz3BYEFIzFJDy9up1lGKuNACe1oOKLZ4p7Jhs-osVA/viewform?usp=pp_url&entry.1981210019=${alumno.apellido},+${alumno.nombre}&entry.246393120=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.528240021=${alumno.dni}&entry.1687154301=${fechaHoy}`;
 
   return (
     <div>

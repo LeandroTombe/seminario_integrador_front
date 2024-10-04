@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import {useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './SidebarCoordinador.css';
 import { useAuth } from '../../context/AuthContext';
@@ -40,22 +40,22 @@ const SidebarCoordinador = () => {
         <h4 className='h4-sidebar'>TUP</h4>
       </div>
       <nav className="sidebar-nav">
-        <NavLink to="/coordinador/inicio" className="sidebar-link" activeclassname="active">
+        <NavLink to="/coordinador/inicio" className="sidebar-link logout-button" activeclassname="active">
           <FiHome className="icon" /> Inicio
         </NavLink>
-        <NavLink to="/coordinador/mensajes" className="sidebar-link" activeclassname="active">
+        <NavLink to="/coordinador/mensajes" className="sidebar-link logout-button" activeclassname="active">
           <FiMail className="icon" /> Mensajes
         </NavLink>
-        <NavLink to="/coordinador/reportes" className="sidebar-link" activeclassname="active">
+        <NavLink to="/coordinador/reportes" className="sidebar-link logout-button" activeclassname="active">
           <FiBarChart2 className="icon" /> Reportes
         </NavLink>
         <div>
-          <button onClick={toggleConfig} className="sidebar-link">
+          <button onClick={toggleConfig} className="sidebar-link logout-button">
             <FiSettings className="icon" /> Configuración
           </button>
           {isConfigOpen && (
             <div className="config-options">
-              <button onClick={toggleCompromiso} className="sidebar-link">
+              <button onClick={toggleCompromiso} className="sidebar-link ">
                 <FiChevronRight className="icon" /> Compromiso de Pago
               </button>
               {isCompromisoOpen && (

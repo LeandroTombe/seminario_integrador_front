@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 import Layout from "../../LayoutAlumno";
 import { useAuth } from "../../context/AuthContext";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import InfoCompromiso from '../../components/InfoCompromiso';
+import Table from 'react-bootstrap/Table';
 
 const FirmarCompromiso = () => {
   const { authTokens } = useAuth();
   const navigate = useNavigate(); // Define navigate para redirigir
   const [pdfUrl, setPdfUrl] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [compromiso, setCompromiso] = useState([]);
   const [existeFirma, setExisteFirma] = useState([]);
 
@@ -91,14 +89,6 @@ const FirmarCompromiso = () => {
     }
   };
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   // Función para formatear fechas a solo mes y día
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -122,16 +112,9 @@ const FirmarCompromiso = () => {
                   height="600px" 
                   title="Compromiso de Pago PDF"
                 />
-                <div className="mt-3 d-flex justify-content-center">
-                  <button 
-                    className="btn btn-secondary" 
-                    onClick={handleShowModal}
-                  >
-                    Ver resumen de valores
-                  </button>
-                </div>
               </div>
             )}
+            <InfoCompromiso compromiso = {compromiso[0]}/>
             
             <br />
             <h4>Firma del compromiso de pago:</h4>
@@ -139,35 +122,20 @@ const FirmarCompromiso = () => {
                 <p>Ya has firmado el compromiso de pago. Fecha de firma: {formatDate(existeFirma.firmado)}</p>
             ) : (
               <>
-                    <button 
-                      type="button" 
-                      className="btn btn-primary"
-                      onClick={handleSign}
-                    >
-                      Firmar Compromiso
-                    </button>
+                <button 
+                  type="button" 
+                  className="btn btn-primary"
+                  onClick={handleSign}
+                >
+                  Firmar Compromiso
+                </button>
               </>
             )}
           </>
         ) : (
-          <p>No se ha encontrado ningún compromiso.</p>
+          <p>No se ha encontrado un compromiso para el año y cuatrimestre actual</p>
         )}
         <br /><br />
-        
-
-        <Modal show={showModal} onHide={handleCloseModal} size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>Resumen de Valores de Cuotas y Matriculas</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {compromiso.length > 0 && <InfoCompromiso compromiso={compromiso[0]} />}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Aceptar
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </div>
     </Layout>
   );

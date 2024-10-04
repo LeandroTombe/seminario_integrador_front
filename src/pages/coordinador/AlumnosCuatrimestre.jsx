@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Pagination, Form } from 'react-bootstrap';
+import { Table, Pagination, Form, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -9,13 +9,14 @@ const AlumnosCuatrimestre = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6);
+    const [filterFirmo, setFilterFirmo] = useState('todos'); // Estado para el filtro de firma de compromiso
 
     const navigate = useNavigate(); // Hook para redirigir
 
     useEffect(() => {
         const fetchFirmantes = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listadoAlumnosInscriptos/');
+                const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listadoFirmaCompromisoActual/');
                 if (!response.ok) {
                     throw new Error('Error al obtener los datos');
                 }
@@ -29,11 +30,23 @@ const AlumnosCuatrimestre = () => {
         fetchFirmantes();
     }, []);
 
-    // Filtrar los firmantes en función del término de búsqueda
-    const filteredFirmantes = firmantes.filter(firmante => 
-        firmante.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        firmante.legajo.toString().includes(searchTerm)
-    );
+    // Filtrar los firmantes en función del término de búsqueda y si firmaron o no
+    const filteredFirmantes = firmantes.filter(firmante => {
+        const matchesSearch = 
+            firmante.alumno.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            firmante.alumno.legajo.toString().includes(searchTerm);
+
+        const matchesFirmoFilter = 
+            filterFirmo === 'todos' || 
+            (filterFirmo === 'firmo' && firmante.firmo_compromiso) ||
+            (filterFirmo === 'noFirmo' && !firmante.firmo_compromiso);
+
+        return matchesSearch && matchesFirmoFilter;
+    });
+
+    // Contar el total de firmantes y no firmantes
+    const totalFirmantes = firmantes.filter(firmante => firmante.firmo_compromiso).length;
+    const totalNoFirmantes = firmantes.length - totalFirmantes;
 
     // Para la paginacion
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -55,21 +68,54 @@ const AlumnosCuatrimestre = () => {
     return (
         <>
             {error ? (
-                <p>{error}</p>
+                <p>No se ha podido cargar los datos</p>
             ) : (
                 <>
-                    <h2>Total de alumnos inscriptos: {firmantes.length}</h2>
-                    
-                    {/* Campo de búsqueda */}
-                    <Form.Group controlId="search">
-                        <Form.Label>Buscar Alumno</Form.Label>
-                        <Form.Control 
-                            type="text" 
-                            placeholder="Buscar por apellido o legajo" 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </Form.Group>
+                    <Row className="justify-content-center">
+                        <Col xs={12} md={4}>
+                            <Card className="text-center bg-light">
+                                <Card.Body>
+                                    <Card.Title>{firmantes.length}</Card.Title>
+                                    <Card.Text className="text-secondary">
+                                        Total de alumnos inscriptos en el cuatrimestre
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <Card className="text-center bg-light">
+                                <Card.Body>
+                                    <Card.Title>{totalFirmantes} / {firmantes.length}</Card.Title>
+                                    <Card.Text className="text-secondary">
+                                        Total de alumnos firmantes del compromiso actual
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                    <br />
+                    <Form className="d-flex justify-content-between mb-3">
+                        {/* Filtro de búsqueda */}
+                        <Form.Group controlId="search" className="w-50 me-2">
+                            <Form.Label>Buscar alumno</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Buscar por apellido o legajo" 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </Form.Group>
+
+                        {/* Filtro de firma */}
+                        <Form.Group controlId="firmoFilter" className="w-50 ms-2">
+                            <Form.Label>Compromiso Firmado</Form.Label>
+                            <Form.Select value={filterFirmo} onChange={(e) => setFilterFirmo(e.target.value)}>
+                                <option value="todos">Todos</option>
+                                <option value="firmo">SI</option>
+                                <option value="noFirmo">NO</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Form>
                     <br />
                     <Table striped bordered hover>
                         <thead>
@@ -80,17 +126,19 @@ const AlumnosCuatrimestre = () => {
                                 <th>Nombre</th>
                                 <th>Correo</th>
                                 <th>Cantidad de Materias</th>
+                                <th>Compromiso Firmado</th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentItems.map(firmante => (
-                                <tr key={firmante.id} onClick={() => handleRowClick(firmante)} style={{ cursor: 'pointer' }}>
-                                    <td>{firmante.legajo}</td>
-                                    <td>{firmante.dni}</td>
-                                    <td>{firmante.apellido}</td>
-                                    <td>{firmante.nombre}</td>
-                                    <td>{firmante.email}</td>
-                                    <td>{firmante.materias.length}</td>
+                                <tr key={firmante.alumno.id} onClick={() => handleRowClick(firmante.alumno)} style={{ cursor: 'pointer' }}>
+                                    <td>{firmante.alumno.legajo}</td>
+                                    <td>{firmante.alumno.dni}</td>
+                                    <td>{firmante.alumno.apellido}</td>
+                                    <td>{firmante.alumno.nombre}</td>
+                                    <td>{firmante.alumno.email}</td>
+                                    <td>{firmante.alumno.materias.length}</td>
+                                    <td>{firmante.firmo_compromiso ? 'SI' : 'NO'}</td>
                                 </tr>
                             ))}
                         </tbody>

@@ -1,87 +1,23 @@
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    z-index: 2; 
-  }
-  
-  .sidebar-header {
-    padding-bottom: 2px;
-    padding-top: 16px;
-    padding-left: 10px;
-    background-color: #eee;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .sidebar-header h3 {
-    margin: 0;
-    font-size: 20px;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  .sidebar-nav {
-    flex: 1;
-    padding: 20px 0;
-    overflow-y: auto; /* Esto hace que si hay elementos que no se ven, se agregue el scroll */
-  }
-  
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    color: #333;
-    text-decoration: none;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar-link .icon {
-    margin-right: 10px;
-  }
-  
-  .sidebar-link:hover {
-    background-color: #ddd;
-  }
-  
-  .sidebar-link.active {
-    background-color: #ccc;
-    font-weight: bold;
-  }
-
-  .sidebar-link .icon {
-    font-size: 22px; /* Ajusta el tamaño del ícono */
-    margin-right: 12px; /* Espacio entre el ícono y el texto */
-  }
-
-.config-options {
-    padding-left: 20px; /* Ajusta según sea necesario */
-    display: flex;
-    flex-direction: column;
-}
-  
-.config-options .sidebar-link {
-    padding: 10px;
-    font-size: 14px;
-}
-
-.compromiso-options {
-  padding-left: 20px;
+.sidebar-link {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Asegura que los ítems dentro del link estén alineados desde el inicio */
+  padding: 15px 20px;
+  width: 100%; /* Asegura que el link ocupe todo el espacio horizontal disponible */
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
-.compromiso-options .sidebar-link {
-  padding: 10px;
+.sidebar-link:hover {
+  background-color: #ddd;
+  width: 100%; /* Esto asegurará que el hover ocupe todo el ancho del contenedor */
 }
 
-.h4-sidebar{
-  font-weight: bold;
+.logout-button {
+  margin: 0px 0px 0px 0px; /* Asegura consistencia en el padding */
+}
+.logout-button:hover {
+  background-color: #ddd; /* Color de fondo al hacer hover*/
 }

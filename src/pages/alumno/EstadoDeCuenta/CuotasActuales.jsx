@@ -177,8 +177,11 @@ const CuotasActuales = ({ authTokens, alumno }) => {
     
             setMontoAPagar(montoTotal.toFixed(2));
     
-            // Crear un string con los nombres de los meses correspondientes
-            const mesesString = nuevasSeleccionadas.map(cuota => meses[cuota - 1]).join(', ');
+            // Crear un string con los nombres de los meses correspondientes, o "Matricula" si nroCuota es 0
+            const mesesString = nuevasSeleccionadas
+                .map(cuota => cuota === 0 ? "Matricula" : meses[cuota - 1])
+                .join(', ');
+    
             setMesesSeleccionados(mesesString);
             
             console.log("Meses seleccionados:", mesesString); // Muestra el string actualizado
@@ -202,7 +205,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
 
         for (let i = primeraCuotaPendiente; i < cuota.nroCuota; i++) {
             const cuotaAnterior = cuotas.find(c => c.nroCuota === i);
-            if (!cuotasSeleccionadas.includes(i) && getEstado(cuotaAnterior) !== 'Pagado') {
+            if (cuotaAnterior && !cuotasSeleccionadas.includes(i) && getEstado(cuotaAnterior) !== 'Pagado') {
                 return true;
             }
         }

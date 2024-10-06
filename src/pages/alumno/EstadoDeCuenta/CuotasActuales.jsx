@@ -98,17 +98,6 @@ const CuotasActuales = ({ authTokens, alumno }) => {
         fetchCuotas();
     }, [authTokens, alumno]);
 
-    const getEstado = (cuota) => {
-        const today = new Date();
-        const fechaVencimiento = new Date(cuota.fechaPrimerVencimiento);
-
-        if (today >= fechaVencimiento && cuota.importePagado < cuota.total) {
-            return 'Vencida';
-        }
-
-        return parseFloat(cuota.importePagado) >= parseFloat(cuota.total) ? 'Pagado' : 'Pendiente';
-    };
-
     const formatDate = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
@@ -171,7 +160,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
             const montoTotal = cuotas
                 .filter(cuota => nuevasSeleccionadas.includes(cuota.nroCuota))
                 .reduce((total, cuota) => {
-                    const montoPendiente = parseFloat(cuota.total) - parseFloat(cuota.importePagado);
+                    const montoPendiente = parseFloat(cuota.total) - parseFloat(cuota.importePagado) - parseFloat(cuota.importeInformado);
                     return total + Math.max(montoPendiente, 0);
                 }, 0);
     
@@ -183,21 +172,21 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                 .join(', ');
     
             setMesesSeleccionados(mesesString);
-            
-            console.log("Meses seleccionados:", mesesString); // Muestra el string actualizado
+    
+            // Mostrar en la consola las cuotas seleccionadas actualizadas
+            //console.log("Cuotas seleccionadas (actualizado):", nuevasSeleccionadas);
     
             return nuevasSeleccionadas;
         });
     };
 
     const isCheckboxDisabled = (cuota) => {
-        const estado = getEstado(cuota);
 
-        if (estado === 'Pagado') {
+        if (cuota.estado === 'Pagada') {
             return true;
         }
 
-        const primeraCuotaPendiente = cuotas.find(c => getEstado(c) !== 'Pagado')?.nroCuota || 0;
+        const primeraCuotaPendiente = cuotas.find(c => cuota.estado !== 'Pagada')?.nroCuota || 0;
 
         if (cuota.nroCuota === primeraCuotaPendiente) {
             return false;
@@ -205,7 +194,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
 
         for (let i = primeraCuotaPendiente; i < cuota.nroCuota; i++) {
             const cuotaAnterior = cuotas.find(c => c.nroCuota === i);
-            if (cuotaAnterior && !cuotasSeleccionadas.includes(i) && getEstado(cuotaAnterior) !== 'Pagado') {
+            if (cuotaAnterior && !cuotasSeleccionadas.includes(i) && cuotaAnterior.estado !== 'Pagada') {
                 return true;
             }
         }
@@ -220,10 +209,32 @@ const CuotasActuales = ({ authTokens, alumno }) => {
       const handleMostrarModal = () => setShowModal(true);  // Mostrar el modal
       const handleCerrarModal = () => setShowModal(false);  // Cerrar el modal
   
-      const handleConfirmarPago = () => {
-          setShowModal(false);  // Cerrar el modal después del pago
-          window.location.reload();
-      };
+      const handleConfirmarPago = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/pagos/informarPagoCuotas/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authTokens.refresh}`,
+                },
+                body: JSON.stringify({
+                    cuotasSeleccionadas: cuotasSeleccionadas,
+                    montoAPagar: montoAPagar,
+                }),
+            });
+            if (!response.ok) {
+                throw new Error('Error al confirmar el pago');
+            }
+    
+            const data = await response.json();
+            alert('Pago confirmado:', data);
+            setShowModal(false);  // Cierra el modal después de confirmar el pago
+            window.location.reload();  // Recarga la página después del pago
+        } catch (error) {
+            console.log(cuotasSeleccionadas)
+            alert('Error al confirmar el pago:', error);
+        }
+    };
 
     return (
         <>
@@ -231,17 +242,25 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                 <p>{error}</p>
             ) : cuotas.length === 0 ? (
                 <>
-                {valoresExistentes ? (
-                    <p>
-                    Firma el compromiso de pago pendiente para generar las cuotas del cuatrimestre.
-                    <span
-                        style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
-                        onClick={() => handleFirmarCompromiso()}>
-                        Firmar Compromiso
-                    </span>
-                    </p>
-                ) :
-                    <p>No es posible generar cuotas, aún no se encuentra disponible el compromiso de pago para este cuatrimestre.</p>
+                { alumno ? (
+                    <p>No hay cuotas correspondientes al cuatrimestre actual</p>
+                ) : (
+                    <>
+                    {valoresExistentes ? (
+                        <p>
+                        Firma el compromiso de pago pendiente para generar las cuotas del cuatrimestre.
+                        <span
+                            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
+                            onClick={() => handleFirmarCompromiso()}>
+                            Firmar Compromiso
+                        </span>
+                        </p>
+                    ) :
+                        <p>No es posible generar cuotas, aún no se encuentra disponible el compromiso de pago para este cuatrimestre.</p>
+                    }
+                    </>
+                )
+
                 }
                 </>
             ) : (
@@ -254,8 +273,9 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                 <th>Importe</th>
                                 <th>Primer vencimiento</th>
                                 <th>Segundo vencimiento</th>
-                                <th>Mora aplicada</th>
+                                <th>Mora</th>
                                 <th>Total</th>
+                                <th>Importe Informado</th>
                                 <th>Importe Pagado</th>
                                 <th>Estado</th>
                                 {(!alumno) && (
@@ -265,9 +285,17 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                         </thead>
                         <tbody>
                             {cuotas.map(cuota => {
-                                const estado = getEstado(cuota);
+                                const estado = cuota.estado;
                                 return (
-                                    <tr key={cuota.nroCuota} className={estado === 'Vencida' ? 'table-danger' : estado === 'Pagado' ? 'table-success' : ''}>
+                                    <tr key={cuota.nroCuota}
+                                        className={
+                                        estado === 'Vencida'
+                                        ? 'table-danger' 
+                                        : estado === 'Pagada'
+                                        ? 'table-success'
+                                        : estado === 'Informada' && tratarfechaForm() > cuota.fechaPrimerVencimiento
+                                        ? 'table-danger'
+                                        : ''}>
                                         <td>{cuota.nroCuota}</td>
                                         <td>{cuota.año}</td>
                                         <td>$ {cuota.importe}</td>
@@ -275,6 +303,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                         <td>{formatDate(cuota.fechaSegundoVencimiento)}</td>
                                         <td>$ {(parseFloat(cuota.moraSegundoVencimiento) + parseFloat(cuota.moraPrimerVencimiento)).toFixed(2)}</td>
                                         <td>$ {cuota.total}</td>
+                                        <td>$ {cuota.importeInformado}</td>
                                         <td>$ {cuota.importePagado}</td>
                                         <td>{estado}</td>
                                         {(!alumno) && (
@@ -282,7 +311,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                                 <input
                                                     type="checkbox"
                                                     disabled={isCheckboxDisabled(cuota)}
-                                                    checked={estado === 'Pagado' || cuotasSeleccionadas.includes(cuota.nroCuota)}
+                                                    checked={estado === 'Pagada' || cuotasSeleccionadas.includes(cuota.nroCuota)}
                                                     onChange={() => handleSeleccionCuota(cuota.nroCuota)}
                                                 />
                                             </td>

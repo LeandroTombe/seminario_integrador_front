@@ -46,10 +46,12 @@ const GestionHabilitacionAlumno = () => {
     setFiltroVencido(e.target.value);
   };
 
-  const handleCambiarEstado =  (id) => {
+  const handleCambiarEstado = (id, pagoAlDia) => {
+    const nuevoEstado = !pagoAlDia; // Cambia el estado a lo contrario del actual
+  
     Swal.fire({
       title: '¿Estás seguro?',
-      text: "Esto cambiará el estado de pago al día a vencido.",
+      text: `Esto cambiará el estado de pago al día a ${nuevoEstado ? 'habilitado' : 'inhabilitado'}.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -59,24 +61,23 @@ const GestionHabilitacionAlumno = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // Hacer la petición para cambiar el estado
-        const response = fetch(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/${id}/cambiar-estado-pago/`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${authTokens.refresh}` // Incluye el token si usas autenticación
-            },
-            body: JSON.stringify({ pago_al_dia: false })
-        
+        fetch(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/${id}/cambiar-estado-pago/`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authTokens.refresh}` // Incluye el token si usas autenticación
+          },
+          body: JSON.stringify({ pago_al_dia: nuevoEstado })
         })
           .then(response => response.json())
           .then(data => {
             // Actualizar la lista de alumnos para reflejar el cambio
             setAlumnos(prevAlumnos =>
               prevAlumnos.map(alumno =>
-                alumno.id === id ? { ...alumno, pago_al_dia: false } : alumno
+                alumno.id === id ? { ...alumno, pago_al_dia: nuevoEstado } : alumno
               )
             );
-            Swal.fire('Estado cambiado', 'El estado de pago ha sido actualizado.', 'success');
+            Swal.fire('Estado cambiado', `El estado de pago ha sido ${nuevoEstado ? 'habilitado' : 'inhabilitado'}.`, 'success');
           })
           .catch(error => {
             console.error('Error al cambiar el estado de pago:', error);
@@ -165,6 +166,15 @@ const GestionHabilitacionAlumno = () => {
 
   const totalFirmantes = firmantes.filter(firmante => firmante.firmo_compromiso).length;
 
+  // Función para obtener el nombre del mes a partir de la fecha
+  const obtenerNombreMes = (fecha) => {
+    const date = new Date(fecha);
+    const meses = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    return meses[date.getMonth()];
+  };
 
   return (
     <div>
@@ -181,47 +191,76 @@ const GestionHabilitacionAlumno = () => {
             </Col>
         </Row>
         <br />
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Legajo</th>
-            <th>DNI</th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Estado actual</th>
-            <th>Ultimo Mes Pagado</th>
-            <th>Cambiar Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((item) => (
+        <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>Legajo</th>
+          <th>DNI</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Estado actual</th>
+          <th>Ultimo Mes Pagado</th>
+          <th>Cuotas Vencidas</th> {/* Nueva columna para las cuotas vencidas */}
+          <th>Cambiar Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {currentItems.map((item) => {
+          // Obtener el importe de la última cuota pagada (si existe)
+          const ultimaCuotaPagada = item.cuotas_vencidas.length > 0
+            ? Math.max(...item.cuotas_vencidas.map((cuota) => cuota.importePagado || 0))
+            : 0;
+
+          return (
             <tr key={item.id}>
               <td>{item.legajo}</td>
               <td>{item.dni}</td>
               <td>{`${item.apellido} ${item.nombre}`}</td>
               <td>{item.email}</td>
               <td>{item.pago_al_dia ? 'Habilitado' : 'Inhabilitado'}</td>
-              <td>{item.ultima_cuota_pagada}</td>
+              <td>{item.ultima_cuota_pagada || 'Sin pagos'}</td> {/* Mostrar 'Sin pagos' si no hay pagos previos */}
+              
+              {/* Nueva columna para mostrar las cuotas vencidas */}
+              <td>
+                {item.cuotas_vencidas && item.cuotas_vencidas.length > 0 ? (
+                  <ul>
+                    {item.cuotas_vencidas
+                      // Filtrar cuotas cuyo importe sea mayor o igual a la última cuota pagada
+                      .filter((cuota) => cuota.importe >= ultimaCuotaPagada)
+                      .map((cuota) => (
+                        <li key={cuota.id}>
+                          {/* Obtener el nombre del mes a partir de la fecha */}
+                          Mes: {obtenerNombreMes(cuota.fechaPrimerVencimiento)}
+                        </li>
+                      ))}
+                  </ul>
+                ) : (
+                  'No tiene cuotas vencidas'
+                )}
+              </td>
+              
               <td>
                 {item.pago_al_dia ? (
-                <button
-                  className="btn btn-warning"
-                  onClick={() => handleCambiarEstado(item.id)}
-                >
-                  Inhabilitar
-                </button>) : (
-                <button
-                  className="btn btn-success"
-                  onClick={() => handleCambiarEstado(item.id)}
-                >
-                  Habilitar
-                </button>
+                  <button
+                    className="btn btn-warning"
+                    onClick={() => handleCambiarEstado(item.id, item.pago_al_dia)}
+                  >
+                    Inhabilitar
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-success"
+                    onClick={() => handleCambiarEstado(item.id, item.pago_al_dia)}
+                  >
+                    Habilitar
+                  </button>
                 )}
               </td>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          );
+        })}
+      </tbody>
+    </Table>
 
       <Pagination>
         {[...Array(totalPages).keys()].map((number) => (

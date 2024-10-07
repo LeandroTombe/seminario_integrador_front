@@ -235,6 +235,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                         style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
                         onClick={() => handleFirmarCompromiso()}>
                         Firmar Compromiso
+                        {console.log(alumno)}
                     </span>
                     </p>
                 ) :

@@ -242,25 +242,17 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                 <p>{error}</p>
             ) : cuotas.length === 0 ? (
                 <>
-                { alumno ? (
-                    <p>No hay cuotas correspondientes al cuatrimestre actual</p>
-                ) : (
-                    <>
-                    {valoresExistentes ? (
-                        <p>
-                        Firma el compromiso de pago pendiente para generar las cuotas del cuatrimestre.
-                        <span
-                            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
-                            onClick={() => handleFirmarCompromiso()}>
-                            Firmar Compromiso
-                        </span>
-                        </p>
-                    ) :
-                        <p>No es posible generar cuotas, aún no se encuentra disponible el compromiso de pago para este cuatrimestre.</p>
-                    }
-                    </>
-                )
-
+                {valoresExistentes ? (
+                    <p>
+                    Firma el compromiso de pago pendiente para generar las cuotas del cuatrimestre.
+                    <span
+                        style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
+                        onClick={() => handleFirmarCompromiso()}>
+                        Firmar Compromiso
+                    </span>
+                    </p>
+                ) :
+                    <p>No es posible generar cuotas, aún no se encuentra disponible el compromiso de pago para este cuatrimestre.</p>
                 }
                 </>
             ) : (

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
-import { Form, Row, Col, Pagination } from 'react-bootstrap';
+import { Card, Row, Col, Pagination, Form } from 'react-bootstrap';
 import { useAuth } from '../../../context/AuthContext';
 import Swal from 'sweetalert2';
-import { Card } from 'react-bootstrap';
 import { id } from 'date-fns/locale';
 
 const GestionHabilitacionAlumno = () => {
@@ -14,11 +13,11 @@ const GestionHabilitacionAlumno = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(3);
   const [firmantes, setFirmantes] = useState([]);
-  const [inhabilitados, setInhabilitados] = useState([]);
+  //const [inhabilitados, setInhabilitados] = useState(0);
   const [error, setError] = useState(null);
   const [mes, setMes] = useState([]);
-
-
+  const [inhabilitados, setInhabilitados] = useState(0);
+  const [filtroEstado, setFiltroEstado] = useState('todos');
 
     useEffect(() => {
       const fetchultimacuotapagada = async () => {
@@ -29,6 +28,11 @@ const GestionHabilitacionAlumno = () => {
               }
               const data = await response.json();
               setAlumnos(data);
+
+              // Calcular el número inicial de inhabilitados
+              const initialInhabilitados = data.filter(alumno => !alumno.pago_al_dia).length;
+              setInhabilitados(initialInhabilitados);
+
           } catch (err) {
               setError(err.message);
           }
@@ -42,8 +46,9 @@ const GestionHabilitacionAlumno = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleFiltroVencidoChange = (e) => {
-    setFiltroVencido(e.target.value);
+  // Manejar el cambio de filtro de estado
+  const handleFiltroEstadoChange = (event) => {
+    setFiltroEstado(event.target.value);
   };
 
   const handleCambiarEstado = (id, pagoAlDia) => {
@@ -51,12 +56,12 @@ const GestionHabilitacionAlumno = () => {
   
     Swal.fire({
       title: '¿Estás seguro?',
-      text: `Esto cambiará el estado de pago al día a ${nuevoEstado ? 'habilitado' : 'inhabilitado'}.`,
+      text: `Esto cambiará el estado del alumno a a ${nuevoEstado ? 'habilitado' : 'inhabilitado'}.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, cambiar',
+      confirmButtonText: 'Confirmar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -72,11 +77,15 @@ const GestionHabilitacionAlumno = () => {
           .then(response => response.json())
           .then(data => {
             // Actualizar la lista de alumnos para reflejar el cambio
-            setAlumnos(prevAlumnos =>
-              prevAlumnos.map(alumno =>
+            setAlumnos(prevAlumnos => {
+              const updatedAlumnos = prevAlumnos.map(alumno =>
                 alumno.id === id ? { ...alumno, pago_al_dia: nuevoEstado } : alumno
-              )
-            );
+              );
+              // Actualizar el estado de inhabilitados
+              const nuevosInhabilitados = updatedAlumnos.filter(alumno => !alumno.pago_al_dia).length;
+              setInhabilitados(nuevosInhabilitados); // Recalcular el número de inhabilitados
+              return updatedAlumnos;
+            });
             Swal.fire('Estado cambiado', `El estado de pago ha sido ${nuevoEstado ? 'habilitado' : 'inhabilitado'}.`, 'success');
           })
           .catch(error => {
@@ -87,16 +96,18 @@ const GestionHabilitacionAlumno = () => {
     });
   };
 
-  // Filtrar alumnos por nombre, apellido y estado de pago (vencido o no)
-  const filteredAlumnos = alumnos.filter((alumno) => {
-    const nombre = alumno.nombre || ''; // Verifica si 'nombre' existe
-    const apellido = alumno.apellido || ''; // Verifica si 'apellido' existe
-    const matchesSearch = nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          apellido.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPagoAlDia = filtroVencido === 'todos' || 
-                             (filtroVencido === 'vencidas' && !alumno.pago_al_dia) || 
-                             (filtroVencido === 'al_dia' && alumno.pago_al_dia);
-    return matchesSearch && matchesPagoAlDia;
+  // Filtrar alumnos según el filtro de estado
+  const filteredAlumnos = alumnos.filter(alumno => {
+    const matchesSearch = 
+            alumno.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            alumno.legajo.toString().includes(searchTerm);
+    
+    const matchesEstadoFilter = 
+            filtroEstado === 'todos' || 
+            (filtroEstado === 'habilitado' && alumno.pago_al_dia) ||
+            (filtroEstado === 'inhabilitado' && !alumno.pago_al_dia);
+    
+  return matchesSearch && matchesEstadoFilter;
   });
 
   // Paginación
@@ -145,25 +156,6 @@ const GestionHabilitacionAlumno = () => {
     mespagado();
 }, []);
 
-
-
-  useEffect(() => {
-    const fetchInhabilitados = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/alumno/ihhabilitados/');
-            if (!response.ok) {
-                throw new Error('Error al obtener los datos');
-            }
-            const data = await response.json();
-            setInhabilitados(data);
-        } catch (err) {
-            setError(err.message);
-        }
-    };
-
-    fetchInhabilitados();
-}, []);
-
   const totalFirmantes = firmantes.filter(firmante => firmante.firmo_compromiso).length;
 
   // Función para obtener el nombre del mes a partir de la fecha
@@ -191,14 +183,37 @@ const GestionHabilitacionAlumno = () => {
             </Col>
         </Row>
         <br />
+        <Form className="d-flex justify-content-between mb-3">
+          {/* Filtro de búsqueda (placeholder para si quieres agregarlo luego) */}
+          <Form.Group controlId="search" className="w-50 me-2">
+            <Form.Label>Buscar alumno</Form.Label>
+            <Form.Control 
+              type="text" 
+              placeholder="Buscar por apellido o legajo" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Form.Group>
+
+          {/* Filtro de estado */}
+          <Form.Group controlId="estadoFilter" className="w-50 ms-2">
+            <Form.Label>Estado del Alumno</Form.Label>
+            <Form.Select value={filtroEstado} onChange={handleFiltroEstadoChange}>
+              <option value="todos">Todos</option>
+              <option value="habilitado">Habilitado</option>
+              <option value="inhabilitado">Inhabilitado</option>
+            </Form.Select>
+          </Form.Group>
+        </Form>
+
         <Table striped bordered hover>
       <thead>
         <tr>
           <th>Legajo</th>
           <th>DNI</th>
           <th>Nombre</th>
-          <th>Email</th>
-          <th>Estado actual</th>
+          <th>Correo</th>
+          <th>Estado Actual</th>
           <th>Ultimo Mes Pagado</th>
           <th>Cuotas Vencidas</th> {/* Nueva columna para las cuotas vencidas */}
           <th>Cambiar Estado</th>
@@ -222,15 +237,14 @@ const GestionHabilitacionAlumno = () => {
               
               {/* Nueva columna para mostrar las cuotas vencidas */}
               <td>
+                {console.log(item.cuotas_vencidas)}
                 {item.cuotas_vencidas && item.cuotas_vencidas.length > 0 ? (
                   <ul>
                     {item.cuotas_vencidas
-                      // Filtrar cuotas cuyo importe sea mayor o igual a la última cuota pagada
-                      .filter((cuota) => cuota.importe >= ultimaCuotaPagada)
                       .map((cuota) => (
                         <li key={cuota.id}>
                           {/* Obtener el nombre del mes a partir de la fecha */}
-                          Mes: {obtenerNombreMes(cuota.fechaPrimerVencimiento)}
+                          {cuota}
                         </li>
                       ))}
                   </ul>
@@ -239,7 +253,7 @@ const GestionHabilitacionAlumno = () => {
                 )}
               </td>
               
-              <td>
+              <td className="text-center">
                 {item.pago_al_dia ? (
                   <button
                     className="btn btn-warning"

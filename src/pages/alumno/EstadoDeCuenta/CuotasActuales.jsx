@@ -10,6 +10,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
     const [alumnos, setAlumnos] = useState(null);
     const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState([]);
     const [montoAPagar, setMontoAPagar] = useState('0.00');
+    const [montoAPagarMaximo, setMontoAPagarMaximo] = useState('0.00');
     const [valoresExistentes, setValoresExistentes] = useState(null);
     const [showModal, setShowModal] = useState(false);  // Nuevo estado para el modal
     const navigate = useNavigate();
@@ -160,11 +161,12 @@ const CuotasActuales = ({ authTokens, alumno }) => {
             const montoTotal = cuotas
                 .filter(cuota => nuevasSeleccionadas.includes(cuota.nroCuota))
                 .reduce((total, cuota) => {
-                    const montoPendiente = parseFloat(cuota.total) - parseFloat(cuota.importePagado) - parseFloat(cuota.importeInformado);
+                    const montoPendiente = parseFloat(cuota.total) - parseFloat(cuota.importePagado);
                     return total + Math.max(montoPendiente, 0);
                 }, 0);
     
             setMontoAPagar(montoTotal.toFixed(2));
+            setMontoAPagarMaximo(montoTotal.toFixed(2))
     
             // Crear un string con los nombres de los meses correspondientes, o "Matricula" si nroCuota es 0
             const mesesString = nuevasSeleccionadas
@@ -238,21 +240,29 @@ const CuotasActuales = ({ authTokens, alumno }) => {
 
     return (
         <>
+            {console.log(cuotas)}
             {error ? (
                 <p>{error}</p>
             ) : cuotas.length === 0 ? (
                 <>
-                {valoresExistentes ? (
-                    <p>
-                    Firma el compromiso de pago pendiente para generar las cuotas del cuatrimestre.
-                    <span
-                        style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
-                        onClick={() => handleFirmarCompromiso()}>
-                        Firmar Compromiso
-                    </span>
-                    </p>
-                ) :
-                    <p>No es posible generar cuotas, aún no se encuentra disponible el compromiso de pago para este cuatrimestre.</p>
+                { alumno ? (
+                    <p>No hay cuotas correspondientes al cuatrimestre actual</p>
+                ) : (
+                    <>
+                    {valoresExistentes ? (
+                        <p>
+                        Firma el compromiso de pago pendiente para generar las cuotas del cuatrimestre.
+                        <span
+                            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
+                            onClick={() => handleFirmarCompromiso()}>
+                            Firmar Compromiso
+                        </span>
+                        </p>
+                    ) :
+                        <p>No es posible generar cuotas, aún no se encuentra disponible el compromiso de pago para este cuatrimestre.</p>
+                    }
+                    </>
+                )
                 }
                 </>
             ) : (
@@ -320,7 +330,14 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                 <Form.Control
                                     type="number"
                                     value={montoAPagar}
-                                    onChange={(e) => setMontoAPagar(e.target.value)} // Actualiza el estado cuando cambia el valor
+                                    onChange={(e) => {
+                                        const value = Number(e.target.value);
+                                        // Solo permitir valores que sean menores o iguales al montoAPagar
+                                        if (value <= montoAPagarMaximo) {
+                                            setMontoAPagar(value);
+                                        }
+                                    }}
+                                    
                                     style={{ maxWidth: '150px' }}
                                 />
                                 <Button className="ms-2" onClick={() => {setShowModal(true)}}>

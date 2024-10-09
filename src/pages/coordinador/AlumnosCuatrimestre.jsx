@@ -67,6 +67,7 @@ const AlumnosCuatrimestre = () => {
 
     return (
         <>
+            {console.log(firmantes)}
             {error ? (
                 <p>No se ha podido cargar los datos</p>
             ) : (
@@ -127,6 +128,7 @@ const AlumnosCuatrimestre = () => {
                                 <th>Correo</th>
                                 <th>Cantidad de Materias</th>
                                 <th>Compromiso Firmado</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -139,6 +141,7 @@ const AlumnosCuatrimestre = () => {
                                     <td>{firmante.alumno.email}</td>
                                     <td>{firmante.alumno.materias.length}</td>
                                     <td>{firmante.firmo_compromiso ? 'SI' : 'NO'}</td>
+                                    <td>{firmante.alumno.pago_al_dia ? 'Habilitado' : 'Inhabilitado'}</td>
                                 </tr>
                             ))}
                         </tbody>

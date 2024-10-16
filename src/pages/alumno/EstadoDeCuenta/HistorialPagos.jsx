@@ -41,7 +41,6 @@ const HistorialPagos = ({ authTokens, alumno }) => {
 
     return(
         <>
-        {console.log(pagos)}
             <Table striped bordered hover>
                 <thead>
                     <tr>

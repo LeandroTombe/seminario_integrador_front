@@ -161,7 +161,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
             const montoTotal = cuotas
                 .filter(cuota => nuevasSeleccionadas.includes(cuota.nroCuota))
                 .reduce((total, cuota) => {
-                    const montoPendiente = parseFloat(cuota.total) - parseFloat(cuota.importePagado);
+                    const montoPendiente = parseFloat(cuota.total) - parseFloat(cuota.importeInformado);
                     return total + Math.max(montoPendiente, 0);
                 }, 0);
     
@@ -183,24 +183,39 @@ const CuotasActuales = ({ authTokens, alumno }) => {
     };
 
     const isCheckboxDisabled = (cuota) => {
-
-        if (cuota.estado === 'Pagada') {
+        // Si la cuota está pagada o tiene el importe igual al total, se deshabilita.
+        if (cuota.estado === 'Pagada' || cuota.importeInformado === cuota.total) {
             return true;
         }
-
-        const primeraCuotaPendiente = cuotas.find(c => cuota.estado !== 'Pagada')?.nroCuota || 0;
-
+    
+        // Encontrar la primera cuota pendiente que no esté pagada y cuyo importe sea distinto del total.
+        const primeraCuotaPendiente = cuotas.find(
+            (c) => c.estado !== 'Pagada' && c.importeInformado !== c.total
+        )?.nroCuota || 0;
+    
+        // Si esta es la primera cuota pendiente, habilitamos el checkbox.
         if (cuota.nroCuota === primeraCuotaPendiente) {
             return false;
         }
-
+    
+        // Recorremos las cuotas anteriores a la actual para verificar restricciones.
         for (let i = primeraCuotaPendiente; i < cuota.nroCuota; i++) {
             const cuotaAnterior = cuotas.find(c => c.nroCuota === i);
-            if (cuotaAnterior && !cuotasSeleccionadas.includes(i) && cuotaAnterior.estado !== 'Pagada') {
-                return true;
+    
+            if (cuotaAnterior) {
+                // Si encontramos una cuota con importe igual al total y esta es la inmediata siguiente, habilita.
+                if (cuotaAnterior.importeInformado === cuotaAnterior.total && cuota.nroCuota === i + 1) {
+                    return false;
+                }
+    
+                // Si una cuota anterior no está pagada ni seleccionada, deshabilita.
+                if (!cuotasSeleccionadas.includes(i) && cuotaAnterior.estado !== 'Pagada') {
+                    return true;
+                }
             }
         }
-
+    
+        // En cualquier otro caso, habilita el checkbox.
         return false;
     };
 
@@ -233,14 +248,12 @@ const CuotasActuales = ({ authTokens, alumno }) => {
             setShowModal(false);  // Cierra el modal después de confirmar el pago
             window.location.reload();  // Recarga la página después del pago
         } catch (error) {
-            console.log(cuotasSeleccionadas)
             alert('Error al confirmar el pago:', error);
         }
     };
 
     return (
         <>
-            {console.log(cuotas)}
             {error ? (
                 <p>{error}</p>
             ) : cuotas.length === 0 ? (

@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
                 if (userRole === "Admin") {
                     navigate("/admin/inicio");
                 } else if (userRole === "Coordinador") {
-                    navigate("/coordinador/inicio");
+                    navigate("/coordinador/reportes");
                 } else if (userRole === "Alumno") {
                     navigate("/alumno/inicio");
                 } else {

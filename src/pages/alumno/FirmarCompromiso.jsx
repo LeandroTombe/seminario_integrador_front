@@ -101,7 +101,7 @@ const FirmarCompromiso = () => {
   return (
     <Layout>
       <h1>Compromiso de Pago Actual</h1>
-      <div className="containerConfig">
+      <div className="containerConfig mt-3">
         {compromiso.length > 0 ? (
           <>
             {pdfUrl && (

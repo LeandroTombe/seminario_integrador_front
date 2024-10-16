@@ -1,4 +1,4 @@
-import {useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './SidebarCoordinador.css';
 import { useAuth } from '../../context/AuthContext';
@@ -36,7 +36,7 @@ const SidebarCoordinador = () => {
 
   return (
     <div className="sidebar">
-      <div className="sidebar-header">
+      <div className="sidebar-header flex aling ">
         <h4 className='h4-sidebar'>TUP</h4>
       </div>
       <nav className="sidebar-nav">

@@ -10,6 +10,7 @@ const AlumnosCuatrimestre = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6);
     const [filterFirmo, setFilterFirmo] = useState('todos'); // Estado para el filtro de firma de compromiso
+    const [filterEstado, setFilterEstado] = useState('todos'); // Estado para el filtro de firma de compromiso
 
     const navigate = useNavigate(); // Hook para redirigir
 
@@ -41,7 +42,12 @@ const AlumnosCuatrimestre = () => {
             (filterFirmo === 'firmo' && firmante.firmo_compromiso) ||
             (filterFirmo === 'noFirmo' && !firmante.firmo_compromiso);
 
-        return matchesSearch && matchesFirmoFilter;
+        const matchesEstadoFilter = 
+            filterEstado === 'todos' || 
+            (filterEstado === 'habilitado' && firmante.alumno.pago_al_dia) ||
+            (filterEstado === 'inhabilitado' && !firmante.alumno.pago_al_dia);
+
+        return matchesSearch && matchesFirmoFilter && matchesEstadoFilter;
     });
 
     // Contar el total de firmantes y no firmantes
@@ -114,6 +120,16 @@ const AlumnosCuatrimestre = () => {
                                 <option value="todos">Todos</option>
                                 <option value="firmo">SI</option>
                                 <option value="noFirmo">NO</option>
+                            </Form.Select>
+
+                        </Form.Group>
+                        {/* Filtro de estado */}
+                                                <Form.Group controlId="estadoFilter" className="w-50 ms-2">
+                            <Form.Label>Estado</Form.Label>
+                            <Form.Select value={filterEstado} onChange={(e) => setFilterEstado(e.target.value)}>
+                                <option value="todos">Todos</option>
+                                <option value="habilitado">Habilitado</option>
+                                <option value="inhabilitado">Inhabilitado</option>
                             </Form.Select>
                         </Form.Group>
                     </Form>

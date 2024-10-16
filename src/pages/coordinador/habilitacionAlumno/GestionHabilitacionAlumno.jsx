@@ -197,7 +197,7 @@ const GestionHabilitacionAlumno = () => {
 
           {/* Filtro de estado */}
           <Form.Group controlId="estadoFilter" className="w-50 ms-2">
-            <Form.Label>Estado del Alumno</Form.Label>
+            <Form.Label>Estado Actual</Form.Label>
             <Form.Select value={filtroEstado} onChange={handleFiltroEstadoChange}>
               <option value="todos">Todos</option>
               <option value="habilitado">Habilitado</option>

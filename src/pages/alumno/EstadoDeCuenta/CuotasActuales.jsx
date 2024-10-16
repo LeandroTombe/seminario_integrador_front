@@ -368,12 +368,19 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <p>El pago de las cuotas seleccionadas se realiza a través de un formulario externo. Por favor, complete y envíe el formulario para continuar con el proceso de pago.</p>
-                    <p>Tenga en cuenta que la confirmación del pago se hará únicamente después de verificar que el pago ha sido efectivamente procesado.</p>
-                    <p>El estado de las cuotas pagadas, quedarán en estado de "Informada" hasta que se confirme el pago correctamente.</p>
-                    <p>
+                    <p>Tenga en cuenta que la confirmación del pago se hará únicamente después de verificar que el pago ha sido efectivamente realizado.</p>
+                    <p style={{ textAlign: 'center' }}>
                         <span
-                            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', marginLeft: '5px' }} 
-                            onClick={() => handlePago()}>
+                            style={{ 
+                                color: 'blue', 
+                                textDecoration: 'underline',
+                                cursor: 'pointer', 
+                                fontSize: '24px', // Tamaño del texto
+                                display: 'inline-block', 
+                                marginTop: '10px' 
+                            }}
+                            onClick={() => handlePago()}
+                        >
                             Formulario de pago
                         </span>
                     </p>

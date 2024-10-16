@@ -10,7 +10,7 @@ const ListadoPagos = () => {
   const [fechaFin, setFechaFin] = useState('');
   const [filtroFecha, setFiltroFecha] = useState(''); // Nuevo estado para el tipo de filtro
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(8);
 
   useEffect(() => {
     const fetchPagos = async () => {
@@ -177,7 +177,7 @@ const ListadoPagos = () => {
             <Card.Body>
               <Card.Title>$ {totalRecaudadoMesActual}</Card.Title>
               <Card.Text className="text-secondary">
-                Total recaudado en el cuatrimestre
+                Total recaudado en el mes actual
               </Card.Text>
             </Card.Body>
           </Card>
@@ -187,7 +187,7 @@ const ListadoPagos = () => {
             <Card.Body>
               <Card.Title>$ {totalRecaudadoMesCuota}</Card.Title>
               <Card.Text className="text-secondary">
-                Total recaudado en el mes actual
+                Total recaudado del mes actual
               </Card.Text>
             </Card.Body>
           </Card>

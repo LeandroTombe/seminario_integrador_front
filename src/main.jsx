@@ -28,6 +28,7 @@ import Pagos from "./pages/coordinador/Pagos.jsx";
 import PagosPendientes from "./pages/coordinador/PagosPendientes.jsx";
 import HistorialImportaciones from "./pages/importaciones/HistorialImportaciones.jsx";
 import ImportarPago from "./pages/importaciones/ImportarPago.jsx";
+import CompromisoDePago from "./pages/coordinador/compromiso/CompromisoDePago.jsx";
 
 import Mensajes from "./pages/coordinador/Mensajes.jsx";
 import Reportes from "./pages/coordinador/Reportes.jsx";
@@ -70,7 +71,7 @@ const App = () => {
         <Route
           path="/alumno/mensajes"
           element={
-            <ProtectedRoute element={<BaseNotificacion />} roles={["Alumno"]} />
+            <ProtectedRoute element={<AlumnoMensajes />} roles={["Alumno"]} />
           }
         />
         <Route
@@ -125,6 +126,7 @@ const App = () => {
         />
         <Route path="/coordinador/mensajes" element={<Mensajes />} />
         <Route path="/coordinador/reportes" element={<Reportes />} />
+        <Route path="/coordinador/compromiso" element={<CompromisoDePago />} />
         <Route
           path="/coordinador/configuracion/compromiso/actual"
           element={<Compromiso />}

@@ -1,12 +1,9 @@
 import { useState,useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from "../SidebarCoordinador";
 import './Compromiso.css';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap'; // Importa los componentes de Bootstrap
-import Layout from '../../../Layout'
 
-function CargarCompromiso() {
+function CargarCompromiso({setActiveTab}) {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1; 
   const currentSemester = currentMonth <= 6 ? '1' : '2';
@@ -28,7 +25,6 @@ function CargarCompromiso() {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
   const [valoresExistentes, setValoresExistentes] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -56,13 +52,13 @@ function CargarCompromiso() {
     if (valoresExistentes) {
       // Redireccionar después de 5 segundos si los valores ya existen
       const timer = setTimeout(() => {
-        navigate('/coordinador/configuracion/compromiso/actual'); // Redirigir usando useNavigate
+        setActiveTab("actual"); // Redirigir usando useNavigate
       }, 5000);
 
       // Limpiar el temporizador si el componente se desmonta
       return () => clearTimeout(timer);
     }
-  }, [valoresExistentes, navigate]);
+  }, [valoresExistentes]);
 
 
   const handleChange = (e) => {
@@ -127,9 +123,7 @@ function CargarCompromiso() {
         console.log([...formDataToSend.entries()]);
         setSuccessMessage('Compromiso cargado exitosamente');
         setError(null);
-        navigate('/coordinador/configuracion/compromiso/actual', {
-          state: { successMessage: 'Compromiso cargado exitosamente' },
-        });
+        setActiveTab("actual");
       } catch (error) {
         setError(error.message);
         setSuccessMessage('');
@@ -138,13 +132,14 @@ function CargarCompromiso() {
   };
 
   const handleCancel = () => {
-    handleConfirm('¿Estás seguro de que deseas cancelar?', () => navigate('/coordinador/configuracion/compromiso/actual'));
+    handleConfirm('¿Estás seguro de que deseas cancelar?', () => {
+      // Aquí establecemos el tab activo en "actual" después de cancelar
+      setActiveTab("actual");
+    });
   };
 
   if (loading) return (
-    <Layout>
-      <h1>Nuevos Valores y Compromiso de Pago</h1>
-
+    <>
       <div style={{
         display: 'flex',
         justifyContent: 'center',
@@ -155,23 +150,21 @@ function CargarCompromiso() {
         Cargando...
 
       </div>
-    </Layout>)
+    </>)
 
   if (valoresExistentes) {
       return (
-      <Layout>
-        <h1>Nuevos Valores y Compromiso de Pago</h1>
+      <>
         <div className='containerConfig'>
           Ya hay valores cargados para el año {currentYear} y cuatrimestre {currentSemester}. Redirigiendo a los valores cargados en 5 segundos...
 
         </div>
-      </Layout>
+      </>
       )
 
   }
   return (
-    <Layout>
-        <h1>Nuevos Valores y Compromiso de Pago</h1>
+    <>
         <div className="containerConfig">
           <form onSubmit={handleSubmit}>
           <div className="row mb-3">
@@ -341,7 +334,7 @@ function CargarCompromiso() {
             </Button>
           </Modal.Footer>
         </Modal>
-    </Layout>
+    </>
   );
 }
 

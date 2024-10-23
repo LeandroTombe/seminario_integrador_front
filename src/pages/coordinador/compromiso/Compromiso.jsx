@@ -1,23 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import InfoCompromiso from "../../../components/InfoCompromiso";
-import Sidebar from "../SidebarCoordinador";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Badge from 'react-bootstrap/Badge';
+import CompromisoEditar from './CompromisoEditar'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import './Compromiso.css';
-import Layout from '../../../Layout'
 
-function Compromiso() {
+function Compromiso({ setActiveTab }) {
   const [data, setData] = useState([]);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [editando, setEditando] = useState(false); // Nuevo estado para alternar vistas
+  const [successMessage, setSuccessMessage] = useState(false); // Nuevo estado para alternar vistas
   const navigate = useNavigate();
-  const location = useLocation();
-  const successMessage = location.state?.successMessage || '';
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/compromisoActual/');
@@ -37,14 +36,11 @@ function Compromiso() {
     fetchData();
   }, []);
 
-  const handleEditarCompromiso = () => {
-    navigate('/coordinador/configuracion/compromiso/actual/editar', {
-      state: { compromiso: data[0] },
-    });
-  };
+  const handleEditarCompromiso = () => setEditando(true); // Cambia a modo edición
 
-  const handleCargarCompromiso = () => {
-    navigate('/coordinador/configuracion/compromiso/cargar')
+  const handleCancelarEdicion = (message) => {
+    setSuccessMessage(message); // Establecer el mensaje de éxito en el estado
+    setEditando(false); // O lo que necesites hacer para salir del modo de edición
   };
 
   const handleVisualizarPDF = () => {
@@ -56,38 +52,45 @@ function Compromiso() {
   };
 
   return (
-    <Layout>
-        <h1>Valores y Compromiso de Pago Actual</h1>
-        {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
-        <div className="containerConfig">
-          {data.length === 0 ? (
-            <>
+    <>
+      {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
+
+      <div className="containerConfig">
+        {editando ? (
+          <CompromisoEditar compromiso={data[0]} onCancel={handleCancelarEdicion} />
+        ) : data.length === 0 ? (
+          <>
               <p>No existe un compromiso de pago para el año y cuatrimestre actual.</p>
-              <div className="conteinerBotones">
-                <button className="btn btn-primary me-3" type="button" onClick={handleCargarCompromiso}>Cargar Compromiso</button>
-              </div>
-            </>
-          ) : (
-            <div className='conteinerInfo'>
-              <InfoCompromiso compromiso={data[0]}/>
-
-              {pdfUrl && (
-                <div className="mt-3">
-                  <button 
-                    className="btn btn-secondary" 
-                    onClick={handleVisualizarPDF}
+              <div className="containerBotones">
+                  <button
+                      className="btn btn-primary me-3"
+                      type="button"
+                      onClick={() => setActiveTab('nuevo')} // Cambia a la pestaña 'nuevo'
                   >
-                    Visualizar PDF
+                      Cargar Compromiso
                   </button>
-                </div>
-              )}
-
-              <div className="conteinerBotones">
-                <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>Modificar Valores</button>
               </div>
+          </>
+      ) : (
+          <div className="conteinerInfo">
+            <InfoCompromiso compromiso={data[0]} />
+
+            {pdfUrl && (
+              <div className="mt-3">
+                <button className="btn btn-secondary" onClick={handleVisualizarPDF}>
+                  Visualizar PDF
+                </button>
+              </div>
+            )}
+
+            <div className="conteinerBotones">
+              <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>
+                Modificar Valores
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
 
       {/* Modal para mostrar el PDF */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
@@ -112,7 +115,7 @@ function Compromiso() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Layout>
+    </>
   );
 }
 

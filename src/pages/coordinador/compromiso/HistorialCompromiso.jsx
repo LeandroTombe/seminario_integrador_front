@@ -76,9 +76,7 @@ function HistorialCompromiso() {
   };
 
   return (
-    <Layout>
-      <Sidebar />
-      <h1>Historial de Valores y Compromisos de Pago</h1>
+    <>
       <div className="containerConfig">
         <Form.Group controlId="sortOrder" style={{ maxWidth: '200px', marginBottom: '20px' }}>
           <Form.Label>Ordenar por</Form.Label>
@@ -171,7 +169,7 @@ function HistorialCompromiso() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Layout>
+    </>
   );
 }
 

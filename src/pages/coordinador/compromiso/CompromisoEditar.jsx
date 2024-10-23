@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from '../SidebarCoordinador';
 import './Compromiso.css';
 import { Modal, Button } from 'react-bootstrap';
-import Layout from '../../../Layout'
 
-function CompromisoEditar() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const compromiso = location.state?.compromiso;
+function CompromisoEditar({compromiso, onCancel}) {
 
   const [formData, setFormData] = useState({
     año: '',
@@ -106,22 +100,24 @@ function CompromisoEditar() {
             throw new Error('Error al actualizar el compromiso de pago');
           }
 
-          setSuccessMessage('Compromiso actualizado con éxito');
+          // Establecer mensaje de éxito y llamar a onCancel con el mensaje
+          const message = 'Compromiso actualizado con éxito';
+          setSuccessMessage(message);
           setError(null);
-          
-          navigate('/coordinador/configuracion/compromiso/actual', { state: { successMessage: 'Compromiso actualizado con éxito' } });
+          onCancel(message); // Llamar a onCancel pasando el mensaje
+
         } catch (error) {
           setError(error.message);
           setSuccessMessage('');
         }
       }
     );
-  };
+};
 
   const handleCancel = () => {
     handleConfirm(
       '¿Estás seguro de que deseas cancelar?',
-      () => navigate('/coordinador/configuracion/compromiso/actual')
+      () => onCancel() // Establecemos editando a false sin mensaje.
     );
   };
 
@@ -131,8 +127,8 @@ function CompromisoEditar() {
   };
 
   return (
-    <Layout>
-        <h1>Modificar Valores y Compromiso de Pago</h1>
+    <>
+        <h3>Editar Compromiso</h3>
         <div className="containerConfig">
         <form onSubmit={handleSubmit}>
             <div className="row mb-3">
@@ -313,7 +309,7 @@ function CompromisoEditar() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Layout>
+    </>
   );
 }
 

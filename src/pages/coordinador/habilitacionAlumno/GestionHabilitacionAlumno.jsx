@@ -216,7 +216,6 @@ const GestionHabilitacionAlumno = () => {
           <th>Estado Actual</th>
           <th>Ultimo Mes Pagado</th>
           <th>Cuotas Vencidas</th> {/* Nueva columna para las cuotas vencidas */}
-          <th>Cambiar Estado</th>
         </tr>
       </thead>
       <tbody>
@@ -250,24 +249,6 @@ const GestionHabilitacionAlumno = () => {
                   </ul>
                 ) : (
                   'No tiene cuotas vencidas'
-                )}
-              </td>
-              
-              <td className="text-center">
-                {item.pago_al_dia ? (
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => handleCambiarEstado(item.id, item.pago_al_dia)}
-                  >
-                    Inhabilitar
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-success"
-                    onClick={() => handleCambiarEstado(item.id, item.pago_al_dia)}
-                  >
-                    Habilitar
-                  </button>
                 )}
               </td>
             </tr>

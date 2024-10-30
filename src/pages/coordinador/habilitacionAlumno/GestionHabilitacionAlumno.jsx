@@ -214,7 +214,7 @@ const GestionHabilitacionAlumno = () => {
           <th>Nombre</th>
           <th>Correo</th>
           <th>Estado Actual</th>
-          <th>Ultimo Mes Pagado</th>
+          <th>Último Mes Pagado</th>
           <th>Cuotas Vencidas</th> {/* Nueva columna para las cuotas vencidas */}
         </tr>
       </thead>

@@ -77,7 +77,7 @@ const Prorroga = () => {
                                         onClick={() => {
                                             handleShowModal(prorroga.analitico);
                                         }}>
-                                        Ver PDF
+                                        Ver Documento
                                     </span>
                                 </td>
                             </tr>
@@ -94,7 +94,7 @@ const Prorroga = () => {
 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>{selectedPdf ? "Visualización del PDF" : "Solicitar Nueva Prórroga"}</Modal.Title>
+                    <Modal.Title>{selectedPdf ? "Certificado Analítico" : "Solicitar Nueva Prórroga"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {selectedPdf ? (

@@ -9,6 +9,8 @@ const GestionProrroga = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [estadoFiltro, setEstadoFiltro] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [showModalPDF, setShowModalPDF] = useState(false);
+    const [selectedPdf, setSelectedPdf] = useState(''); // Almacena la URL del PDF seleccionado
     const [selectedProrroga, setSelectedProrroga] = useState(null);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -85,6 +87,11 @@ const GestionProrroga = () => {
         filtrarProrrogas();
     }, [searchTerm, estadoFiltro, prorrogas]);
 
+    const handleShowModalPDF = (url) => {
+        setSelectedPdf(url)
+        setShowModalPDF(true);
+    }
+
     const handleShowModal = (prorroga) => {
         setSelectedProrroga(prorroga);
         setShowModal(true);
@@ -92,7 +99,9 @@ const GestionProrroga = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
+        setShowModalPDF(false);
         setSelectedProrroga(null);
+        setSelectedPdf(null)
     };
 
     const handlePageChange = (pageNumber) => {
@@ -182,7 +191,13 @@ const GestionProrroga = () => {
                                             Evaluar Prórroga
                                         </Button>
                                     ) : (
-                                        <p>Sin acciones disponibles</p>
+                                        <span
+                                            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                                            onClick={() => {
+                                                handleShowModalPDF(prorroga.analitico);
+                                            }}>
+                                            Ver Analítico
+                                        </span>
                                     )}
                                 </td>
                             </tr>
@@ -200,6 +215,7 @@ const GestionProrroga = () => {
                     {selectedProrroga && (
                         <>
                             <h4><b>Fecha de Solicitud:</b> {new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</h4>
+                            <h4><b>Materia:</b> {selectedProrroga.materia.nombre}</h4>
                             <h4><b>Motivo:</b></h4>
                             <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.motivo}</p>
                             <h4><b>Certificado Analítico:</b></h4>
@@ -225,6 +241,19 @@ const GestionProrroga = () => {
                             </div>
                         </>
                     )}
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={showModalPDF} onHide={handleCloseModal} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Certificado Analítico</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                        <iframe
+                            src={selectedPdf}
+                            title="PDF Analítico"
+                            style={{ width: '100%', height: '500px', border: 'none' }}
+                        />
                 </Modal.Body>
             </Modal>
 

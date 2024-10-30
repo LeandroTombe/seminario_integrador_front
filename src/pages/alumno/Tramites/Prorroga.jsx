@@ -50,7 +50,7 @@ const Prorroga = () => {
     return (
         <>
             <h2>Historial de Prórrogas de Regularización</h2>
-
+            {console.log(prorrogas)}
             {prorrogas.length === 0 ? (
                 <p>No existen solicitudes de prórrogas anteriores</p>
             ) : (
@@ -68,7 +68,7 @@ const Prorroga = () => {
                         {prorrogas.map((prorroga) => (
                             <tr key={prorroga.id}>
                                 <td>{prorroga.materia.nombre}</td>
-                                <td>{prorroga.motivo}</td>
+                                <td style={{ whiteSpace: 'normal', wordWrap: 'break-word', maxWidth: '200px' }}>{prorroga.motivo}</td>
                                 <td>{new Date(prorroga.fecha_solicitud).toLocaleDateString()}</td>
                                 <td>{prorroga.estado}</td>
                                 <td>
@@ -89,7 +89,7 @@ const Prorroga = () => {
             <Button variant="primary" onClick={() => setShowModal(true)}>
                 Solicitar Nueva Prórroga
             </Button>
-
+            <br /><br />
             {message && <Alert variant="success">{message}</Alert>}
 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">

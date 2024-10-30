@@ -89,7 +89,7 @@ function HistorialCompromiso() {
         {loading ? (
           <p>Cargando...</p>
         ) : error ? (
-          <p>{error}</p>
+          <p>No existen compromisos de pago</p>
         ) : (
           <>
             <Table striped bordered hover>

@@ -17,6 +17,7 @@ import AlumnoMensajes from "./pages/alumno/AlumnoMensajes.jsx";
 import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
 import AlumnoPago from "./pages/alumno/AlumnoPago.jsx";
 import BaseNotificacion from "./pages/notificacion/BaseNotificacion.jsx";
+import Prorroga from "./pages/alumno/Tramites/Prorroga.jsx"
 
 /* Paginas de coordinador */
 import Inicio from "./pages/coordinador/Inicio.jsx";
@@ -84,6 +85,12 @@ const App = () => {
           path="/alumno/firmarCompromiso"
           element={
             <ProtectedRoute element={<FirmarCompromiso />} roles={["Alumno"]} />
+          }
+        />
+        <Route
+          path="/alumno/tramites/prorroga"
+          element={
+            <ProtectedRoute element={<Prorroga />} roles={["Alumno"]} />
           }
         />
         <Route

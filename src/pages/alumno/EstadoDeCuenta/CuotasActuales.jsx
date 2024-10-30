@@ -63,6 +63,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
         if (!alumno) {
             const fechaHoy = tratarfechaForm();
             const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLSd2MWAkLz3BYEFIzFJDy9up1lGKuNACe1oOKLZ4p7Jhs-osVA/viewform?usp=pp_url&entry.1981210019=${alumnos.apellido},+${alumnos.nombre}&entry.246393120=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.528240021=${alumnos.dni}&entry.1687154301=${fechaHoy}&entry.2124083799=${mesesSeleccionados}`;
+            // const googleFormUrl = `https://docs.google.com/forms/d/e/1FAIpQLScHqqDBeF2j0e9j9ecnv0lWvgKF9-G-V0CHaenG6QXgLI3V2A/viewform?usp=pp_url&entry.551280810=${alumnos.apellido},+${alumnos.nombre}&entry.1533183852=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.123577009=${alumnos.dni}&entry.1941417406=${fechaHoy}&entry.964040428=${mesesSeleccionados}`;
             window.open(googleFormUrl, '_blank');
         }
     };
@@ -343,6 +344,8 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                 <Form.Control
                                     type="number"
                                     value={montoAPagar}
+                                    readOnly
+                                    style={{ maxWidth: '150px', backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                                     onChange={(e) => {
                                         const value = Number(e.target.value);
                                         // Solo permitir valores que sean menores o iguales al montoAPagar
@@ -350,8 +353,6 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                             setMontoAPagar(value);
                                         }
                                     }}
-                                    
-                                    style={{ maxWidth: '150px' }}
                                 />
                                 <Button className="ms-2" onClick={() => {setShowModal(true)}}>
                                     Informar Pago

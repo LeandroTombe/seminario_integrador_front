@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import Layout from '../../LayoutAlumno';
 import Prorroga from './Tramites/Prorroga';
+import BajaProvisoria from './Tramites/BajaProvisoria'
 
 function AlumnoTramites() {
 
@@ -13,7 +14,7 @@ function AlumnoTramites() {
                       <Prorroga />
                   </Tab>
                   <Tab eventKey="baja" title="Baja Provisoria" mountOnEnter unmountOnExit>
-                      <Prorroga />
+                      <BajaProvisoria />
                   </Tab>
               </Tabs>
           </Layout>

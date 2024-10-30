@@ -122,7 +122,8 @@ const NuevaProrroga = ({ onSuccess }) => {
                 <Button variant="primary" type="submit">
                 Solicitar Prórroga
                 </Button>
-
+                
+                <br /><br />
                 {message && <Alert variant="success">{message}</Alert>}
                 {error && <Alert variant="danger">{error}</Alert>}
 

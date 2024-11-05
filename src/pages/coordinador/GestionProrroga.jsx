@@ -10,7 +10,8 @@ const GestionProrroga = () => {
     const [estadoFiltro, setEstadoFiltro] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showModalPDF, setShowModalPDF] = useState(false);
-    const [selectedPdf, setSelectedPdf] = useState(''); // Almacena la URL del PDF seleccionado
+    const [selectedPdf, setSelectedPdf] = useState('');
+    const [comentarios, setComentarios] = useState('');
     const [selectedProrroga, setSelectedProrroga] = useState(null);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -19,27 +20,27 @@ const GestionProrroga = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6); // Cambia este valor según lo que desees
 
-    useEffect(() => {
-        const fetchProrrogas = async () => {
-            try {
-                const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listado-prorrogas/');
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error('Error al obtener las prorrogas');
-                }
-                setProrrogas(data);
-                setFilteredProrrogas(data);
-            } catch (error) {
-                console.error('Error:', error);
+    const fetchProrrogas = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listado-prorrogas/');
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error('Error al obtener las prorrogas');
             }
-        };
+            setProrrogas(data);
+            setFilteredProrrogas(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchProrrogas();
     }, []);
 
-    const actualizarEstadoProrroga = async (id, nuevoEstado) => {
-        // Preguntar confirmación al usuario
+    const actualizarEstadoProrroga = async (id, nuevoEstado, comentarios) => {
         const confirm = window.confirm(`¿Está seguro que desea marcar la prórroga como "${nuevoEstado}"?`);
-        if (!confirm) return; // Si no confirma, salimos de la función
+        if (!confirm) return;
 
         try {
             const response = await fetch(
@@ -50,16 +51,18 @@ const GestionProrroga = () => {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${authTokens.refresh}`,
                     },
-                    body: JSON.stringify({ estado: nuevoEstado }),
+                    body: JSON.stringify({ 
+                        estado: nuevoEstado,
+                        comentarios: comentarios
+                    }),
                 }
             );
             if (!response.ok) throw new Error('No se pudo actualizar el estado.');
 
             setMessage(`Prórroga ${nuevoEstado.toLowerCase()} exitosamente.`);
-            setProrrogas((prev) =>
-                prev.map((p) => (p.id === id ? { ...p, estado: nuevoEstado } : p))
-            );
-            setShowModal(false);
+            setShowModal(false)
+
+            await fetchProrrogas();
         } catch (error) {
             console.error('Error:', error);
             setError('No se pudo actualizar la prórroga.');
@@ -87,8 +90,9 @@ const GestionProrroga = () => {
         filtrarProrrogas();
     }, [searchTerm, estadoFiltro, prorrogas]);
 
-    const handleShowModalPDF = (url) => {
-        setSelectedPdf(url)
+    const handleShowModalPDF = (prorroga) => {
+        setSelectedProrroga(prorroga);
+        setSelectedPdf(prorroga.analitico)
         setShowModalPDF(true);
     }
 
@@ -102,6 +106,7 @@ const GestionProrroga = () => {
         setShowModalPDF(false);
         setSelectedProrroga(null);
         setSelectedPdf(null)
+        setComentarios(null)
     };
 
     const handlePageChange = (pageNumber) => {
@@ -194,9 +199,9 @@ const GestionProrroga = () => {
                                         <span
                                             style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
                                             onClick={() => {
-                                                handleShowModalPDF(prorroga.analitico);
+                                                handleShowModalPDF(prorroga);
                                             }}>
-                                            Ver Analítico
+                                            Ver Detalle
                                         </span>
                                     )}
                                 </td>
@@ -214,31 +219,61 @@ const GestionProrroga = () => {
                 <Modal.Body>
                     {selectedProrroga && (
                         <>
-                            <h4><b>Fecha de Solicitud:</b> {new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</h4>
-                            <h4><b>Materia:</b> {selectedProrroga.materia.nombre}</h4>
-                            <h4><b>Motivo:</b></h4>
-                            <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.motivo}</p>
-                            <h4><b>Certificado Analítico:</b></h4>
-                            <iframe
-                                src={selectedProrroga.analitico}
-                                title="PDF Analítico"
-                                style={{ width: '100%', height: '400px', border: 'none' }}
-                            />
-                            <div className="d-flex justify-content-end mt-4">
-                                <Button
-                                    variant="success"
-                                    className="me-2"
-                                    onClick={() => actualizarEstadoProrroga(selectedProrroga.id, 'Aprobada')}
-                                >
-                                    Aprobar
-                                </Button>
-                                <Button
-                                    variant="danger"
-                                    onClick={() => actualizarEstadoProrroga(selectedProrroga.id, 'Rechazada')}
-                                >
-                                    Rechazar
-                                </Button>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Fecha de Solicitud</h6>
+                                        <p>{new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</p>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Materia</h6>
+                                        <p>{selectedProrroga.materia.nombre}</p>
+                                    </div>
+                                    <div className="col-12 mb-3">
+                                        <h6 className="fw-bold">Motivo</h6>
+                                        <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.motivo}</p>
+                                    </div>
+                                    <div className="col-12 mb-3">
+                                        <h6 className="fw-bold">Certificado Analítico</h6>
+                                        <iframe
+                                            src={selectedProrroga.analitico}
+                                            title="PDF Analítico"
+                                            style={{ width: '100%', height: '400px', border: '1px solid #ddd', borderRadius: '5px' }}
+                                        />
+                                    </div>
+                                </div>
                             </div>
+                            <Form.Group className="mt-3">
+                                <Form.Label>Comentarios</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    onChange={(e) => setComentarios(e.target.value)}
+                                    placeholder="Ingrese un comentario de evaluación"
+                                    required
+                                />
+                                <div className="d-flex justify-content-end mt-4">
+                                    <Button
+                                        variant="success"
+                                        className="me-2"
+                                        onClick={() => {actualizarEstadoProrroga(selectedProrroga.id, 'Aprobada', comentarios);}}
+                                    >
+                                        Aprobar
+                                    </Button>
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => {
+                                            if (!comentarios) {
+                                                alert("Debe ingresar un comentario antes de rechazar.");
+                                                return;
+                                            }
+                                            actualizarEstadoProrroga(selectedProrroga.id, 'Rechazada', comentarios);
+                                        }}
+                                    >
+                                        Rechazar
+                                    </Button>
+                                </div>
+                            </Form.Group>
                         </>
                     )}
                 </Modal.Body>
@@ -246,15 +281,55 @@ const GestionProrroga = () => {
 
             <Modal show={showModalPDF} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Certificado Analítico</Modal.Title>
+                    <Modal.Title>Detalles de la Solicitud de Prórroga</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                        <iframe
-                            src={selectedPdf}
-                            title="PDF Analítico"
-                            style={{ width: '100%', height: '500px', border: 'none' }}
-                        />
+                    {selectedProrroga && (
+                        <>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Fecha de Solicitud</h6>
+                                        <p>{new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</p>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Motivo</h6>
+                                        <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.motivo}</p>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Materia</h6>
+                                        <p>{selectedProrroga.materia.nombre}</p>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Fecha de Evaluación</h6>
+                                        <p>{new Date(selectedProrroga.fecha_evaluacion).toLocaleDateString()}</p>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Comentarios de Evaluación</h6>
+                                        <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.comentarios}</p>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <h6 className="fw-bold">Estado de solicitud</h6>
+                                        <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.estado}</p>
+                                    </div>
+                                    <div className="col-12 mb-3">
+                                        <h6 className="fw-bold">Certificado Analítico</h6>
+                                        <iframe
+                                            src={selectedPdf}
+                                            title="PDF Analítico"
+                                            style={{ width: '100%', height: '400px', border: '1px solid #ddd', borderRadius: '5px' }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
             </Modal>
 
             {message && <Alert variant="success">{message}</Alert>}

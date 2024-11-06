@@ -41,34 +41,38 @@ const HistorialPagos = ({ authTokens, alumno }) => {
 
     return(
         <>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                    <th>Nro Recibo</th>
-                    <th>Monto Pagado</th>
-                    <th>Forma de Pago</th>
-                    <th>Concepto de Pago</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {pagos.map(pago => (
-                    <tr key={pago.id}>
-                        <td>{pago.numero_recibo}</td>
-                        <td>{pago.monto_confirmado}</td>
-                        <td>{pago.forma_pago}</td>
-                        <td>
-                            <>
-                                {pago.detalles.map((detalle) => (
-                                    <li key={detalle.id}>
-                                        Cuota {detalle.cuota.nroCuota}: ${detalle.monto_cuota}
-                                    </li>
-                                ))}
-                            </>
-                        </td>
-                    </tr>
-                    ))}
-                </tbody>
-            </Table>
+            { pagos.length === 0 ? (
+                <p>No existen pagos anteriores</p>
+            ) : (
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                        <th>Nro Recibo</th>
+                        <th>Monto Pagado</th>
+                        <th>Forma de Pago</th>
+                        <th>Concepto de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {pagos.map(pago => (
+                        <tr key={pago.id}>
+                            <td>{pago.numero_recibo}</td>
+                            <td>{pago.monto_confirmado}</td>
+                            <td>{pago.forma_pago}</td>
+                            <td>
+                                <>
+                                    {pago.detalles.map((detalle) => (
+                                        <li key={detalle.id}>
+                                            Cuota {detalle.cuota.nroCuota}: ${detalle.monto_cuota}
+                                        </li>
+                                    ))}
+                                </>
+                            </td>
+                        </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            )}
         </>
     )
 }

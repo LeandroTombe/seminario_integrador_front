@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, Table, Alert } from 'react-bootstrap';
+import { Button, Modal, Table, Alert, Row, Col } from 'react-bootstrap';
 import { useAuth } from '../../../context/AuthContext';
 import NuevaProrroga from './NuevaProrroga';
 
@@ -53,7 +53,6 @@ const Prorroga = () => {
     return (
         <>
             <h2>Historial de Prórrogas de Regularización</h2>
-            {console.log(prorrogas)}
             {prorrogas.length === 0 ? (
                 <p>No existen solicitudes de prórrogas anteriores</p>
             ) : (
@@ -105,44 +104,33 @@ const Prorroga = () => {
 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>{selectedPdf ? "Certificado Analítico" : "Solicitar Nueva Prórroga"}</Modal.Title>
+                    <Modal.Title>{selectedPdf ? "Detalle de Prórroga" : "Solicitar Nueva Prórroga"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {selectedProrroga ? (
-                        <>
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-md-6 mb-3">
-                                        <h6 className="fw-bold">Fecha de Solicitud</h6>
-                                        <p>{new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</p>
-                                    </div>
-                                    <div className="col-md-6 mb-3">
-                                        <h6 className="fw-bold">Motivo</h6>
-                                        <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.motivo}</p>
-                                    </div>
-                                    <div className="col-md-6 mb-3">
-                                        <h6 className="fw-bold">Materia</h6>
-                                        <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.materia.nombre}</p>
-                                    </div>
+                            <div className="p-3 mb-4">
+                                    <Row className="mb-3">
+                                        <Col md={6}><strong>Fecha de Solicitud:</strong> {new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</Col>
+                                        <Col md={6}><strong>Estado:</strong> {selectedProrroga.estado}</Col>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Col md={6}><strong>Materia:</strong> {selectedProrroga.materia.nombre}</Col>
+                                        <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Motivo:</strong> {selectedProrroga.motivo}</Col>
+                                    </Row>
+
+                                    <Row>
                                     {selectedProrroga.fecha_evaluacion && (
-                                        <div className="col-md-6 mb-3">
-                                            <h6 className="fw-bold">Fecha de Evaluación</h6>
-                                            <p>{new Date(selectedProrroga.fecha_evaluacion).toLocaleDateString()}</p>
-                                        </div>
+                                        <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Fecha de Evaluacion:</strong> {new Date(selectedProrroga.fecha_evaluacion).toLocaleDateString()}</Col>
+
                                     )}
 
                                     {selectedProrroga.comentarios && (
-                                        <div className="col-md-6 mb-3">
-                                            <h6 className="fw-bold">Comentarios de Evaluación</h6>
-                                            <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.comentarios}</p>
-                                        </div>
+                                        <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Comentarios de Evaluación:</strong> {selectedProrroga.comentarios}</Col>
                                     )}
-
-                                    <div className="col-md-6 mb-3">
-                                        <h6 className="fw-bold">Estado de solicitud</h6>
-                                        <p style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>{selectedProrroga.estado}</p>
-                                    </div>
+                                    </Row>
                                     <div className="col-12 mb-3">
+                                        <br />
                                         <h6 className="fw-bold">Certificado Analítico</h6>
                                         <iframe
                                             src={selectedPdf}
@@ -150,9 +138,7 @@ const Prorroga = () => {
                                             style={{ width: '100%', height: '400px', border: '1px solid #ddd', borderRadius: '5px' }}
                                         />
                                     </div>
-                                </div>
                             </div>
-                        </>
                         ) : (
                         <NuevaProrroga onSuccess={handleSuccess} />
                     )}

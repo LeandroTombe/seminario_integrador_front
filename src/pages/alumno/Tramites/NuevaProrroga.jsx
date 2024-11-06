@@ -81,59 +81,67 @@ const NuevaProrroga = ({ onSuccess }) => {
     return (
         <>
             {alumno && (
-                <div className="mb-4">
-                    <p><strong>Nombre:</strong> {alumno.apellido}, {alumno.nombre}</p>
-                    <p><strong>DNI:</strong> {alumno.dni}</p>
-                    <p><strong>Legajo:</strong> {alumno.legajo}</p>
-                    <p><strong>Email:</strong> {alumno.email}</p>
+                <div className="p-3 mb-4">
+                    <h5 className="mb-3">Información del Alumno</h5>
+                    
+                    <Row className="mb-2">
+                        <Col md={6}><strong>Nombre:</strong> {alumno.apellido}, {alumno.nombre}</Col>
+                        <Col md={6}><strong>DNI:</strong> {alumno.dni}</Col>
+                    </Row>
+                    
+                    <Row className="mb-2">
+                        <Col md={6}><strong>Legajo:</strong> {alumno.legajo}</Col>
+                        <Col md={6}><strong>Email:</strong> {alumno.email}</Col>
+                    </Row>
+        
+                    <hr />
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Materia</Form.Label>
+                            <Form.Select
+                                value={selectedMateria}
+                                onChange={(e) => setSelectedMateria(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccione una materia</option>
+                                {materias.map((materia) => (
+                                    <option key={materia.codigo_materia} value={materia.codigo_materia}>
+                                        {materia.nombre}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Certificado Analítico</Form.Label>
+                            <Form.Control
+                                type="file"
+                                accept=".pdf"
+                                onChange={handleFileChange}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Motivo (opcional)</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={motivo}
+                                onChange={(e) => setMotivo(e.target.value)}
+                            />
+                        </Form.Group>
+
+                        <Button variant="primary" type="submit">
+                            Solicitar Prórroga
+                        </Button>
+
+                        <br /><br />
+                        {message && <Alert variant="success">{message}</Alert>}
+                        {error && <Alert variant="danger">{error}</Alert>}
+                    </Form>
                 </div>
             )}
-
-            <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label>Materia</Form.Label>
-                    <Form.Select
-                        value={selectedMateria}
-                        onChange={(e) => setSelectedMateria(e.target.value)}
-                        required
-                    >
-                        <option value="">Seleccione una materia</option>
-                        {materias.map((materia) => (
-                            <option key={materia.codigo_materia} value={materia.codigo_materia}>
-                                {materia.nombre}
-                            </option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                    <Form.Label>Certificado Analítico</Form.Label>
-                    <Form.Control
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange}
-                        required
-                    />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                    <Form.Label>Motivo (opcional)</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        rows={3}
-                        value={motivo}
-                        onChange={(e) => setMotivo(e.target.value)}
-                    />
-                </Form.Group>
-
-                <Button variant="primary" type="submit">
-                    Solicitar Prórroga
-                </Button>
-
-                <br /><br />
-                {message && <Alert variant="success">{message}</Alert>}
-                {error && <Alert variant="danger">{error}</Alert>}
-            </Form>
         </>
     );
 };

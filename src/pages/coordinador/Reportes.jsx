@@ -5,6 +5,7 @@ import AlumnosCuatrimestre from './AlumnosCuatrimestre';
 import ListadoPagos from './ListadoPagos';
 import GestionHabilitacionAlumno from "./habilitacionAlumno/GestionHabilitacionAlumno";
 import GestionProrroga from "./GestionProrroga"
+import GestionBajaProvisoria from "./GestionBajaProvisoria"
 
 function Reportes() {
     return (
@@ -22,6 +23,9 @@ function Reportes() {
                 </Tab>
                 <Tab eventKey="reporte4" title="Prórrogas de Regularización" mountOnEnter unmountOnExit>
                     <GestionProrroga />
+                </Tab>
+                <Tab eventKey="reporte5" title="Bajas Provisorias" mountOnEnter unmountOnExit>
+                    <GestionBajaProvisoria/>
                 </Tab>
             </Tabs>
         </Layout>

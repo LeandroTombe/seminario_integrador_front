@@ -22,13 +22,13 @@ const EstadoDeCuenta = ({alumno}) => {
         <>
             <h2>Estado de cuenta al {obtenerFechaActual()}</h2>
             <Tabs defaultActiveKey="actuales" id="estado-de-cuenta-tabs" className="mb-3">
-                <Tab eventKey="actuales" title="Cuotas del Cuatrimestre Actual">
+                <Tab eventKey="actuales" title="Cuotas del Cuatrimestre Actual" mountOnEnter unmountOnExit>
                     <CuotasActuales authTokens={authTokens} alumno={alumno}/>
                 </Tab>
-                <Tab eventKey="pagadas" title="Historial de Cuotas">
+                <Tab eventKey="pagadas" title="Historial de Cuotas" mountOnEnter unmountOnExit>
                     <HistorialCuotas authTokens={authTokens} alumno={alumno}/>
                 </Tab>
-                <Tab eventKey="pagos" title="Historial de Pagos">
+                <Tab eventKey="pagos" title="Historial de Pagos" mountOnEnter unmountOnExit>
                     <HistorialPagos authTokens={authTokens} alumno={alumno}/>
                 </Tab>
             </Tabs>

@@ -13,7 +13,7 @@ function AlumnoTramites() {
                   <Tab eventKey="prorroga" title="Solicitud de Prórroga de Regularización" mountOnEnter unmountOnExit>
                       <Prorroga />
                   </Tab>
-                  <Tab eventKey="baja" title="Baja Provisoria" mountOnEnter unmountOnExit>
+                  <Tab eventKey="baja" title="Solicitud de Baja Provisoria" mountOnEnter unmountOnExit>
                       <BajaProvisoria />
                   </Tab>
               </Tabs>

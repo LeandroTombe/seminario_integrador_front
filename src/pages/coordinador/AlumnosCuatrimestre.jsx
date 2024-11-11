@@ -62,9 +62,8 @@ const AlumnosCuatrimestre = () => {
   
     const totalPages = Math.ceil(filteredFirmantes.length / itemsPerPage);
   
-    const handlePageChange = (pageNumber) => {
-      setCurrentPage(pageNumber);
-    };
+    // Cambiar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Función que se ejecuta al hacer clic en una fila
     const handleRowClick = (firmante) => {
@@ -208,13 +207,26 @@ const AlumnosCuatrimestre = () => {
                     //totales={totales}
                 />
             </div>
-            <Pagination>
-              {[...Array(totalPages).keys()].map((number) => (
-                <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
-                  {number + 1}
-                </Pagination.Item>
-              ))}
-            </Pagination>
+                    {/* Componente de paginación de React-Bootstrap */}
+                    <Pagination className="pagination-container">
+                        <Pagination.Prev
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        />
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={index + 1 === currentPage}
+                                onClick={() => paginate(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                        <Pagination.Next
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        />
+                    </Pagination>
         </>
     );
 };

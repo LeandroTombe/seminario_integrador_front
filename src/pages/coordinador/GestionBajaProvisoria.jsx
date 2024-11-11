@@ -40,7 +40,7 @@ const GestionBajaProvisoria = () => {
     }, []);
 
     const actualizarEstadoBaja = async (id, nuevoEstado, comentarios) => {
-        const confirm = window.confirm(`¿Está seguro que desea marcar la prórroga como "${nuevoEstado}"?`);
+        const confirm = window.confirm(`¿Está seguro que desea marcar la baja como "${nuevoEstado}"?`);
         if (!confirm) return;
 
         try {
@@ -110,9 +110,8 @@ const GestionBajaProvisoria = () => {
         setComentarios(null)
     };
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
+    // Cambiar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Función para contar las bajas pendientes
     const contarBajasPendientes = () => {
@@ -194,7 +193,7 @@ const GestionBajaProvisoria = () => {
                                             variant="primary"
                                             onClick={() => handleShowModal(baja)}
                                         >
-                                            Evaluar Prórroga
+                                            Evaluar Baja
                                         </Button>
                                     ) : (
                                         <span
@@ -310,14 +309,26 @@ const GestionBajaProvisoria = () => {
             {message && <Alert variant="success">{message}</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
 
-            {/* Paginación */}
-            <Pagination>
-              {[...Array(totalPages).keys()].map((page) => (
-                <Pagination.Item key={page + 1} active={page + 1 === currentPage} onClick={() => handlePageChange(page + 1)}>
-                  {page + 1}
-                </Pagination.Item>
-              ))}
-            </Pagination>
+                    {/* Componente de paginación de React-Bootstrap */}
+                    <Pagination className="pagination-container">
+                        <Pagination.Prev
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        />
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={index + 1 === currentPage}
+                                onClick={() => paginate(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                        <Pagination.Next
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        />
+                    </Pagination>
         </>
     );
 };

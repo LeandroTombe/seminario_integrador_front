@@ -1,0 +1,101 @@
+.notifications-container {
+    width: 100%;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification-list, .notification-detail {
+    padding: 16px;
+}
+
+.notification-item {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    flex-direction: column; /* Coloca título y mensaje en columna */
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+    justify-content: space-between;
+}
+
+.notification-item:hover {
+    background: #f9f9f9; /* Fondo más claro en hover */
+    box-shadow: 0 4px 8px rgba(27, 84, 207, 0.822); /* Agrega sombra al hacer hover */
+    border-left: 4px solid #007bff; /* Borde azul al pasar el ratón */
+}
+
+.notification-item.unread {
+    font-weight: bold;
+    background-color: #fffaf0;
+    border-left: 4px solid transparent; /* El borde izquierdo por defecto es transparente */
+}
+
+.notification-item.read {
+    color: #777;
+    background-color: #f8f8f8;
+    border-left: 4px solid transparent; /* Mantener el borde transparente cuando está leído */
+}
+
+.notification-item h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #000000;
+}
+
+.notification-item p {
+    margin: 4px 0 0; /* Añade margen superior para separarlo del título */
+    color: #555;
+    font-size: 14px;
+}
+
+.notification-item .status {
+    font-size: 12px;
+    padding: 2px 6px;
+    background: #007bff;
+    color: white;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.notification-detail h3 {
+    font-size: 26px;
+    color: #000000;
+}
+
+.notification-detail p {
+    font-size: 16px;
+    color: #444;
+    margin-top: 10px;
+}
+
+.notification-detail .status {
+    font-size: 14px;
+    color: #007bff;
+    margin-top: 10px;
+    display: block;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-container .page-item {
+    cursor: pointer;
+}

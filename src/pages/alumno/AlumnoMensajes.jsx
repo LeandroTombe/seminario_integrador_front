@@ -7,7 +7,7 @@ function AlumnoMensajes() {
 
     return (
       <Layout>
-       <h1>Mensajes</h1>
+       <h1>Notificaciones</h1>
        <BaseNotificacion/>
       </Layout>
     )

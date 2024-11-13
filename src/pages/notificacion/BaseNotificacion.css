@@ -30,7 +30,7 @@
 
 .notification-item.unread {
     font-weight: bold;
-    background-color: #fffaf0;
+    background-color: #b3bdf759;
     border-left: 4px solid transparent; /* El borde izquierdo por defecto es transparente */
 }
 

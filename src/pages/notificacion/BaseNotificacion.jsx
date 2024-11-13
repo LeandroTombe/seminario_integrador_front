@@ -87,9 +87,6 @@ const BaseNotificacion = () => {
                                         : notif.mensaje}
                                 </p>
                                 <span>{new Date(notif.fecha).toLocaleDateString()}, {new Date(notif.fecha).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                { !notif.visto && (
-                                  <span className="status">{!notif.visto && 'Nueva'}</span>
-                                )}
                             </div>
                         ))
                     )}

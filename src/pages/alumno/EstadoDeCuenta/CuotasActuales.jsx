@@ -287,8 +287,8 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                 <th>Cuota</th>
                                 <th>Año</th>
                                 <th>Importe</th>
-                                <th>Primer vencimiento</th>
-                                <th>Segundo vencimiento</th>
+                                <th>Primer Vencimiento</th>
+                                <th>Segundo Vencimiento</th>
                                 <th>Mora</th>
                                 <th>Total</th>
                                 <th>Importe Informado</th>
@@ -314,13 +314,13 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                         : ''}>
                                         <td>{cuota.nroCuota}</td>
                                         <td>{cuota.año}</td>
-                                        <td>$ {cuota.importe}</td>
+                                        <td> {cuota.importe}</td>
                                         <td>{formatDate(cuota.fechaPrimerVencimiento)}</td>
                                         <td>{formatDate(cuota.fechaSegundoVencimiento)}</td>
-                                        <td>$ {(parseFloat(cuota.moraSegundoVencimiento) + parseFloat(cuota.moraPrimerVencimiento)).toFixed(2)}</td>
-                                        <td>$ {cuota.total}</td>
-                                        <td>$ {cuota.importeInformado}</td>
-                                        <td>$ {cuota.importePagado}</td>
+                                        <td> {(parseFloat(cuota.moraSegundoVencimiento) + parseFloat(cuota.moraPrimerVencimiento)).toFixed(2)}</td>
+                                        <td> {cuota.total}</td>
+                                        <td> {cuota.importeInformado}</td>
+                                        <td> {cuota.importePagado}</td>
                                         <td>{estado}</td>
                                         {(!alumno) && (
                                             <td className="text-center">
@@ -380,7 +380,8 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                                 display: 'inline-block', 
                                 marginTop: '10px' 
                             }}
-                            onClick={() => handlePago()}
+                            onClick={() => manejoForm()}
+                            //onClick={() => handlePago()}
                         >
                             Formulario de pago
                         </span>

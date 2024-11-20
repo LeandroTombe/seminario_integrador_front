@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Table, Alert, Form, Row, Col, Pagination, Card } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
+import EstadoDeCuenta from '../alumno/EstadoDeCuenta';
 
-const GestionProrroga = () => {
+const GestionBajaProvisoria = () => {
     const { authTokens } = useAuth();
-    const [prorrogas, setProrrogas] = useState([]);
-    const [filteredProrrogas, setFilteredProrrogas] = useState([]);
+    const [bajas, setbajas] = useState([]);
+    const [filteredBajas, setFilteredBajas] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [estadoFiltro, setEstadoFiltro] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showModalPDF, setShowModalPDF] = useState(false);
     const [selectedPdf, setSelectedPdf] = useState('');
     const [comentarios, setComentarios] = useState('');
-    const [selectedProrroga, setSelectedProrroga] = useState(null);
+    const [selectedBaja, setSelectedBaja] = useState(null);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
@@ -20,31 +21,31 @@ const GestionProrroga = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6); // Cambia este valor según lo que desees
 
-    const fetchProrrogas = async () => {
+    const fetchBajas = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listado-prorrogas/');
+            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/listado-bajas/');
             const data = await response.json();
             if (!response.ok) {
-                throw new Error('Error al obtener las prorrogas');
+                throw new Error('Error al obtener las bajas');
             }
-            setProrrogas(data);
-            setFilteredProrrogas(data);
+            setbajas(data);
+            setFilteredBajas(data);
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
     useEffect(() => {
-        fetchProrrogas();
+        fetchBajas();
     }, []);
 
-    const actualizarEstadoProrroga = async (id, nuevoEstado, comentarios) => {
-        const confirm = window.confirm(`¿Está seguro que desea marcar la prórroga como "${nuevoEstado}"?`);
+    const actualizarEstadoBaja = async (id, nuevoEstado, comentarios) => {
+        const confirm = window.confirm(`¿Está seguro que desea marcar la baja como "${nuevoEstado}"?`);
         if (!confirm) return;
 
         try {
             const response = await fetch(
-                `http://127.0.0.1:8000/api/v1/estudiantes/prorroga/${id}/`,
+                `http://127.0.0.1:8000/api/v1/estudiantes/baja/${id}/`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -59,18 +60,18 @@ const GestionProrroga = () => {
             );
             if (!response.ok) throw new Error('No se pudo actualizar el estado.');
 
-            setMessage(`Prórroga ${nuevoEstado.toLowerCase()} exitosamente.`);
+            setMessage(`Baja ${nuevoEstado.toLowerCase()} exitosamente.`);
             setShowModal(false)
 
-            await fetchProrrogas();
+            await fetchBajas();
         } catch (error) {
             console.error('Error:', error);
-            setError('No se pudo actualizar la prórroga.');
+            setError('No se pudo actualizar la baja.');
         }
     };
 
-    const filtrarProrrogas = () => {
-        let resultados = prorrogas;
+    const filtrarBajas = () => {
+        let resultados = bajas;
 
         if (searchTerm) {
             resultados = resultados.filter((p) =>
@@ -83,28 +84,28 @@ const GestionProrroga = () => {
             resultados = resultados.filter((p) => p.estado.toLowerCase() === estadoFiltro.toLowerCase());
         }
 
-        setFilteredProrrogas(resultados);
+        setFilteredBajas(resultados);
     };
 
     useEffect(() => {
-        filtrarProrrogas();
-    }, [searchTerm, estadoFiltro, prorrogas]);
+        filtrarBajas();
+    }, [searchTerm, estadoFiltro, bajas]);
 
-    const handleShowModalPDF = (prorroga) => {
-        setSelectedProrroga(prorroga);
-        setSelectedPdf(prorroga.analitico)
+    const handleShowModalPDF = (baja) => {
+        setSelectedBaja(baja);
+        setSelectedPdf(baja.analitico)
         setShowModalPDF(true);
     }
 
-    const handleShowModal = (prorroga) => {
-        setSelectedProrroga(prorroga);
+    const handleShowModal = (baja) => {
+        setSelectedBaja(baja);
         setShowModal(true);
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
         setShowModalPDF(false);
-        setSelectedProrroga(null);
+        setSelectedBaja(null);
         setSelectedPdf(null)
         setComentarios(null)
     };
@@ -112,16 +113,16 @@ const GestionProrroga = () => {
     // Cambiar página
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    // Función para contar las prórrogas pendientes
-    const contarProrrogasPendientes = () => {
-        return prorrogas.filter(p => p.estado === 'Pendiente').length;
+    // Función para contar las bajas pendientes
+    const contarBajasPendientes = () => {
+        return bajas.filter(p => p.estado === 'Pendiente').length;
     };
 
     // Lógica para la paginación
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredProrrogas.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(filteredProrrogas.length / itemsPerPage);
+    const currentItems = filteredBajas.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredBajas.length / itemsPerPage);
 
     return (
         <>
@@ -129,17 +130,17 @@ const GestionProrroga = () => {
                 <Col xs={12} md={4}>
                     <Card className="text-center bg-light">
                         <Card.Body>
-                            <Card.Title>{contarProrrogasPendientes()}</Card.Title>
+                            <Card.Title>{contarBajasPendientes()}</Card.Title>
                             <Card.Text className="text-secondary">
-                                Prórrogas pendientes de revisión
+                                Bajas pendientes de revisión
                             </Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
 
-            {prorrogas.length === 0 ? (
-                <p className="mt-3">No existen solicitudes de prórrogas</p>
+            {bajas.length === 0 ? (
+                <p className="mt-3">No existen solicitudes de bajas provisorias</p>
             ) : (
                 <>
                 <Row className="mt-3">
@@ -172,33 +173,33 @@ const GestionProrroga = () => {
                             <th>DNI</th>
                             <th>Alumno</th>
                             <th>Correo</th>
-                            <th>Materia</th>
+                            <th>Periodo</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {currentItems.map((prorroga) => (
-                            <tr key={prorroga.id}>
-                                <td>{prorroga.alumno.legajo}</td>
-                                <td>{prorroga.alumno.dni}</td>
-                                <td>{prorroga.alumno.apellido}, {prorroga.alumno.nombre}</td>
-                                <td>{prorroga.alumno.email}</td>
-                                <td>{prorroga.materia.nombre}</td>
-                                <td>{prorroga.estado}</td>
+                        {currentItems.map((baja) => (
+                            <tr key={baja.id}>
+                                <td>{baja.alumno.legajo}</td>
+                                <td>{baja.alumno.dni}</td>
+                                <td>{baja.alumno.apellido}, {baja.alumno.nombre}</td>
+                                <td>{baja.alumno.email}</td>
+                                <td>Año {baja.compromiso.año} Cuatrimestre {baja.compromiso.cuatrimestre}</td>
+                                <td>{baja.estado}</td>
                                 <td>
-                                    {prorroga.estado === 'Pendiente' ? (
+                                    {baja.estado === 'Pendiente' ? (
                                         <Button
                                             variant="primary"
-                                            onClick={() => handleShowModal(prorroga)}
+                                            onClick={() => handleShowModal(baja)}
                                         >
-                                            Evaluar Prórroga
+                                            Evaluar Baja
                                         </Button>
                                     ) : (
                                         <span
                                             style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
                                             onClick={() => {
-                                                handleShowModalPDF(prorroga);
+                                                handleShowModalPDF(baja);
                                             }}>
                                             Ver Detalle
                                         </span>
@@ -211,32 +212,27 @@ const GestionProrroga = () => {
                 </>
             )}
 
-            <Modal show={showModal} onHide={handleCloseModal} size="lg">
+            <Modal show={showModal} onHide={handleCloseModal} size="xl" style={{ maxWidth: '150%', margin: '0 auto' }}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Evaluar Prórroga</Modal.Title>
+                    <Modal.Title>Evaluar Baja Provisoria</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {selectedProrroga && (
+                    {selectedBaja && (
                         <>
                             <div className="p-3 mb-4">
                                     <Row className="mb-3">
-                                        <Col md={6}><strong>Fecha de Solicitud:</strong> {new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</Col>
-                                        <Col md={6}><strong>Estado:</strong> {selectedProrroga.estado}</Col>
+                                        <Col md={6}><strong>Fecha de Solicitud:</strong> {new Date(selectedBaja.fecha_solicitud).toLocaleDateString()}</Col>
+                                        <Col md={6}><strong>Estado:</strong> {selectedBaja.estado}</Col>
                                     </Row>
 
                                     <Row className="mb-3">
-                                        <Col md={6}><strong>Materia:</strong> {selectedProrroga.materia.nombre}</Col>
-                                        <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Motivo:</strong> {selectedProrroga.motivo}</Col>
+                                        <Col md={6}><strong>Periodo:</strong> Año {selectedBaja.compromiso.año} Cuatrimestre {selectedBaja.compromiso.cuatrimestre}</Col>
+                                        <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Motivo:</strong> {selectedBaja.motivo}</Col>
                                     </Row>
-                                    <div className="col-12 mb-3">
-                                        <h6 className="fw-bold">Certificado Analítico</h6>
-                                        <iframe
-                                            src={selectedProrroga.analitico}
-                                            title="PDF Analítico"
-                                            style={{ width: '100%', height: '400px', border: '1px solid #ddd', borderRadius: '5px' }}
-                                        />
-                                    </div>
-                                </div>
+                            </div>
+
+                            <EstadoDeCuenta alumno={selectedBaja.alumno} />
+                            <strong>Al aceptar la baja provisoria, se eliminarán las cuotas con estado "Pendiente"</strong>
                             <Form.Group className="mt-3">
                                 <Form.Label>Comentarios</Form.Label>
                                 <Form.Control
@@ -250,7 +246,7 @@ const GestionProrroga = () => {
                                     <Button
                                         variant="success"
                                         className="me-2"
-                                        onClick={() => {actualizarEstadoProrroga(selectedProrroga.id, 'Aprobada', comentarios);}}
+                                        onClick={() => {actualizarEstadoBaja(selectedBaja.id, 'Aprobada', comentarios);}}
                                     >
                                         Aprobar
                                     </Button>
@@ -261,7 +257,7 @@ const GestionProrroga = () => {
                                                 alert("Debe ingresar un comentario antes de rechazar.");
                                                 return;
                                             }
-                                            actualizarEstadoProrroga(selectedProrroga.id, 'Rechazada', comentarios);
+                                            actualizarEstadoBaja(selectedBaja.id, 'Rechazada', comentarios);
                                         }}
                                     >
                                         Rechazar
@@ -275,40 +271,31 @@ const GestionProrroga = () => {
 
             <Modal show={showModalPDF} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Detalles de la Solicitud de Prórroga</Modal.Title>
+                    <Modal.Title>Detalles de la Solicitud de Baja Provisoria</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {selectedProrroga && (
+                    {selectedBaja && (
                         <div className="p-3 mb-4">
                             <Row className="mb-3">
-                                <Col md={6}><strong>Fecha de Solicitud:</strong> {new Date(selectedProrroga.fecha_solicitud).toLocaleDateString()}</Col>
-                                <Col md={6}><strong>Estado:</strong> {selectedProrroga.estado}</Col>
+                                <Col md={6}><strong>Fecha de Solicitud:</strong> {new Date(selectedBaja.fecha_solicitud).toLocaleDateString()}</Col>
+                                <Col md={6}><strong>Estado:</strong> {selectedBaja.estado}</Col>
                             </Row>
 
                             <Row className="mb-3">
-                                <Col md={6}><strong>Materia:</strong> {selectedProrroga.materia.nombre}</Col>
-                                <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Motivo:</strong> {selectedProrroga.motivo}</Col>
+                            <Col md={6}><strong>Periodo:</strong> Año {selectedBaja.compromiso.año} Cuatrimestre {selectedBaja.compromiso.cuatrimestre}</Col>
+                                <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Motivo:</strong> {selectedBaja.motivo}</Col>
                             </Row>
 
                             <Row>
-                            {selectedProrroga.fecha_evaluacion && (
-                                <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Fecha de Evaluacion:</strong> {new Date(selectedProrroga.fecha_evaluacion).toLocaleDateString()}</Col>
+                            {selectedBaja.fecha_evaluacion && (
+                                <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Fecha de Evaluacion:</strong> {new Date(selectedBaja.fecha_evaluacion).toLocaleDateString()}</Col>
 
                             )}
 
-                            {selectedProrroga.comentarios && (
-                                <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Comentarios de Evaluación:</strong> {selectedProrroga.comentarios}</Col>
+                            {selectedBaja.comentarios && (
+                                <Col md={6} style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}><strong>Comentarios de Evaluación:</strong> {selectedBaja.comentarios}</Col>
                             )}
                             </Row>
-                            <div className="col-12 mb-3">
-                                <br />
-                                <h6 className="fw-bold">Certificado Analítico</h6>
-                                <iframe
-                                    src={selectedPdf}
-                                    title="PDF Analítico"
-                                    style={{ width: '100%', height: '400px', border: '1px solid #ddd', borderRadius: '5px' }}
-                                />
-                            </div>
                         </div>
                     )}
                 </Modal.Body>
@@ -346,4 +333,4 @@ const GestionProrroga = () => {
     );
 };
 
-export default GestionProrroga;
+export default GestionBajaProvisoria

@@ -116,9 +116,8 @@ const GestionHabilitacionAlumno = () => {
   const currentItems = filteredAlumnos.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredAlumnos.length / itemsPerPage);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+    // Cambiar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Total de alumnos con cuotas vencidas
     useEffect(() => {
@@ -214,7 +213,7 @@ const GestionHabilitacionAlumno = () => {
           <th>Nombre</th>
           <th>Correo</th>
           <th>Estado Actual</th>
-          <th>Ultimo Mes Pagado</th>
+          <th>Último Mes Pagado</th>
           <th>Cuotas Vencidas</th> {/* Nueva columna para las cuotas vencidas */}
         </tr>
       </thead>
@@ -257,17 +256,26 @@ const GestionHabilitacionAlumno = () => {
       </tbody>
     </Table>
 
-      <Pagination>
-        {[...Array(totalPages).keys()].map((number) => (
-          <Pagination.Item
-            key={number + 1}
-            active={number + 1 === currentPage}
-            onClick={() => handlePageChange(number + 1)}
-          >
-            {number + 1}
-          </Pagination.Item>
-        ))}
-      </Pagination>
+                    {/* Componente de paginación de React-Bootstrap */}
+                    <Pagination className="pagination-container">
+                        <Pagination.Prev
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        />
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={index + 1 === currentPage}
+                                onClick={() => paginate(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                        <Pagination.Next
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        />
+                    </Pagination>
     </div>
   );
 };

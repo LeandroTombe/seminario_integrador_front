@@ -1,74 +1,120 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useAuth } from "../../context/AuthContext";
+import { Pagination } from 'react-bootstrap';
+import './BaseNotificacion.css'; // Archivo CSS separado para estilos
 
 const BaseNotificacion = () => {
-  const [notifications, setNotifications] = useState([]);
-  const [ws, setWs] = useState(null);
+    const { authTokens } = useAuth();
+    const [notifications, setNotifications] = useState([]);
+    const [selectedNotification, setSelectedNotification] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1); // Página actual
+    const notificationsPerPage = 4; // Número de notificaciones por página
 
-  // Obtiene las notificaciones actuales desde la API
-  useEffect(() => {
-    const fetchNotifications = async () => {
-        try {
-            const response = await axios.get('http://127.0.0.1:8000/api/v1/estudiantes/mensajes/');
-            console.log(response.data);  // Para verificar la estructura de los datos
-            if (Array.isArray(response.data)) {
-                setNotifications(response.data);
-            } else {
-                console.error('La respuesta no es un array:', response.data);
-            }
-        } catch (error) {
-            console.error('Error al obtener las notificaciones:', error);
-        }
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/mensajes/', {
+                headers: {
+                    'Authorization': `Bearer ${authTokens.refresh}`,
+                },
+            });
+            const data = await response.json();
+            setNotifications(data);
+        };
+
+        fetchNotifications();
+        const interval = setInterval(fetchNotifications, 60000); // Polling cada 1 min
+        return () => clearInterval(interval);
+    }, [authTokens]);
+
+    const marcarComoLeido = async (id) => {
+        await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/mensajes/${id}/`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${authTokens.refresh}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ visto: true }),
+        });
+        setNotifications((prev) =>
+            prev.map((notif) => (notif.id === id ? { ...notif, visto: true } : notif))
+        );
     };
 
-    fetchNotifications();
-  }, []);
-
-  // Conectar a WebSocket para recibir nuevas notificaciones en tiempo real
-  useEffect(() => {
-    const socket = new WebSocket('ws://127.0.0.1:8000/ws/notificaciones/');
-
-    socket.onopen = () => {
-        console.log('WebSocket conectado');
+    const handleNotificationClick = (notif) => {
+        marcarComoLeido(notif.id);
+        setSelectedNotification(notif);
     };
 
-    socket.onmessage = (event) => {
-        const newNotification = JSON.parse(event.data);
-        setNotifications(prev => [newNotification, ...prev]);
+    const handleBackClick = () => {
+        setSelectedNotification(null);
     };
 
-    socket.onerror = (error) => {
-        console.error('Error en el WebSocket:', error);
-    };
+    // Lógica para calcular las notificaciones que se deben mostrar en la página actual
+    const indexOfLastNotification = currentPage * notificationsPerPage;
+    const indexOfFirstNotification = indexOfLastNotification - notificationsPerPage;
+    const currentNotifications = notifications.slice(indexOfFirstNotification, indexOfLastNotification);
 
-    socket.onclose = () => {
-        console.log('WebSocket cerrado');
-    };
+    // Cambiar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    setWs(socket);
+    // Determinar el número total de páginas
+    const totalPages = Math.ceil(notifications.length / notificationsPerPage);
 
-    return () => {
-        socket.close();
-    };
-  }, []);
+    return (
+        <div className="notifications-container">
+            {selectedNotification ? (
+                <div className="notification-detail">
+                    <button onClick={handleBackClick} className="back-button">← Volver a Bandeja de Entrada</button>
+                    <h3>{selectedNotification.tipo_evento}</h3>
+                    <p>{selectedNotification.mensaje}</p>
+                    <span>Recibido: {new Date(selectedNotification.fecha).toLocaleDateString()}, {new Date(selectedNotification.fecha).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+            ) : (
+                <div className="notification-list">
+                    {currentNotifications.length === 0 ? (
+                        <p>No tienes notificaciones</p>
+                    ) : (
+                        currentNotifications.map((notif) => (
+                            <div
+                                key={notif.id}
+                                onClick={() => handleNotificationClick(notif)}
+                                className={`notification-item ${notif.visto ? 'read' : 'unread'}`}
+                            >
+                                <h3>{notif.tipo_evento}</h3>
+                                <p>
+                                    {notif.mensaje.length > 50
+                                        ? `${notif.mensaje.substring(0, 50)}...`
+                                        : notif.mensaje}
+                                </p>
+                                <span>{new Date(notif.fecha).toLocaleDateString()}, {new Date(notif.fecha).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                        ))
+                    )}
 
-  return (
-    <div className="notifications-container">
-      <h3>Notificaciones</h3>
-      <ul>
-        {notifications.length > 0 ? (
-          notifications.map((notification, index) => (
-            <li key={index} className={`notification ${notification.tipo}`}>
-              <span>{notification.contenido}</span>
-              <span className="notification-date">{new Date(notification.fecha).toLocaleString()}</span>
-            </li>
-          ))
-        ) : (
-          <p>No tienes notificaciones nuevas</p>
-        )}
-      </ul>
-    </div>
-  );
+                    {/* Componente de paginación de React-Bootstrap */}
+                    <Pagination className="pagination-container">
+                        <Pagination.Prev
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        />
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={index + 1 === currentPage}
+                                onClick={() => paginate(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                        <Pagination.Next
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        />
+                    </Pagination>
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default BaseNotificacion;

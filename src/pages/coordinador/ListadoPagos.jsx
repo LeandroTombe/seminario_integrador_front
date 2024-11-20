@@ -124,9 +124,8 @@ const ListadoPagos = () => {
   
     const totalPages = Math.ceil(filteredPagos.length / itemsPerPage);
   
-    const handlePageChange = (pageNumber) => {
-      setCurrentPage(pageNumber);
-    };
+    // Cambiar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   //Calcular el total recaudado en el mes actual
   const getTotalRecaudadoMesActual = () => {
@@ -194,104 +193,125 @@ const ListadoPagos = () => {
         </Col>
       </Row>
       <br />
-      <Form>
-        <Row className="align-items-end">
-          <Col>
-            <Form.Group controlId="searchTerm">
-              <Form.Label>Buscar alumno</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ingrese apellido o legajo"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-            </Form.Group>
-          </Col>
-
-          <Col>
-            <Form.Group controlId="filtroFecha">
-              <Form.Label>Periodo</Form.Label>
-              <Form.Control as="select" value={filtroFecha} onChange={handleFiltroFechaChange}>
-                <option value="">Seleccionar Filtro</option>
-                <option value="mes">Mes Actual</option>
-                <option value="semestre">Semestre Actual</option>
-                <option value="año">Año Actual</option>
-                <option value="rango">Seleccionar Fechas</option>
-              </Form.Control>
-            </Form.Group>
-          </Col>
-
-          {filtroFecha === 'rango' && (
-            <>
-              <Col>
-                <Form.Group controlId="fechaInicio">
-                  <Form.Label>Fecha de Inicio</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={fechaInicio}
-                    onChange={(e) => handleDateChange('inicio', e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col>
-                <Form.Group controlId="fechaFin">
-                  <Form.Label>Fecha de Fin</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={fechaFin}
-                    onChange={(e) => handleDateChange('fin', e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-            </>
-          )}
-        </Row>
-      </Form>
         <br />
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Nro Recibo</th>
-            <th>Legajo</th>
-            <th>DNI</th>
-            <th>Nombre</th>
-            <th>Monto Pagado</th>
-            <th>Fecha Pago</th>
-            <th>Forma de Pago</th>
-            <th>Concepto de Pago</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((pago) => (
-            <tr key={pago.id}>
-              <td>{pago.numero_recibo}</td>
-              <td>{pago.alumno.legajo}</td>
-              <td>{pago.alumno.dni}</td>
-              <td>{pago.alumno.apellido} {pago.alumno.nombre}</td>
-              <td>$ {pago.monto_confirmado}</td>
-              <td>{formatDate(pago.fecha_pago_confirmado) || 'N/A'}</td>
-              <td>{pago.forma_pago}</td>
-              <td>
-                  <>
-                      {pago.detalles.map((detalle) => (
-                          <li key={detalle.id}>
-                              Cuota {detalle.cuota.nroCuota}: $ {detalle.monto_cuota}
-                          </li>
-                      ))}
-                  </>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      <Pagination>
-              {[...Array(totalPages).keys()].map((number) => (
-                <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
-                  {number + 1}
-                </Pagination.Item>
+      { pagos.length === 0 ? (
+        <p>No existen pagos registrados</p>
+      ) : (
+        <>
+              <Form>
+                <Row className="align-items-end">
+                  <Col>
+                    <Form.Group controlId="searchTerm">
+                      <Form.Label>Buscar alumno</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Ingrese apellido o legajo"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                      />
+                    </Form.Group>
+                  </Col>
+
+                  <Col>
+                    <Form.Group controlId="filtroFecha">
+                      <Form.Label>Periodo</Form.Label>
+                      <Form.Control as="select" value={filtroFecha} onChange={handleFiltroFechaChange}>
+                        <option value="">Seleccionar Filtro</option>
+                        <option value="mes">Mes Actual</option>
+                        <option value="semestre">Semestre Actual</option>
+                        <option value="año">Año Actual</option>
+                        <option value="rango">Seleccionar Fechas</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+
+                  {filtroFecha === 'rango' && (
+                    <>
+                      <Col>
+                        <Form.Group controlId="fechaInicio">
+                          <Form.Label>Fecha de Inicio</Form.Label>
+                          <Form.Control
+                            type="date"
+                            value={fechaInicio}
+                            onChange={(e) => handleDateChange('inicio', e.target.value)}
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col>
+                        <Form.Group controlId="fechaFin">
+                          <Form.Label>Fecha de Fin</Form.Label>
+                          <Form.Control
+                            type="date"
+                            value={fechaFin}
+                            onChange={(e) => handleDateChange('fin', e.target.value)}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </>
+                  )}
+                </Row>
+              </Form>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Nro Recibo</th>
+                <th>Legajo</th>
+                <th>DNI</th>
+                <th>Nombre</th>
+                <th>Monto Pagado</th>
+                <th>Fecha Pago</th>
+                <th>Forma de Pago</th>
+                <th>Concepto de Pago</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((pago) => (
+                <tr key={pago.id}>
+                  <td>{pago.numero_recibo}</td>
+                  <td>{pago.alumno.legajo}</td>
+                  <td>{pago.alumno.dni}</td>
+                  <td>{pago.alumno.apellido} {pago.alumno.nombre}</td>
+                  <td>$ {pago.monto_confirmado}</td>
+                  <td>{formatDate(pago.fecha_pago_confirmado) || 'N/A'}</td>
+                  <td>{pago.forma_pago}</td>
+                  <td>
+                      <>
+                          {pago.detalles.map((detalle) => (
+                              <li key={detalle.id}>
+                                  Cuota {detalle.cuota.nroCuota}: $ {detalle.monto_cuota}
+                              </li>
+                          ))}
+                      </>
+                  </td>
+                </tr>
               ))}
-      </Pagination>
+            </tbody>
+          </Table>
+
+                    {/* Componente de paginación de React-Bootstrap */}
+                    <Pagination className="pagination-container">
+                        <Pagination.Prev
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        />
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={index + 1 === currentPage}
+                                onClick={() => paginate(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                        <Pagination.Next
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        />
+                    </Pagination>
+        </>
+      )}
+
     </div>
   );
 };

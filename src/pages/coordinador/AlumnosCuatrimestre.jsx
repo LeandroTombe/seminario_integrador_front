@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Pagination, Form, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ExportarDatos from '../../components/ExportarDatos'
 
 const AlumnosCuatrimestre = () => {
     const [firmantes, setFirmantes] = useState([]);
@@ -61,14 +62,48 @@ const AlumnosCuatrimestre = () => {
   
     const totalPages = Math.ceil(filteredFirmantes.length / itemsPerPage);
   
-    const handlePageChange = (pageNumber) => {
-      setCurrentPage(pageNumber);
-    };
+    // Cambiar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Función que se ejecuta al hacer clic en una fila
     const handleRowClick = (firmante) => {
         // Aquí puedes pasar firmante.legajo o firmante.id si necesitas pasarlo en la URL
         navigate('/coordinador/perfilAlumno', { state: { firmante: firmante } });
+    };
+
+    // Preparacion de datos para la exportación
+    const encabezados = [
+        { label: 'Legajo', key: 'legajo' },
+        { label: 'DNI', key: 'dni' },
+        { label: 'Apellido', key: 'apellido' },
+        { label: 'Nombre', key: 'nombre' },
+        { label: 'Correo', key: 'email' },
+        { label: 'Cantidad de Materias', key: 'materiasCount' },
+        { label: 'Compromiso Firmado', key: 'firmo_compromiso' },
+        { label: 'Estado', key: 'pago_al_dia' },
+    ];
+
+    const datosExportacion = currentItems.map(firmante => ({
+        legajo: firmante.alumno.legajo,
+        dni: firmante.alumno.dni,
+        apellido: firmante.alumno.apellido,
+        nombre: firmante.alumno.nombre,
+        email: firmante.alumno.email,
+        materiasCount: firmante.alumno.materias.length,
+        firmo_compromiso: firmante.firmo_compromiso ? 'SI' : 'NO',
+        pago_al_dia: firmante.alumno.pago_al_dia ? 'Habilitado' : 'Inhabilitado',
+    }));
+
+    // Calcula el título basado en los filtros seleccionados
+    const generarTitulo = () => {
+        let titulo = "Alumnos cursantes del cuatrimestre";
+        if (filterFirmo !== 'todos') {
+            titulo += filterFirmo === 'firmo' ? " con compromiso firmado" : " sin compromiso firmado";
+        }
+        if (filterEstado !== 'todos') {
+            titulo += ` con estado ${filterEstado}`;
+        }
+        return titulo;
     };
 
     return (
@@ -164,13 +199,34 @@ const AlumnosCuatrimestre = () => {
                     </Table>
                 </>
             )}
-            <Pagination>
-              {[...Array(totalPages).keys()].map((number) => (
-                <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
-                  {number + 1}
-                </Pagination.Item>
-              ))}
-            </Pagination>
+            <div class="text-end">
+                <ExportarDatos 
+                    titulo={generarTitulo()}
+                    encabezados={encabezados}
+                    datos={datosExportacion}
+                    //totales={totales}
+                />
+            </div>
+                    {/* Componente de paginación de React-Bootstrap */}
+                    <Pagination className="pagination-container">
+                        <Pagination.Prev
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        />
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={index + 1 === currentPage}
+                                onClick={() => paginate(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                        <Pagination.Next
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        />
+                    </Pagination>
         </>
     );
 };

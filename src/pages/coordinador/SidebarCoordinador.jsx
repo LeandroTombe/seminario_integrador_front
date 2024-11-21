@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import {useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './SidebarCoordinador.css';
 import { useAuth } from '../../context/AuthContext';
 import '../../assets/logout-button.css';
-import { FiHome, FiMail, FiBarChart2, FiSettings, FiLogOut, FiChevronRight } from 'react-icons/fi';
+import { FiHome, FiMail, FiBarChart2, FiFileText, FiLogOut, FiChevronRight } from 'react-icons/fi';
+import { IoSchoolOutline } from "react-icons/io5";
+import { MdOutlinePayments } from "react-icons/md";
 
 const SidebarCoordinador = () => {
   const { logoutUser } = useAuth();
@@ -40,48 +42,26 @@ const SidebarCoordinador = () => {
         <h4 className='h4-sidebar'>TUP</h4>
       </div>
       <nav className="sidebar-nav">
-        <NavLink to="/coordinador/inicio" className="sidebar-link" activeclassname="active">
+        <NavLink to="/coordinador/inicio" className="sidebar-link logout-button" activeclassname="active">
           <FiHome className="icon" /> Inicio
         </NavLink>
-        <NavLink to="/coordinador/mensajes" className="sidebar-link" activeclassname="active">
+        <NavLink to="/coordinador/mensajes" className="sidebar-link logout-button" activeclassname="active">
           <FiMail className="icon" /> Mensajes
         </NavLink>
-        <NavLink to="/coordinador/reportes" className="sidebar-link" activeclassname="active">
+        <NavLink to="/coordinador/reportes" className="sidebar-link logout-button" activeclassname="active">
           <FiBarChart2 className="icon" /> Reportes
         </NavLink>
-        <div>
-          <button onClick={toggleConfig} className="sidebar-link">
-            <FiSettings className="icon" /> Configuración
-          </button>
-          {isConfigOpen && (
-            <div className="config-options">
-              <button onClick={toggleCompromiso} className="sidebar-link">
-                <FiChevronRight className="icon" /> Compromiso de Pago
-              </button>
-              {isCompromisoOpen && (
-                <div className="compromiso-options">
-                  <NavLink to="/coordinador/configuracion/compromiso/actual" className="sidebar-link" activeclassname="active">
-                    <FiChevronRight className="icon" /> Compromiso Actual
-                  </NavLink>
-                  <NavLink to="/coordinador/configuracion/compromiso/cargar" className="sidebar-link" activeclassname="active">
-                    <FiChevronRight className="icon" /> Nuevo Compromiso
-                  </NavLink>
-                  <NavLink to="/coordinador/configuracion/compromiso/historial" className="sidebar-link" activeclassname="active">
-                    <FiChevronRight className="icon" /> Historial de Compromisos
-                  </NavLink>
-                </div>
-              )}
-              <NavLink to="/coordinador/configuracion/importaciones-validas" className="sidebar-link" activeclassname="active">
-                <FiChevronRight className="icon" /> Importar Alumnos
-              </NavLink>
-              <NavLink to="/coordinador/configuracion/importar-pagos" className="sidebar-link" activeclassname="active">
-                <FiChevronRight className="icon" /> Importar Pagos
-              </NavLink>
-            </div>
-          )}
-        </div>
+        <NavLink to="/coordinador/compromiso" className="sidebar-link logout-button" activeclassname="active">
+          <FiFileText className="icon" /> Compromiso de Pago
+        </NavLink>
+        <NavLink to="/coordinador/configuracion/importaciones-validas" className="sidebar-link" activeclassname="active">
+          <IoSchoolOutline className="icon" /> Importar Alumnos
+        </NavLink>
+        <NavLink to="/coordinador/configuracion/importar-pagos" className="sidebar-link" activeclassname="active">
+          <MdOutlinePayments className="icon" /> Importar Pagos
+        </NavLink>
         <button onClick={logoutUser} className="sidebar-link logout-button">
-          <FiLogOut className="icon" /> Logout
+          <FiLogOut className="icon" /> Cerrar Sesión
         </button>
       </nav>
     </div>

@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from '../SidebarCoordinador';
 import './Compromiso.css';
 import { Modal, Button } from 'react-bootstrap';
-import Layout from '../../../Layout'
 
-function CompromisoEditar() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const compromiso = location.state?.compromiso;
+function CompromisoEditar({compromiso, onCancel}) {
 
   const [formData, setFormData] = useState({
     año: '',
@@ -106,22 +100,24 @@ function CompromisoEditar() {
             throw new Error('Error al actualizar el compromiso de pago');
           }
 
-          setSuccessMessage('Compromiso actualizado con éxito');
+          // Establecer mensaje de éxito y llamar a onCancel con el mensaje
+          const message = 'Compromiso actualizado con éxito';
+          setSuccessMessage(message);
           setError(null);
-          
-          navigate('/coordinador/configuracion/compromiso/actual', { state: { successMessage: 'Compromiso actualizado con éxito' } });
+          onCancel(message); // Llamar a onCancel pasando el mensaje
+
         } catch (error) {
           setError(error.message);
           setSuccessMessage('');
         }
       }
     );
-  };
+};
 
   const handleCancel = () => {
     handleConfirm(
       '¿Estás seguro de que deseas cancelar?',
-      () => navigate('/coordinador/configuracion/compromiso/actual')
+      () => onCancel() // Establecemos editando a false sin mensaje.
     );
   };
 
@@ -131,31 +127,33 @@ function CompromisoEditar() {
   };
 
   return (
-    <Layout>
-        <h1>Editar Compromiso de Pago</h1>
+    <>
+        <h3>Editar Compromiso</h3>
         <div className="containerConfig">
         <form onSubmit={handleSubmit}>
             <div className="row mb-3">
                 <div className="col-md-6">
                     <label htmlFor="año" className="form-label">Año</label>
                     <input
-                    type="number"
-                    className="form-control"
-                    id="año"
-                    name="año"
-                    value={formData.año}
-                    readOnly
+                        type="number"
+                        className="form-control"
+                        id="año"
+                        name="año"
+                        value={formData.año}
+                        readOnly
+                        style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                     />
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="cuatrimestre" className="form-label">Cuatrimestre</label>
                     <input
-                    type="text"
-                    className="form-control"
-                    id="cuatrimestre"
-                    name="cuatrimestre"
-                    value={formData.cuatrimestre}
-                    readOnly
+                        type="text"
+                        className="form-control"
+                        id="cuatrimestre"
+                        name="cuatrimestre"
+                        value={formData.cuatrimestre}
+                        readOnly
+                        style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                     />
                 </div>
             </div>
@@ -168,89 +166,93 @@ function CompromisoEditar() {
                 name="importe_matricula"
                 value={formData.importe_matricula}
                 onChange={handleChange}
-                min="0"
                 required
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_completo" className="form-label">Valor de cuota completa</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_completo"
-                name="importe_completo"
-                value={formData.importe_completo}
-                onChange={handleChange}
-                min="0"
-                required
-              />
+            <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="importe_completo" className="form-label">Valor de cuota completa</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_completo"
+                    name="importe_completo"
+                    value={formData.importe_completo}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="importe_reducido" className="form-label">Valor de cuota reducida</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_reducido"
+                    name="importe_reducido"
+                    value={formData.importe_reducido}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_reducido" className="form-label">Valor de cuota reducida</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_reducido"
-                name="importe_reducido"
-                value={formData.importe_reducido}
-                onChange={handleChange}
-                min="0"
-                required
-              />
+            <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="importe_pri_venc_comp" className="form-label">Valor de primer mora completa</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_pri_venc_comp"
+                    name="importe_pri_venc_comp"
+                    value={formData.importe_pri_venc_comp}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                <label htmlFor="importe_pri_venc_red" className="form-label">Valor de primer mora reducida</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_pri_venc_red"
+                    name="importe_pri_venc_red"
+                    value={formData.importe_pri_venc_red}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_pri_venc_comp" className="form-label">Valor de primer mora completa</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_pri_venc_comp"
-                name="importe_pri_venc_comp"
-                value={formData.importe_pri_venc_comp}
-                onChange={handleChange}
-                min="0"
-                required
-              />
+            <div className="row mb-3">
+                <div className="col-md-6">
+                  <label htmlFor="importe_seg_venc_comp" className="form-label">Valor de segunda mora completa</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="importe_seg_venc_comp"
+                      name="importe_seg_venc_comp"
+                      value={formData.importe_seg_venc_comp}
+                      onChange={handleChange}
+                      min="0"
+                      required
+                    />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="importe_seg_venc_red" className="form-label">Valor de segunda mora reducida</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="importe_seg_venc_red"
+                    name="importe_seg_venc_red"
+                    value={formData.importe_seg_venc_red}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="importe_seg_venc_comp" className="form-label">Valor de segunda mora completa</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_seg_venc_comp"
-                name="importe_seg_venc_comp"
-                value={formData.importe_seg_venc_comp}
-                onChange={handleChange}
-                min="0"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="importe_pri_venc_red" className="form-label">Valor de primer mora reducida</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_pri_venc_red"
-                name="importe_pri_venc_red"
-                value={formData.importe_pri_venc_red}
-                onChange={handleChange}
-                min="0"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="importe_seg_venc_red" className="form-label">Valor de segunda mora reducida</label>
-              <input
-                type="number"
-                className="form-control"
-                id="importe_seg_venc_red"
-                name="importe_seg_venc_red"
-                value={formData.importe_seg_venc_red}
-                onChange={handleChange}
-                min="0"
-                required
-              />
-            </div>
-
             {/* Botón para visualizar el PDF original si existe */}
             {pdfPreview && (
               <div className="mt-3">
@@ -307,7 +309,7 @@ function CompromisoEditar() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Layout>
+    </>
   );
 }
 

@@ -2,6 +2,7 @@ import { useAuth } from '../../context/AuthContext';
 import { NavLink } from 'react-router-dom';
 import './SidebarAlumno.css';
 import '../../assets/logout-button.css';
+import { FiHome, FiMail, FiFileText , FiLogOut, FiGrid} from 'react-icons/fi';
 
 const SidebarAlumno = () => {
   const { logoutUser } = useAuth();
@@ -9,20 +10,23 @@ const SidebarAlumno = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h3>Menú</h3>
+        <h4 className='h4-sidebar'>TUP</h4>
       </div>
       <nav className="sidebar-nav">
         <NavLink to="/alumno/inicio" className="sidebar-link" activeclassname="active">
-          <i className="icon">🏠</i> Inicio
+          <FiHome className="icon" /> Inicio
         </NavLink>
         <NavLink to="/alumno/mensajes" className="sidebar-link" activeclassname="active">
-          <i className="icon">📧</i> Mensajes
+          <FiMail className="icon" /> Mensajes
+        </NavLink>
+        <NavLink to="/alumno/firmarCompromiso" className="sidebar-link" activeclassname="active">
+          <FiFileText className="icon" /> Compromiso de Pago
         </NavLink>
         <NavLink to="/alumno/tramites" className="sidebar-link" activeclassname="active">
-          <i className="icon">📊</i> Tramites
+          <FiGrid className="icon" /> Trámites
         </NavLink>
         <button onClick={logoutUser} className="sidebar-link logout-button">
-          <i className="icon">🔒</i> Logout
+          <FiLogOut className="icon" /> Logout
         </button>
       </nav>
     </div>

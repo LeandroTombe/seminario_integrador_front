@@ -26,7 +26,7 @@ function RowOfCards({
   dest3,
 }: Props) {
   return (
-    <div className="row bg-info text-center pb-5 pt-2 px-5 ">
+    <div className="row text-center pb-5 pt-2 px-5 ">
       <div className="col d-flex justify-content-end">
         <Card title={title1} text={text1} destino={dest1} />
       </div>

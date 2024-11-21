@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ImportarUsuarios from "./pages/importaciones/ImportarUsuarios.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -16,6 +15,9 @@ import VerificarNuevoPassword from "./pages/cuentas/login/VerificarNuevoPassword
 import AlumnoInicio from "./pages/alumno/AlumnoInicio.jsx";
 import AlumnoMensajes from "./pages/alumno/AlumnoMensajes.jsx";
 import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
+import AlumnoPago from "./pages/alumno/AlumnoPago.jsx";
+import BaseNotificacion from "./pages/notificacion/BaseNotificacion.jsx";
+import Prorroga from "./pages/alumno/Tramites/Prorroga.jsx"
 
 /* Paginas de coordinador */
 import Inicio from "./pages/coordinador/Inicio.jsx";
@@ -25,6 +27,9 @@ import AlumnosEquivalencias from "./pages/coordinador/AlumnosEquivalencias.jsx";
 import AlumnosProrroga from "./pages/coordinador/AlumnosProrroga.jsx";
 import Pagos from "./pages/coordinador/Pagos.jsx";
 import PagosPendientes from "./pages/coordinador/PagosPendientes.jsx";
+import HistorialImportaciones from "./pages/importaciones/HistorialImportaciones.jsx";
+import ImportarPago from "./pages/importaciones/ImportarPago.jsx";
+import CompromisoDePago from "./pages/coordinador/compromiso/CompromisoDePago.jsx";
 
 import Mensajes from "./pages/coordinador/Mensajes.jsx";
 import Reportes from "./pages/coordinador/Reportes.jsx";
@@ -34,10 +39,29 @@ import CargarCompromiso from "./pages/coordinador/compromiso/CargarCompromiso.js
 import HistorialCompromiso from "./pages/coordinador/compromiso/HistorialCompromiso.jsx";
 import CompromisoEditar from "./pages/coordinador/compromiso/CompromisoEditar.jsx";
 
+import AlumnosFirmasCompromiso from "./pages/coordinador/AlumnosFirmasCompromiso.jsx";
+
+import FirmarCompromiso from "./pages/alumno/FirmarCompromiso.jsx"
+import EstadoDeCuenta from "./pages/alumno/EstadoDeCuenta.jsx"
+
+/* Paginas de admin */
+import AdminInicio from "./pages/admin/AdminInicio.jsx";
+
+
 const App = () => {
   return (
     <div className="app">
       <Routes>
+        
+        {/* Admin */}
+
+        <Route
+          path="/admin/inicio"
+          element={
+            <ProtectedRoute element={<AdminInicio />} roles={["Admin"]} />
+          }
+        />
+
         {/* Paginas de alumno */}
         <Route
           path="/alumno/inicio"
@@ -57,8 +81,18 @@ const App = () => {
             <ProtectedRoute element={<AlumnoTramites />} roles={["Alumno"]} />
           }
         />
-        <Route path="/importar_panda" element={<ImportDataComponent />} />
-        {/* Paginas de coordinador */}
+        <Route
+          path="/alumno/firmarCompromiso"
+          element={
+            <ProtectedRoute element={<FirmarCompromiso />} roles={["Alumno"]} />
+          }
+        />
+        <Route
+          path="/alumno/tramites/prorroga"
+          element={
+            <ProtectedRoute element={<Prorroga />} roles={["Alumno"]} />
+          }
+        />
         <Route
           path="/estudiante"
           element={
@@ -68,8 +102,18 @@ const App = () => {
             />
           }
         />
+
+        <Route path="/importar_panda" element={<ImportDataComponent />} />
+        
+        <Route path="/alumno/pagar" element={<AlumnoPago />} />
+        
+        {/* PAGINAS DE COORDINADOR */}
+
+
+
+        
         <Route path="/coordinador/inicio" element={<Inicio />} />
-        <Route path="/coordinador/Perfil Alumno" element={<PerfilAlumno />} />
+        <Route path="/coordinador/perfilAlumno" element={<PerfilAlumno />} />
         <Route
           path="/coordinador/Alumnos Inhabilitados"
           element={<AlumnosInhabilitados />}
@@ -89,6 +133,7 @@ const App = () => {
         />
         <Route path="/coordinador/mensajes" element={<Mensajes />} />
         <Route path="/coordinador/reportes" element={<Reportes />} />
+        <Route path="/coordinador/compromiso" element={<CompromisoDePago />} />
         <Route
           path="/coordinador/configuracion/compromiso/actual"
           element={<Compromiso />}
@@ -102,24 +147,24 @@ const App = () => {
           element={<HistorialCompromiso />}
         />
         <Route
-          path="/coordinador/configuracion/compromiso/actual/editar"
-          element={<CompromisoEditar />}
+          path="/coordinador/configuracion/importar-pagos"
+          element={<ImportarPago/>}
         />
-        {/*<Route path="/coordinador/importaciones-validas" element={<ImportarUsuarios />} />*/}
         <Route
           path="/coordinador/configuracion/importaciones-validas"
           element={<ImportDataComponent />}
         />
+        <Route path="/historial" element={<HistorialImportaciones />} />
+
+        <Route path="/historial" element={<HistorialImportaciones />} />
+        
         <Route
-          path="/importar"
-          element={
-            <ProtectedRoute>
-              {" "}
-              <ImportarUsuarios />{" "}
-            </ProtectedRoute>
-          }
+          path="/coordinador/configuracion/compromiso/actual/editar"
+          element={<CompromisoEditar/>}
         />
-        {/* Paginas de autorizacion */}
+
+
+        {/* PAGINAS DE AUTORIZACION */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/recuperar-password" element={<RecuperarPass />} />

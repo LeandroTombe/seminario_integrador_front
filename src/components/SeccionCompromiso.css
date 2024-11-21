@@ -1,16 +1,21 @@
 .item {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ddd;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    position: relative;
-}
-.item:last-child {
-    border-bottom: none;
-}
-.item label {
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd; /* Línea divisoria */
+  }
+  
+  .item h5 {
+    margin: 0;
+  }
+  
+  .item .titulo {
     font-weight: bold;
-    width: 50%;
-}
+    color: #555; /* Color más oscuro para el título */
+  }
+  
+  .item .valor {
+    font-size: 1.2em; /* Tamaño de fuente más grande para el valor */
+    color: #333; /* Color más oscuro para el valor */
+  }

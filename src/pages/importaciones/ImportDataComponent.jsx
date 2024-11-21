@@ -70,7 +70,7 @@ const ImportDataComponent = () => {
             <div className="container-import">
                 <input type="file" onChange={handleFileChange} />
                 <button onClick={handleUpload}>Subir archivo</button>
-
+    
                 {response && (
                     <div>
                         <div className="button-group">
@@ -83,22 +83,25 @@ const ImportDataComponent = () => {
                             <button onClick={() => setView('correctas')}>
                                 Ver Correctas ({response.cantidad_filas_correctas})
                             </button>
+                            <button onClick={() => setView('ignoradas')}>
+                                Ver Ignorados ({response.cantidad_filas_ignoradas})
+                            </button>
                         </div>
-
+    
                         {view === 'actualizadas' && (
                             <div>
                                 <h2>Registros Actualizados</h2>
                                 <DataTable data={response.actualizadas} columns={[{ Header: 'Mensaje', accessor: 'mensaje' }]} />
                             </div>
                         )}
-
+    
                         {view === 'errores' && (
                             <div>
                                 <h2>Errores</h2>
                                 <DataTable data={response.errores} columns={[{ Header: 'Error', accessor: 'error' }]} />
                             </div>
                         )}
-
+    
                         {view === 'correctas' && (
                             <div>
                                 <h2>Registros Correctos</h2>
@@ -107,13 +110,26 @@ const ImportDataComponent = () => {
                                     columns={[
                                         { Header: 'Legajo', accessor: 'legajo' },
                                         { Header: 'Apellido', accessor: 'apellido' },
+                                        { Header: 'Nombre', accessor: 'nombre' },
+                                        { Header: 'Documento', accessor: 'dni' },
                                     ]}
                                 />
                             </div>
                         )}
-                       <div className="total-registros">
+                        
+                        {view === 'ignoradas' && (
+                            <div>
+                                <h2>Filas Ignoradas</h2>
+                                <DataTable data={response.filas_ignoradas} columns={[{ Header: 'Error', accessor: 'error' }]} />
+                            </div>
+                        )}
+    
+                        <div className="total-registros">
                             <div className="box">
                                 Total procesados: {response.total_procesadas}
+                            </div>
+                            <div className="box">
+                                Filas ignoradas: {response.cantidad_filas_ignoradas}
                             </div>
                             <div className="box">
                                 Total de registros: {response.total}

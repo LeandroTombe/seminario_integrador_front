@@ -1,12 +1,15 @@
 import Sidebar from "./SidebarAlumno";
+import Layout from "../../LayoutAlumno";
+import BaseNotificacion from "../notificacion/BaseNotificacion"
+
 
 function AlumnoMensajes() {
 
     return (
-      <>
-      <Sidebar/>
-       <p>Mensajes desde alumno</p>
-      </>
+      <Layout>
+       <h1>Mensajes</h1>
+       <BaseNotificacion/>
+      </Layout>
     )
   }
   

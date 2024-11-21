@@ -1,6 +1,7 @@
 import { Carousel } from "react-bootstrap";
 import RowOfCards from "./RowOfCards";
 import React from "react";
+import "./Carrusel.css";
 
 interface Props {
   alumnosTotal: string;
@@ -25,12 +26,13 @@ function myCarousel({
       "Alumnos inhabilitados",
     ],
     // listado de alumnos
-    [alumnosTotal, "alumnos total", "inicio"],
+    [alumnosTotal, "Total Alumnos", "inicio"],
     // listado de pagos realizados
-    [pagos, "pagos realizados", "pagos"],
+    [pagos, "Pagos Realizados", "pagos"],
   ];
 
   return (
+    <div className="carousel-track">
     <Carousel interval={null}>
       <Carousel.Item>
         <RowOfCards
@@ -59,6 +61,7 @@ function myCarousel({
         />
       </Carousel.Item>
     </Carousel>
+    </div>
   );
 }
 

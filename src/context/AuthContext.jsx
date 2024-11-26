@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
                 // Redirigir a la página según el rol del usuario
                 const userRole = decodedUser.role;
                 if (userRole === "Admin") {
-                    navigate("/admin/inicio");
+                    navigate("/coordinador/reportes");
                 } else if (userRole === "Coordinador") {
                     navigate("/coordinador/reportes");
                 } else if (userRole === "Alumno") {

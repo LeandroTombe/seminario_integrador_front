@@ -13,7 +13,7 @@ const EnviarMensajeMultidestinatario = () => {
   const [alumnosFiltrados, setAlumnosFiltrados] = useState([]);
   const [alumnosSeleccionados, setAlumnosSeleccionados] = useState([]);
   const [materias, setMaterias] = useState([]);
-  const [filtros, setFiltros] = useState({ materia: '', anio: '', buscar: '' });
+  const [filtros, setFiltros] = useState({ materia: '', anio: '', compromiso: '', buscar: '' });
   const [mensajeEnviado, setMensajeEnviado] = useState(false);
 
   useEffect(() => {
@@ -83,6 +83,16 @@ const EnviarMensajeMultidestinatario = () => {
   const enviarMensaje = async (e) => {
     e.preventDefault();
 
+    // Mostrar un alert para confirmar la acción
+    const confirmacion = window.confirm(
+      "¿Estás seguro de enviar el mensaje?"
+    );
+
+    // Si el usuario cancela, no se envía el mensaje
+    if (!confirmacion) {
+      return;
+    }
+
     const payload = {
       titulo,
       contenido,
@@ -90,7 +100,7 @@ const EnviarMensajeMultidestinatario = () => {
     };
 
     try {
-      await axios.post('http://127.0.0.1:8000/api/v1/coordinador/enviar-mensaje/', payload);
+      await axios.post('http://127.0.0.1:8000/api/v1/estudiantes/coordinador/enviar-mensaje/', payload);
       setMensajeEnviado(true);
       setTitulo('');
       setContenido('');
@@ -105,7 +115,7 @@ const EnviarMensajeMultidestinatario = () => {
     <>
       <Sidebar />
       <Layout>
-        <div className="enviar-mensaje-container card shadow p-5">
+        <div className="containerConfig">
           <h3 className="mb-4 text-center">Enviar Mensaje a Alumnos</h3>
           {mensajeEnviado && (
             <div className="alert alert-success text-center">
@@ -137,35 +147,44 @@ const EnviarMensajeMultidestinatario = () => {
                 required
               ></textarea>
             </div>
-            <div className="form-group mb-4">
-              <label htmlFor="filtros-materia" className="form-label">Materia</label>
-              <select
-                id="filtros-materia"
-                className="form-select mb-3"
-                value={filtros.materia}
-                onChange={(e) => actualizarFiltros({ materia: e.target.value })}
-              >
-                <option value="">Todas las Materias</option>
-                {materias.map((materia) => (
-                  <option key={materia.id} value={materia.nombre}>
-                    {materia.nombre}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="filtros-anio" className="form-label">Año de Inscripción</label>
-              <select
-                id="filtros-anio"
-                className="form-select mb-3"
-                value={filtros.anio}
-                onChange={(e) => actualizarFiltros({ anio: e.target.value })}
-              >
-                <option value="">Todos los Años</option>
-                {[2024, 2023].map((anio) => (
-                  <option key={anio} value={anio}>
-                    {anio}
-                  </option>
-                ))}
-              </select>
+
+            {/* Filtros */}
+            <div className="row mb-4"> 
+              <div className="col-md-6">
+                  <label htmlFor="filtros-anio" className="form-label">Compromiso de pago actual firmado</label>
+                  <select
+                    id="filtros-anio"
+                    className="form-select"
+                    value={filtros.anio}
+                    onChange={(e) => actualizarFiltros({ anio: e.target.value })}
+                  >
+                    <option value="">Todos</option>
+                    {['Si', 'No'].map((anio) => (
+                      <option key={anio} value={anio}>
+                        {anio}
+                      </option>
+                    ))}
+                  </select>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="filtros-materia" className="form-label">Materia</label>
+                <select
+                  id="filtros-materia"
+                  className="form-select"
+                  value={filtros.materia}
+                  onChange={(e) => actualizarFiltros({ materia: e.target.value })}
+                >
+                  <option value="">Todas las Materias</option>
+                  {materias.map((materia) => (
+                    <option key={materia.id} value={materia.nombre}>
+                      {materia.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group mb-3">
               <label htmlFor="filtros-buscar" className="form-label">Buscar Alumnos</label>
               <input
                 type="text"
@@ -175,6 +194,31 @@ const EnviarMensajeMultidestinatario = () => {
                 onChange={(e) => actualizarFiltros({ buscar: e.target.value })}
                 placeholder="Buscar por nombre o apellido"
               />
+            </div>
+
+            {/* Lista de alumnos con opción de seleccionar todos */}
+            <div className="form-group mb-4">
+              <div className="form-check mb-3">
+                <input
+                  type="checkbox"
+                  id="seleccionar-todos"
+                  className="form-check-input"
+                  checked={
+                    alumnosSeleccionados.length > 0 &&
+                    alumnosSeleccionados.length === alumnosFiltrados.length
+                  }
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAlumnosSeleccionados(alumnosFiltrados.map((alumno) => alumno.id));
+                    } else {
+                      setAlumnosSeleccionados([]);
+                    }
+                  }}
+                />
+                <label htmlFor="seleccionar-todos" className="form-check-label">
+                  Seleccionar/Deseleccionar Todos
+                </label>
+              </div>
               <div className="alumnos-list mt-3">
                 {alumnosFiltrados.map((alumno) => (
                   <div key={alumno.id} className="form-check">
@@ -187,21 +231,28 @@ const EnviarMensajeMultidestinatario = () => {
                       onChange={() => manejarSeleccionAlumno(alumno.id)}
                     />
                     <label htmlFor={`alumno-${alumno.id}`} className="form-check-label">
-                      {alumno.nombre} -  legajo: {alumno.legajo}
+                      {alumno.nombre} {alumno.apellido}
                     </label>
                   </div>
                 ))}
               </div>
             </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Enviar Mensaje
-            </button>
+
+            <div className="d-flex justify-content-center">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={alumnosSeleccionados.length === 0}
+              >
+                Enviar Mensaje
+              </button>
+            </div>
           </form>
         </div>
       </Layout>
+      
     </>
   );
 };
 
 export default EnviarMensajeMultidestinatario;
-

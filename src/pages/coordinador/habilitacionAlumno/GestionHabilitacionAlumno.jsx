@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import { Card, Row, Col, Pagination, Form } from 'react-bootstrap';
 import { useAuth } from '../../../context/AuthContext';
 import Swal from 'sweetalert2';
+import ExportarDatos from '../../../components/ExportarDatos'
 import { id } from 'date-fns/locale';
 
 const GestionHabilitacionAlumno = () => {
@@ -167,6 +168,41 @@ const GestionHabilitacionAlumno = () => {
     return meses[date.getMonth()];
   };
 
+    // Preparación de los encabezados para la exportación
+    const encabezados = [
+      { label: 'Legajo', key: 'legajo' },
+      { label: 'DNI', key: 'dni' },
+      { label: 'Apellido', key: 'apellido' },
+      { label: 'Nombre', key: 'nombre' },
+      { label: 'Correo', key: 'email' },
+      { label: 'Estado Actual', key: 'estado_actual' },
+      { label: 'Último Mes Pagado', key: 'ultima_cuota_pagada' },
+      { label: 'Cuotas Vencidas', key: 'cuotas_vencidas' }, // Nueva columna para las cuotas vencidas
+    ];
+
+    // Preparación de los datos para la exportación (mapear según la estructura de la tabla)
+    const datosExportacion = filteredAlumnos.map(item => ({
+      legajo: item.legajo,
+      dni: item.dni,
+      apellido: item.apellido,
+      nombre: item.nombre,
+      email: item.email,
+      estado_actual: item.pago_al_dia ? 'Habilitado' : 'Inhabilitado',
+      ultima_cuota_pagada: item.ultima_cuota_pagada || 'Sin pagos', // Si no hay pagos, mostrar 'Sin pagos'
+      cuotas_vencidas: item.cuotas_vencidas && item.cuotas_vencidas.length > 0
+          ? item.cuotas_vencidas.map(cuota => `${cuota}`).join(', ') 
+          : 'No tiene cuotas vencidas', // Mostrar las cuotas vencidas si existen
+    }));
+
+    // Generación del título según los filtros seleccionados
+    const generarTitulo = () => {
+      let titulo = "Alumnos con cuotas vencidas";
+      if (filtroEstado !== 'todos') {
+          titulo += ` con estado ${filtroEstado === 'habilitado' ? 'habilitado' : 'inhabilitado'}`;
+      }
+      return titulo;
+    };
+
   return (
     <div>
         <Row className="justify-content-center">
@@ -236,6 +272,7 @@ const GestionHabilitacionAlumno = () => {
               {/* Nueva columna para mostrar las cuotas vencidas */}
               <td>
                 {console.log(item.cuotas_vencidas)}
+                {console.log(item.cuotas_vencidas)}
                 {item.cuotas_vencidas && item.cuotas_vencidas.length > 0 ? (
                   <ul>
                     {item.cuotas_vencidas
@@ -255,7 +292,14 @@ const GestionHabilitacionAlumno = () => {
         })}
       </tbody>
     </Table>
-
+            <div class="text-end">
+                <ExportarDatos 
+                    titulo={generarTitulo()}
+                    encabezados={encabezados}
+                    datos={datosExportacion}
+                    //totales={totales}
+                />
+            </div>
                     {/* Componente de paginación de React-Bootstrap */}
                     <Pagination className="pagination-container">
                         <Pagination.Prev

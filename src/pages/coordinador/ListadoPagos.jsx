@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import {Form, Row, Col, Card, Pagination} from 'react-bootstrap';
+import ExportarDatos from '../../components/ExportarDatos'
 
 const ListadoPagos = () => {
   const [pagos, setPagos] = useState([]);
@@ -74,10 +75,10 @@ const ListadoPagos = () => {
         inicio = new Date(ahora.getFullYear(), ahora.getMonth(), 1).toISOString().split('T')[0];
         fin = new Date(ahora.getFullYear(), ahora.getMonth() + 1, 0).toISOString().split('T')[0];
         break;
-      case 'semestre':
-        const semestreInicio = ahora.getMonth() < 6 ? 0 : 6;
-        inicio = new Date(ahora.getFullYear(), semestreInicio, 1).toISOString().split('T')[0];
-        fin = new Date(ahora.getFullYear(), semestreInicio + 6, 0).toISOString().split('T')[0];
+      case 'cuatrimestre':
+        const cuatrimestreInicio = ahora.getMonth() < 7 ? 0 : 7;
+        inicio = new Date(ahora.getFullYear(), cuatrimestreInicio, 1).toISOString().split('T')[0];
+        fin = new Date(ahora.getFullYear(), cuatrimestreInicio + 6, 0).toISOString().split('T')[0];
         break;
       case 'año':
         inicio = new Date(ahora.getFullYear(), 0, 1).toISOString().split('T')[0];
@@ -160,17 +161,108 @@ const ListadoPagos = () => {
         .reduce((total, monto) => total + monto, 0);
     };
 
-  const totalRecaudadoMesActual = getTotalRecaudadoMesActual();
-  const totalRecaudadoMesCuota = getTotalRecaudadoMesCuota();
+    const getTotalRecaudadoCuatrimestreActual = () => {
+      const ahora = new Date();
+      const year = ahora.getFullYear();
+      const mesActual = ahora.getMonth();
+  
+      // Definir los rangos de meses para cada cuatrimestre
+      const inicioPrimerCuatrimestre = new Date(year, 2, 1); // Marzo
+      const finPrimerCuatrimestre = new Date(year, 7, 0);    // Julio (último día)
+      const inicioSegundoCuatrimestre = new Date(year, 7, 1); // Agosto
+      const finSegundoCuatrimestre = new Date(year, 12, 0);   // Diciembre (último día)
+  
+      // Determinar el cuatrimestre actual
+      let inicioCuatrimestre, finCuatrimestre;
+      if (mesActual >= 2 && mesActual <= 6) { // Marzo a Julio
+          inicioCuatrimestre = inicioPrimerCuatrimestre;
+          finCuatrimestre = finPrimerCuatrimestre;
+      } else { // Agosto a Diciembre
+          inicioCuatrimestre = inicioSegundoCuatrimestre;
+          finCuatrimestre = finSegundoCuatrimestre;
+      }
+  
+      // Filtrar los pagos dentro del cuatrimestre actual
+      const totalRecaudado = pagos
+          .filter((pago) => {
+              const fechaPago = new Date(pago.fecha_pago_confirmado);
+              return fechaPago >= inicioCuatrimestre && fechaPago <= finCuatrimestre;
+          })
+          .reduce((total, pago) => total + (parseFloat(pago.monto_confirmado) || 0), 0);
+  
+      return totalRecaudado;
+    };
 
-  const formatNumber = (number) => {
-    return new Intl.NumberFormat('es-AR', { style: 'decimal' }).format(number);
+    const formatNumber = (number) => {
+      return new Intl.NumberFormat('es-AR', { style: 'decimal' }).format(number);
+  };
+  
+  // Luego utiliza la función en tus cálculos
+  const totalRecaudadoMesActual = formatNumber(getTotalRecaudadoMesActual());
+  const totalRecaudadoMesCuota = formatNumber(getTotalRecaudadoMesCuota());
+  const totalRecaudadoCuatrimestreActual = formatNumber(getTotalRecaudadoCuatrimestreActual());
+
+  // Encabezados para la exportación
+  const encabezados = [
+    { label: 'Nro Recibo', key: 'numero_recibo' },
+    { label: 'Legajo', key: 'legajo' },
+    { label: 'DNI', key: 'dni' },
+    { label: 'Nombre', key: 'nombre' },
+    { label: 'Monto Pagado', key: 'monto_pagado' },
+    { label: 'Fecha Pago', key: 'fecha_pago' },
+    { label: 'Forma de Pago', key: 'forma_pago' },
+    { label: 'Concepto de Pago', key: 'concepto_pago' },
+  ];
+
+  // Preparación de datos para exportación
+  const datosExportacion = filteredPagos.map((pago) => ({
+    numero_recibo: pago.numero_recibo,
+    legajo: pago.alumno.legajo,
+    dni: pago.alumno.dni,
+    nombre: `${pago.alumno.apellido} ${pago.alumno.nombre}`,
+    monto_pagado: `$ ${pago.monto_confirmado}`,
+    fecha_pago: formatDate(pago.fecha_pago_confirmado) || 'N/A',
+    forma_pago: pago.forma_pago,
+    concepto_pago: pago.detalles
+        .map((detalle) => `Cuota ${detalle.cuota.nroCuota}: $${detalle.monto_cuota}`)
+        .join(', '),
+  }));
+
+  const generarTitulo = () => {
+    const ahora = new Date();
+    const year = ahora.getFullYear();
+    const mesActual = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(ahora);
+    const cuatrimestre = ahora.getMonth() >= 7 ? "segundo" : "primer";
+
+    let titulo = "Todos los pagos";
+  
+    if (filtroFecha === "mes") {
+      titulo += ` de ${mesActual} de ${year}`;
+    } else if (filtroFecha === "cuatrimestre") {
+      titulo += ` del ${cuatrimestre} cuatrimestre de ${year}`;
+    } else if (filtroFecha === "año") {
+      titulo += ` de ${year}`;
+    } else if (filtroFecha === "rango" && fechaInicio && fechaFin) {
+      titulo += ` desde ${fechaInicio} hasta ${fechaFin}`;
+    }
+  
+    return titulo;
   };
 
   return (
     <div>
       {console.log(pagos)}
       <Row className="justify-content-center">
+        <Col xs={12} md={4}>
+          <Card className="text-center bg-light">
+            <Card.Body>
+              <Card.Title>$ {totalRecaudadoCuatrimestreActual}</Card.Title>
+              <Card.Text className="text-secondary">
+                Total recaudado en el cuatrimestre actual
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
         <Col xs={12} md={4}>
           <Card className="text-center bg-light">
             <Card.Body>
@@ -218,7 +310,7 @@ const ListadoPagos = () => {
                       <Form.Control as="select" value={filtroFecha} onChange={handleFiltroFechaChange}>
                         <option value="">Seleccionar Filtro</option>
                         <option value="mes">Mes Actual</option>
-                        <option value="semestre">Semestre Actual</option>
+                        <option value="cuatrimestre">Cuatrimestre Actual</option>
                         <option value="año">Año Actual</option>
                         <option value="rango">Seleccionar Fechas</option>
                       </Form.Control>
@@ -289,6 +381,15 @@ const ListadoPagos = () => {
               ))}
             </tbody>
           </Table>
+
+          <div className="text-end">
+              <ExportarDatos 
+                  titulo={generarTitulo()}
+                  encabezados={encabezados}
+                  datos={datosExportacion}
+                  totales={`Total recaudado: $${filteredPagos.reduce((total, pago) => total + (parseFloat(pago.monto_confirmado) || 0), 0).toFixed(2)}`}
+              />
+          </div>
 
                     {/* Componente de paginación de React-Bootstrap */}
                     <Pagination className="pagination-container">

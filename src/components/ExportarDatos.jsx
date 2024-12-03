@@ -1,32 +1,33 @@
-// ExportarDatos.js
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Papa from 'papaparse';
+import * as XLSX from 'xlsx';
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
     const [showModal, setShowModal] = useState(false);
 
-    // Funciones para abrir y cerrar el modal
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
+    const obtenerFechaEmision = () => {
+        const fecha = new Date();
+        return fecha.toLocaleDateString();
+    };
+
     const exportarCSV = () => {
         const csvData = datos.map(item => encabezados.map(header => item[header.key]));
-        
-        // Agregar los totales al final del CSV si se proporcionan
-        if (totales) {
-            const totalRow = encabezados.map(header => totales[header.key] || '');
-            csvData.push(totalRow);
-        }
 
         const csv = Papa.unparse({
             fields: encabezados.map(header => header.label),
             data: csvData,
         });
 
-        const blob = new Blob([`${titulo}\n${csv}`], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob(
+            [`${titulo}\nFecha de emisión: ${obtenerFechaEmision()}\n\n${csv}\n\n${totales}`],
+            { type: 'text/csv;charset=utf-8;' }
+        );
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -36,27 +37,62 @@ const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
 
     const exportarPDF = () => {
         const doc = new jsPDF();
-        doc.text(titulo, 10, 10);
+        const margenIzquierdo = 10;
+        const margenSuperior = 10;
+        const anchoPagina = doc.internal.pageSize.width - margenIzquierdo * 2;
+
+        // Título
+        const tituloAjustado = doc.splitTextToSize(titulo, anchoPagina);
+        doc.setFontSize(14);
+        doc.text(tituloAjustado, margenIzquierdo, margenSuperior);
+
+        // Fecha de emisión
+        doc.setFontSize(10);
+        doc.text(`Fecha de emisión: ${obtenerFechaEmision()}`, margenIzquierdo, margenSuperior + 10);
+
+        // Tabla
         doc.autoTable({
             head: [encabezados.map(header => header.label)],
-            body: [
-                ...datos.map(item => encabezados.map(header => item[header.key])),
-                // Agregar los totales al final del PDF si se proporcionan
-                totales ? encabezados.map(header => totales[header.key] || '') : []
-            ],
-            startY: 20,
+            body: datos.map(item => encabezados.map(header => item[header.key])),
+            startY: margenSuperior + 20,
+            margin: { top: margenSuperior, left: margenIzquierdo, right: margenIzquierdo },
         });
+
+        // Total
+        if (totales) {
+            const finalY = doc.lastAutoTable.finalY || margenSuperior + 30;
+            doc.text(totales, margenIzquierdo, finalY + 10);
+        }
+
         doc.save(`${titulo}.pdf`);
+    };
+
+    const exportarXLSX = () => {
+        const hoja = [
+            [`${titulo}`], // Primera fila: Título del informe
+            [`Fecha de emisión: ${obtenerFechaEmision()}`], // Segunda fila: Fecha de emisión
+            [], // Fila vacía para separar encabezados de los datos
+            encabezados.map(header => header.label), // Encabezados
+            ...datos.map(item => encabezados.map(header => item[header.key])), // Datos
+        ];
+
+        if (totales) {
+            hoja.push([]); // Fila vacía
+            hoja.push([totales]); // Total como texto
+        }
+
+        const libro = XLSX.utils.book_new();
+        const hojaDeTrabajo = XLSX.utils.aoa_to_sheet(hoja);
+        XLSX.utils.book_append_sheet(libro, hojaDeTrabajo, 'Datos');
+        XLSX.writeFile(libro, `${titulo}.xlsx`);
     };
 
     return (
         <>
-            {/* Botón para abrir el modal */}
             <Button variant="primary" onClick={handleShowModal}>
                 Exportar Datos
             </Button>
 
-            {/* Modal de exportación */}
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Exportar Datos</Modal.Title>
@@ -69,6 +105,9 @@ const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
                         </Button>
                         <Button variant="outline-secondary" onClick={exportarPDF}>
                             Exportar PDF
+                        </Button>
+                        <Button variant="outline-success" onClick={exportarXLSX}>
+                            Exportar Excel
                         </Button>
                     </div>
                 </Modal.Body>

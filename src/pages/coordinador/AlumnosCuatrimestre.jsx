@@ -83,7 +83,7 @@ const AlumnosCuatrimestre = () => {
         { label: 'Estado', key: 'pago_al_dia' },
     ];
 
-    const datosExportacion = currentItems.map(firmante => ({
+    const datosExportacion = filteredFirmantes.map(firmante => ({
         legajo: firmante.alumno.legajo,
         dni: firmante.alumno.dni,
         apellido: firmante.alumno.apellido,

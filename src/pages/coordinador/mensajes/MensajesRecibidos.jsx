@@ -73,6 +73,11 @@ const MensajesRecibidos = () => {
       {mensajeSeleccionado ? (
         <div className="mensaje-detalle">
           <button onClick={handleBackClick} className="back-button">← Volver a Mensajes Recibidos</button>
+          {console.log(mensajeSeleccionado)}
+          { user.role === "Coordinador" && (
+            <h2>{mensajeSeleccionado.remitente.apellido} {mensajeSeleccionado.remitente.nombre} - Legajo {mensajeSeleccionado.remitente.legajo}</h2>
+          )
+          }
           <h3>{mensajeSeleccionado.asunto}</h3>
           <p>{mensajeSeleccionado.contenido}</p>
           <span>Recibido: {new Date(mensajeSeleccionado.fecha_envio).toLocaleDateString()}, {new Date(mensajeSeleccionado.fecha_envio).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}</span>

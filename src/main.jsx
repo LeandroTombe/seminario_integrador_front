@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { MensajesProvider } from "./context/MensajesContext.jsx"
 
 /* Paginas de autorizacion y autenticacion */
 import LogoutPage from "./utils/LogoutPage.jsx";
@@ -31,7 +32,7 @@ import HistorialImportaciones from "./pages/importaciones/HistorialImportaciones
 import ImportarPago from "./pages/importaciones/ImportarPago.jsx";
 import CompromisoDePago from "./pages/coordinador/compromiso/CompromisoDePago.jsx";
 
-import Mensajes from "./pages/coordinador/Mensajes.jsx";
+import Mensajes from "./pages/coordinador/mensajes/Mensajes.jsx";
 import Reportes from "./pages/coordinador/Reportes.jsx";
 import ImportDataComponent from "./pages/importaciones/ImportDataComponent.jsx";
 import Compromiso from "./pages/coordinador/compromiso/Compromiso.jsx";
@@ -131,7 +132,10 @@ const App = () => {
           path="/coordinador/Pagos Pendientes"
           element={<PagosPendientes />}
         />
-        <Route path="/coordinador/mensajes" element={<Mensajes />} />
+        <Route path="/coordinador/mensajes" element={
+            <ProtectedRoute element={<Mensajes />} roles={["Coordinador"]} />
+          }
+        />
         <Route path="/coordinador/reportes" element={<Reportes />} />
         <Route path="/coordinador/compromiso" element={<CompromisoDePago />} />
         <Route
@@ -187,7 +191,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <MensajesProvider>
+          <App />
+        </MensajesProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

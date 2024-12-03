@@ -1,4 +1,4 @@
-.notifications-container {
+.mensajes-container {
     width: 100%;
     font-family: Arial, sans-serif;
     border: 1px solid #ddd;
@@ -7,11 +7,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.notification-list, .notification-detail {
+.mensaje-lista, .mensaje-detalle {
     padding: 16px;
 }
 
-.notification-item {
+.mensaje-item {
     display: flex;
     flex-direction: row; /* Alinea los elementos en una fila */
     align-items: center; /* Centra verticalmente los elementos */
@@ -22,37 +22,37 @@
     transition: background 0.3s;
 }
 
-.notification-item:hover {
+.mensaje-item:hover {
     background: #f9f9f9; /* Fondo más claro en hover */
     box-shadow: 0 4px 8px rgba(27, 84, 207, 0.822); /* Agrega sombra al hacer hover */
     border-left: 4px solid #007bff; /* Borde azul al pasar el ratón */
 }
 
-.notification-item.unread {
+.mensaje-item.unread {
     font-weight: bold;
     background-color: #b3bdf759;
     border-left: 4px solid transparent; /* El borde izquierdo por defecto es transparente */
 }
 
-.notification-item.read {
+.mensaje-item.read {
     color: #777;
     background-color: #f8f8f8;
     border-left: 4px solid transparent; /* Mantener el borde transparente cuando está leído */
 }
 
-.notification-item h3 {
+.mensaje-item h3 {
     margin: 0;
     font-size: 20px;
     color: #000000;
 }
 
-.notification-item p {
+.mensaje-item p {
     margin: 4px 0 0; /* Añade margen superior para separarlo del título */
     color: #555;
     font-size: 14px;
 }
 
-.notification-item .status {
+.mensaje-item .status {
     font-size: 12px;
     padding: 2px 6px;
     background: #007bff;
@@ -61,14 +61,14 @@
     margin-left: 10px;
 }
 
-.notification-title {
+.mensaje-titulo {
     font-size: 18px;
     font-weight: bold;
     color: #000000;
     flex: 1; /* Ocupa el espacio necesario */
 }
 
-.notification-message {
+.mensaje-contenido {
     font-size: 16px;
     color: #555;
     flex: 2; /* Ocupa más espacio que el título */
@@ -78,25 +78,25 @@
     text-overflow: ellipsis; /* Añade "..." al final del texto largo */
 }
 
-.notification-date {
+.mensaje-fecha {
     font-size: 16px;
     color: #777;
     flex: 0.5; /* Ocupa menos espacio */
     text-align: right; /* Alinea a la derecha */
 }
 
-.notification-detail h3 {
+.mensaje-detalle h3 {
     font-size: 26px;
     color: #000000;
 }
 
-.notification-detail p {
+.mensaje-detalle p {
     font-size: 16px;
     color: #444;
     margin-top: 10px;
 }
 
-.notification-detail .status {
+.mensaje-detalle .status {
     font-size: 14px;
     color: #007bff;
     margin-top: 10px;

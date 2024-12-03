@@ -21,3 +21,12 @@
 .logout-button:hover {
   background-color: #ddd; /* Color de fondo al hacer hover*/
 }
+
+.notification-badge {
+  background-color: #017bff;
+  color: white;
+  font-size: 0.8em;
+  padding: 0.2em 0.6em;
+  border-radius: 50%;
+  margin-left: 8px;
+}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "../../context/AuthContext";
+import { useMensajes } from "../../context/MensajesContext"
 import { Pagination } from 'react-bootstrap';
 import './BaseNotificacion.css'; // Archivo CSS separado para estilos
 
-const BaseNotificacion = () => {
+const BaseNotificacion = ({ actualizarNotificacionesNoVistas }) => {
     const { authTokens } = useAuth();
+    const {marcarNotificacionComoVista} = useMensajes();
     const [notifications, setNotifications] = useState([]);
     const [selectedNotification, setSelectedNotification] = useState(null);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
@@ -12,22 +14,24 @@ const BaseNotificacion = () => {
 
     useEffect(() => {
         const fetchNotifications = async () => {
-            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/mensajes/', {
+            const response = await fetch('http://127.0.0.1:8000/api/v1/estudiantes/notificaciones/', {
                 headers: {
                     'Authorization': `Bearer ${authTokens.refresh}`,
                 },
             });
             const data = await response.json();
             setNotifications(data);
+            const unreadCount = data.filter((notif) => !notif.visto).length;
+            actualizarNotificacionesNoVistas(unreadCount);
         };
 
         fetchNotifications();
         const interval = setInterval(fetchNotifications, 60000); // Polling cada 1 min
         return () => clearInterval(interval);
-    }, [authTokens]);
+    }, [authTokens, actualizarNotificacionesNoVistas]);
 
     const marcarComoLeido = async (id) => {
-        await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/mensajes/${id}/`, {
+        await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/notificaciones/${id}/`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${authTokens.refresh}`,
@@ -38,10 +42,16 @@ const BaseNotificacion = () => {
         setNotifications((prev) =>
             prev.map((notif) => (notif.id === id ? { ...notif, visto: true } : notif))
         );
+
+        marcarNotificacionComoVista();
+        console.log(notifications.filter((notif) => !notif.visto).length)
+        actualizarNotificacionesNoVistas(notifications.filter((notif) => !notif.visto).length);
     };
 
     const handleNotificationClick = (notif) => {
-        marcarComoLeido(notif.id);
+        if (!notif.visto){
+            marcarComoLeido(notif.id);
+        }
         setSelectedNotification(notif);
     };
 
@@ -80,13 +90,15 @@ const BaseNotificacion = () => {
                                 onClick={() => handleNotificationClick(notif)}
                                 className={`notification-item ${notif.visto ? 'read' : 'unread'}`}
                             >
-                                <h3>{notif.tipo_evento}</h3>
-                                <p>
-                                    {notif.mensaje.length > 50
-                                        ? `${notif.mensaje.substring(0, 50)}...`
+                                <h3 className="notification-title">{notif.tipo_evento}</h3>
+                                <p className="notification-message">
+                                    {notif.mensaje.length > 100
+                                        ? `${notif.mensaje.substring(0, 100)}...`
                                         : notif.mensaje}
                                 </p>
-                                <span>{new Date(notif.fecha).toLocaleDateString()}, {new Date(notif.fecha).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                <span className="notification-date">
+                                    {new Date(notif.fecha).toLocaleDateString()}, {new Date(notif.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
                             </div>
                         ))
                     )}

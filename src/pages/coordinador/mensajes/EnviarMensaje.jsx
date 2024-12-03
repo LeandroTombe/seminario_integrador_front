@@ -1,13 +1,11 @@
 import axios from 'axios';
-import Sidebar from "./SidebarCoordinador";
-import Layout from '../../Layout';
 import React, { useState, useEffect } from 'react';
 import './EnviarMensaje.css';
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 const EnviarMensajeMultidestinatario = () => {
   const { authTokens } = useAuth();
-  const [titulo, setTitulo] = useState('');
+  const [asunto, setAsunto] = useState('');
   const [contenido, setContenido] = useState('');
   const [alumnos, setAlumnos] = useState([]);
   const [alumnosFiltrados, setAlumnosFiltrados] = useState([]);
@@ -94,15 +92,23 @@ const EnviarMensajeMultidestinatario = () => {
     }
 
     const payload = {
-      titulo,
+      asunto,
       contenido,
-      alumnos: alumnosSeleccionados,
+      destinatarios: alumnosSeleccionados,
     };
 
     try {
-      await axios.post('http://127.0.0.1:8000/api/v1/estudiantes/coordinador/enviar-mensaje/', payload);
+        await axios.post(
+            'http://127.0.0.1:8000/api/v1/estudiantes/coordinador/enviar-mensaje/',
+            payload,
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens.refresh}`,
+              },
+            }
+          );
       setMensajeEnviado(true);
-      setTitulo('');
+      setAsunto('');
       setContenido('');
       setAlumnosSeleccionados([]);
       setTimeout(() => setMensajeEnviado(false), 3000);
@@ -113,10 +119,7 @@ const EnviarMensajeMultidestinatario = () => {
 
   return (
     <>
-      <Sidebar />
-      <Layout>
         <div className="containerConfig">
-          <h3 className="mb-4 text-center">Enviar Mensaje a Alumnos</h3>
           {mensajeEnviado && (
             <div className="alert alert-success text-center">
               ¡Mensaje enviado con éxito!
@@ -124,13 +127,13 @@ const EnviarMensajeMultidestinatario = () => {
           )}
           <form onSubmit={enviarMensaje}>
             <div className="form-group mb-3">
-              <label htmlFor="titulo" className="form-label">Título</label>
+              <label htmlFor="asunto" className="form-label">Título</label>
               <input
                 type="text"
-                id="titulo"
+                id="asunto"
                 className="form-control"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
+                value={asunto}
+                onChange={(e) => setAsunto(e.target.value)}
                 placeholder="Ingresa el título del mensaje"
                 required
               />
@@ -249,7 +252,6 @@ const EnviarMensajeMultidestinatario = () => {
             </div>
           </form>
         </div>
-      </Layout>
       
     </>
   );

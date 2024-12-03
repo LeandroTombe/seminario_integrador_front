@@ -1,19 +1,21 @@
-import {useState, useEffect } from 'react';
+// SidebarCoordinador.js
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './SidebarCoordinador.css';
 import { useAuth } from '../../context/AuthContext';
+import { useMensajes } from '../../context/MensajesContext'; // Usar el contexto
 import '../../assets/logout-button.css';
-import { FiHome, FiMail, FiBarChart2, FiFileText, FiLogOut, FiChevronRight } from 'react-icons/fi';
+import { FiHome, FiMail, FiBarChart2, FiFileText, FiLogOut } from 'react-icons/fi';
 import { IoSchoolOutline } from "react-icons/io5";
 import { MdOutlinePayments } from "react-icons/md";
 
 const SidebarCoordinador = () => {
   const { logoutUser } = useAuth();
-  const location = useLocation(); // Hook para obtener la ubicación actual
+  const location = useLocation();
+  const { cantidadMensajesNoLeidos } = useMensajes(); // Consumir el contexto
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [isCompromisoOpen, setIsCompromisoOpen] = useState(false);
 
-  // Efecto para manejar el estado de despliegue de la sección Configuración y Compromiso de Pago basado en la ruta actual
   useEffect(() => {
     if (location.pathname.startsWith('/coordinador/configuracion')) {
       setIsConfigOpen(true);
@@ -46,7 +48,10 @@ const SidebarCoordinador = () => {
           <FiHome className="icon" /> Inicio
         </NavLink>
         <NavLink to="/coordinador/mensajes" className="sidebar-link logout-button" activeclassname="active">
-          <FiMail className="icon" /> Mensajes
+          <FiMail className="icon" /> Mensajes {console.log(cantidadMensajesNoLeidos)}
+          {cantidadMensajesNoLeidos > 0 && (
+            <span className="notification-badge">{cantidadMensajesNoLeidos}</span>
+          )}
         </NavLink>
         <NavLink to="/coordinador/reportes" className="sidebar-link logout-button" activeclassname="active">
           <FiBarChart2 className="icon" /> Reportes

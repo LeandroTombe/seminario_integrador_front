@@ -252,6 +252,7 @@ const ListadoPagos = () => {
                   )}
                 </Row>
               </Form>
+              <br />
           <Table striped bordered hover>
             <thead>
               <tr>

@@ -11,8 +11,9 @@ const EnviarMensajeMultidestinatario = () => {
   const [alumnosFiltrados, setAlumnosFiltrados] = useState([]);
   const [alumnosSeleccionados, setAlumnosSeleccionados] = useState([]);
   const [materias, setMaterias] = useState([]);
-  const [filtros, setFiltros] = useState({ materia: '', anio: '', compromiso: '', buscar: '' });
+  const [filtros, setFiltros] = useState({ materia: '', anio: '', buscar: '' });
   const [mensajeEnviado, setMensajeEnviado] = useState(false);
+  const [mostrarFiltros, setMostrarFiltros] = useState(false); // Estado para mostrar/ocultar filtros
 
   useEffect(() => {
     const fetchDatosIniciales = async () => {
@@ -36,77 +37,50 @@ const EnviarMensajeMultidestinatario = () => {
   const actualizarFiltros = async (nuevoFiltro) => {
     const nuevosFiltros = { ...filtros, ...nuevoFiltro };
     setFiltros(nuevosFiltros);
-  
-    // Crear el query string basado en los filtros seleccionados
+
     const queryParams = new URLSearchParams();
-  
-    if (nuevosFiltros.materia) {
-      queryParams.append("materia", nuevosFiltros.materia);
-    }
-    if (nuevosFiltros.anio) {
-      queryParams.append("anio", nuevosFiltros.anio);
-    }
-  
+    if (nuevosFiltros.materia) queryParams.append("materia", nuevosFiltros.materia);
+    if (nuevosFiltros.anio) queryParams.append("anio", nuevosFiltros.anio);
+
     try {
-      // Usar la URL con los filtros aplicados
-      const response = await axios.get(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/materia-anio/?${queryParams.toString()}`, {
+      const response = await axios.get(`http://127.0.0.1:8000/api/v1/estudiantes/alumno/materia-anio/?${queryParams}`, {
         headers: {
-          Authorization: `Bearer ${authTokens.refresh}`, // Incluir el token JWT
+          Authorization: `Bearer ${authTokens.refresh}`,
         },
       });
-  
-      // Filtrar los alumnos obtenidos por la búsqueda también
+
       const alumnosFiltradosPorBusqueda = nuevosFiltros.buscar
-        ? response.data.filter(alumno => 
+        ? response.data.filter((alumno) =>
             alumno.nombre.toLowerCase().includes(nuevosFiltros.buscar.toLowerCase()) ||
             alumno.apellido.toLowerCase().includes(nuevosFiltros.buscar.toLowerCase())
           )
         : response.data;
-  
-      setAlumnosFiltrados(alumnosFiltradosPorBusqueda); // Actualizar la lista de alumnos
+
+      setAlumnosFiltrados(alumnosFiltradosPorBusqueda);
     } catch (error) {
       console.error("Error al filtrar alumnos:", error);
     }
   };
 
   const manejarSeleccionAlumno = (id) => {
-    setAlumnosSeleccionados((prevSeleccionados) => {
-      if (prevSeleccionados.includes(id)) {
-        return prevSeleccionados.filter((alumnoId) => alumnoId !== id);
-      }
-      return [...prevSeleccionados, id];
-    });
+    setAlumnosSeleccionados((prevSeleccionados) =>
+      prevSeleccionados.includes(id)
+        ? prevSeleccionados.filter((alumnoId) => alumnoId !== id)
+        : [...prevSeleccionados, id]
+    );
   };
 
   const enviarMensaje = async (e) => {
     e.preventDefault();
+    const confirmacion = window.confirm("¿Estás seguro de enviar el mensaje?");
+    if (!confirmacion) return;
 
-    // Mostrar un alert para confirmar la acción
-    const confirmacion = window.confirm(
-      "¿Estás seguro de enviar el mensaje?"
-    );
-
-    // Si el usuario cancela, no se envía el mensaje
-    if (!confirmacion) {
-      return;
-    }
-
-    const payload = {
-      asunto,
-      contenido,
-      destinatarios: alumnosSeleccionados,
-    };
+    const payload = { asunto, contenido, destinatarios: alumnosSeleccionados };
 
     try {
-        await axios.post(
-            'http://127.0.0.1:8000/api/v1/estudiantes/coordinador/enviar-mensaje/',
-            payload,
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens.refresh}`,
-              },
-            }
-          );
+      await axios.post('http://127.0.0.1:8000/api/v1/estudiantes/coordinador/enviar-mensaje/', payload, {
+        headers: { Authorization: `Bearer ${authTokens.refresh}` },
+      });
       setMensajeEnviado(true);
       setAsunto('');
       setContenido('');
@@ -118,56 +92,66 @@ const EnviarMensajeMultidestinatario = () => {
   };
 
   return (
-    <>
-        <div className="containerConfig">
-          {mensajeEnviado && (
-            <div className="alert alert-success text-center">
-              ¡Mensaje enviado con éxito!
-            </div>
-          )}
-          <form onSubmit={enviarMensaje}>
-            <div className="form-group mb-3">
-              <label htmlFor="asunto" className="form-label">Título</label>
-              <input
-                type="text"
-                id="asunto"
-                className="form-control"
-                value={asunto}
-                onChange={(e) => setAsunto(e.target.value)}
-                placeholder="Ingresa el título del mensaje"
-                required
-              />
-            </div>
-            <div className="form-group mb-3">
-              <label htmlFor="contenido" className="form-label">Contenido</label>
-              <textarea
-                id="contenido"
-                className="form-control"
-                value={contenido}
-                onChange={(e) => setContenido(e.target.value)}
-                placeholder="Escribe el contenido del mensaje"
-                rows="4"
-                required
-              ></textarea>
-            </div>
+    <div className="containerConfig">
+      {mensajeEnviado && (
+        <div className="alert alert-success text-center">
+          ¡Mensaje enviado con éxito!
+        </div>
+      )}
+      <form onSubmit={enviarMensaje}>
+        <div className="form-group mb-3">
+          <label htmlFor="asunto" className="form-label">Asunto</label>
+          <input
+            type="text"
+            id="asunto"
+            className="form-control"
+            value={asunto}
+            onChange={(e) => setAsunto(e.target.value)}
+            placeholder="Ingresa el asunto del mensaje"
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <label htmlFor="contenido" className="form-label">Contenido</label>
+          <textarea
+            id="contenido"
+            className="form-control"
+            value={contenido}
+            onChange={(e) => setContenido(e.target.value)}
+            placeholder="Escribe el contenido del mensaje"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+        <hr />
+        <h5 className="mb-3">Seleccionar destinatarios</h5>
+        {/* Botón para mostrar/ocultar filtros */}
+        <div className="mb-4">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setMostrarFiltros(!mostrarFiltros)}
+          >
+            {mostrarFiltros ? 'Ocultar Filtros' : 'Mostrar Filtros'}
+          </button>
+        </div>
 
-            {/* Filtros */}
-            <div className="row mb-4"> 
+        {mostrarFiltros && (
+          <div className="filtros mb-4">
+            <div className="row">
               <div className="col-md-6">
-                  <label htmlFor="filtros-anio" className="form-label">Compromiso de pago actual firmado</label>
-                  <select
-                    id="filtros-anio"
-                    className="form-select"
-                    value={filtros.anio}
-                    onChange={(e) => actualizarFiltros({ anio: e.target.value })}
-                  >
-                    <option value="">Todos</option>
-                    {['Si', 'No'].map((anio) => (
-                      <option key={anio} value={anio}>
-                        {anio}
-                      </option>
-                    ))}
-                  </select>
+                <label htmlFor="filtros-anio" className="form-label">Compromiso de pago firmado</label>
+                <select
+                  id="filtros-anio"
+                  className="form-select"
+                  value={filtros.anio}
+                  onChange={(e) => actualizarFiltros({ anio: e.target.value })}
+                >
+                  <option value="">Todos</option>
+                  {['Si', 'No'].map((anio) => (
+                    <option key={anio} value={anio}>{anio}</option>
+                  ))}
+                </select>
               </div>
               <div className="col-md-6">
                 <label htmlFor="filtros-materia" className="form-label">Materia</label>
@@ -179,15 +163,12 @@ const EnviarMensajeMultidestinatario = () => {
                 >
                   <option value="">Todas las Materias</option>
                   {materias.map((materia) => (
-                    <option key={materia.id} value={materia.nombre}>
-                      {materia.nombre}
-                    </option>
+                    <option key={materia.id} value={materia.nombre}>{materia.nombre}</option>
                   ))}
                 </select>
               </div>
             </div>
-
-            <div className="form-group mb-3">
+            <div className="form-group mt-3">
               <label htmlFor="filtros-buscar" className="form-label">Buscar Alumnos</label>
               <input
                 type="text"
@@ -198,49 +179,47 @@ const EnviarMensajeMultidestinatario = () => {
                 placeholder="Buscar por nombre o apellido"
               />
             </div>
-
-            {/* Lista de alumnos con opción de seleccionar todos */}
-            <div className="form-group mb-4">
-              <div className="form-check mb-3">
-                <input
-                  type="checkbox"
-                  id="seleccionar-todos"
-                  className="form-check-input"
-                  checked={
-                    alumnosSeleccionados.length > 0 &&
-                    alumnosSeleccionados.length === alumnosFiltrados.length
-                  }
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setAlumnosSeleccionados(alumnosFiltrados.map((alumno) => alumno.id));
-                    } else {
-                      setAlumnosSeleccionados([]);
-                    }
-                  }}
-                />
-                <label htmlFor="seleccionar-todos" className="form-check-label">
-                  Seleccionar/Deseleccionar Todos
-                </label>
-              </div>
-              <div className="alumnos-list mt-3">
-                {alumnosFiltrados.map((alumno) => (
-                  <div key={alumno.id} className="form-check">
-                    <input
-                      type="checkbox"
-                      id={`alumno-${alumno.id}`}
-                      className="form-check-input"
-                      value={alumno.id}
-                      checked={alumnosSeleccionados.includes(alumno.id)}
-                      onChange={() => manejarSeleccionAlumno(alumno.id)}
-                    />
-                    <label htmlFor={`alumno-${alumno.id}`} className="form-check-label">
-                      {alumno.nombre} {alumno.apellido}
-                    </label>
-                  </div>
-                ))}
-              </div>
+          </div>
+        )}
+        <div className="form-check mb-3">
+          <input
+            type="checkbox"
+            id="seleccionar-todos"
+            className="form-check-input"
+            checked={
+              alumnosSeleccionados.length > 0 &&
+              alumnosSeleccionados.length === alumnosFiltrados.length
+            }
+            onChange={(e) => {
+              if (e.target.checked) {
+                setAlumnosSeleccionados(alumnosFiltrados.map((alumno) => alumno.id));
+              } else {
+                setAlumnosSeleccionados([]);
+              }
+            }}
+          />
+          <label htmlFor="seleccionar-todos" className="form-check-label">
+            Seleccionar/Deseleccionar Todos
+          </label>
+        </div>
+        <div className="alumnos-list mt-3">
+          {alumnosFiltrados.map((alumno) => (
+            <div key={alumno.id} className="form-check">
+              <input
+                type="checkbox"
+                id={`alumno-${alumno.id}`}
+                className="form-check-input"
+                value={alumno.id}
+                checked={alumnosSeleccionados.includes(alumno.id)}
+                onChange={() => manejarSeleccionAlumno(alumno.id)}
+              />
+              <label htmlFor={`alumno-${alumno.id}`} className="form-check-label">
+                {alumno.nombre} {alumno.apellido}
+              </label>
             </div>
-
+          ))}
+        </div>
+          <br />
             <div className="d-flex justify-content-center">
               <button
                 type="submit"
@@ -250,10 +229,8 @@ const EnviarMensajeMultidestinatario = () => {
                 Enviar Mensaje
               </button>
             </div>
-          </form>
-        </div>
-      
-    </>
+      </form>
+    </div>
   );
 };
 

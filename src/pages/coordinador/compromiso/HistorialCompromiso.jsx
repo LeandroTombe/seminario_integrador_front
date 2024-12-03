@@ -109,9 +109,9 @@ function HistorialCompromiso() {
                   <tr key={index}>
                     <td>{compromiso.año}</td>
                     <td>{compromiso.cuatrimestre}</td>
-                    <td>{compromiso.importe_matricula}</td>
-                    <td>{compromiso.importe_completo}</td>
-                    <td>{compromiso.importe_reducido}</td>
+                    <td>$ {compromiso.importe_matricula}</td>
+                    <td>$ {compromiso.importe_completo}</td>
+                    <td>$ {compromiso.importe_reducido}</td>
                     <td>
                       {compromiso.compromiso_contenido && (
                         <span

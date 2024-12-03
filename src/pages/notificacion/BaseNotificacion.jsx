@@ -4,13 +4,13 @@ import { useMensajes } from "../../context/MensajesContext"
 import { Pagination } from 'react-bootstrap';
 import './BaseNotificacion.css'; // Archivo CSS separado para estilos
 
-const BaseNotificacion = ({ actualizarNotificacionesNoVistas }) => {
+const BaseNotificacion = () => {
     const { authTokens } = useAuth();
-    const {marcarNotificacionComoVista} = useMensajes();
+    const {marcarNotificacionComoVista, } = useMensajes();
     const [notifications, setNotifications] = useState([]);
     const [selectedNotification, setSelectedNotification] = useState(null);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
-    const notificationsPerPage = 4; // Número de notificaciones por página
+    const notificationsPerPage = 8; // Número de notificaciones por página
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -21,14 +21,12 @@ const BaseNotificacion = ({ actualizarNotificacionesNoVistas }) => {
             });
             const data = await response.json();
             setNotifications(data);
-            const unreadCount = data.filter((notif) => !notif.visto).length;
-            actualizarNotificacionesNoVistas(unreadCount);
         };
 
         fetchNotifications();
         const interval = setInterval(fetchNotifications, 60000); // Polling cada 1 min
         return () => clearInterval(interval);
-    }, [authTokens, actualizarNotificacionesNoVistas]);
+    }, [authTokens]);
 
     const marcarComoLeido = async (id) => {
         await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/notificaciones/${id}/`, {
@@ -45,7 +43,6 @@ const BaseNotificacion = ({ actualizarNotificacionesNoVistas }) => {
 
         marcarNotificacionComoVista();
         console.log(notifications.filter((notif) => !notif.visto).length)
-        actualizarNotificacionesNoVistas(notifications.filter((notif) => !notif.visto).length);
     };
 
     const handleNotificationClick = (notif) => {

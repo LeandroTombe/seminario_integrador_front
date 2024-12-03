@@ -22,7 +22,7 @@ const SidebarAlumno = () => {
             <FiHome className="icon" /> Inicio
           </NavLink>
           <NavLink to="/alumno/mensajes" className="sidebar-link" activeclassname="active">
-            <FiMail className="icon" /> Notificaciones
+            <FiMail className="icon" /> Mensajes
             {(cantidadMensajesNoLeidos + cantidadNotificacionesNoVistas) > 0 && (
               <span className="notification-badge">{cantidadMensajesNoLeidos + cantidadNotificacionesNoVistas}</span>
             )}

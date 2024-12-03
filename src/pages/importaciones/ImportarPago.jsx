@@ -70,7 +70,7 @@ const ImportDataComponent = () => {
             <div className="container-import">
                 <input type="file" onChange={handleFileChange} />
                 <button onClick={handleUpload}>Subir archivo</button>
-    
+                <br />
                 {response && (
                     <div>
                         <div className="button-group">

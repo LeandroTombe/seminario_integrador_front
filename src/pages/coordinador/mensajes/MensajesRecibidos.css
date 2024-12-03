@@ -94,6 +94,8 @@
     font-size: 16px;
     color: #444;
     margin-top: 10px;
+    word-wrap: break-word; /* Rompe líneas si el contenido es muy largo */
+    overflow-wrap: break-word;
 }
 
 .mensaje-detalle .status {

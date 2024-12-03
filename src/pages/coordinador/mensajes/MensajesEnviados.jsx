@@ -8,7 +8,7 @@ const MensajesEnviados = () => {
     const [mensajes, setMensajes] = useState([]);
     const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
     const [paginaActual, setPaginaActual] = useState(1); // Página actual
-    const mensajesPorPagina = 4; // Número de mensajes por página
+    const mensajesPorPagina = 8; // Número de mensajes por página
 
     useEffect(() => {
         const fetchMensajes = async () => {
@@ -86,11 +86,15 @@ const MensajesEnviados = () => {
                                 onClick={() => handleMensajeClick(msg)}
                                 className="mensaje-item read"
                             >
-                                <h3 className="mensaje-titulo">{msg.asunto}</h3>
-                                <p className="mensaje-contenido">
-                                    {msg.asunto.length > 100
-                                        ? `${msg.asunto.substring(0, 100)}...`
+                                <h3 className="mensaje-titulo">
+                                    {msg.asunto.length > 30
+                                        ? `${msg.asunto.substring(0, 30)}...`
                                         : msg.asunto}
+                                </h3>
+                                <p className="mensaje-contenido">
+                                    {msg.contenido.length > 100
+                                        ? `${msg.contenido.substring(0, 100)}...`
+                                        : msg.contenido}
                                 </p>
                                 <span className="mensaje-fecha">
                                     {new Date(msg.fecha_envio).toLocaleDateString()}, {new Date(msg.fecha_envio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

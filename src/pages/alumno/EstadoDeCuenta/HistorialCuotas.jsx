@@ -6,7 +6,7 @@ const HistorialCuotas = (authTokens) => {
 
     return (
         <>
-            { true ? (
+            { false ? (
                 <p>No existen cuotas anteriores </p>    
             ) : (
             <Table striped bordered hover>
@@ -21,6 +21,46 @@ const HistorialCuotas = (authTokens) => {
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>3</td>
+                        <td>2024</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 00.00</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 20000.00</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>2024</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 00.00</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 20000.00</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>2024</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 00.00</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 20000.00</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>2024</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 00.00</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 20000.00</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>2024</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 00.00</td>
+                        <td>$ 20000.00</td>
+                        <td>$ 20000.00</td>
+                    </tr>
                 </tbody>
             </Table>
             )}

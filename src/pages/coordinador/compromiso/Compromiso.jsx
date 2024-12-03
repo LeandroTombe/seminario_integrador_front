@@ -83,11 +83,14 @@ function Compromiso({ setActiveTab }) {
               </div>
             )}
 
-            <div className="conteinerBotones">
-              <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>
-                Modificar Valores
-              </button>
-            </div>
+            {false && (
+                <div className="conteinerBotones">
+                    <button className="btn btn-primary me-3" type="button" onClick={handleEditarCompromiso}>
+                        Modificar Valores
+                    </button>
+                </div> 
+            )
+            }
           </div>
         )}
       </div>

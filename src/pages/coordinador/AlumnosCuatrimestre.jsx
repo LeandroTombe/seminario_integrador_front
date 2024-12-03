@@ -9,7 +9,7 @@ const AlumnosCuatrimestre = () => {
     const [error, setError] = useState(null); // Manejo de errores
     const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(6);
+    const [itemsPerPage] = useState(8);
     const [filterFirmo, setFilterFirmo] = useState('todos'); // Estado para el filtro de firma de compromiso
     const [filterEstado, setFilterEstado] = useState('todos'); // Estado para el filtro de firma de compromiso
 

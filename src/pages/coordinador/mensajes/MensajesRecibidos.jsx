@@ -4,13 +4,13 @@ import { useMensajes } from "../../../context/MensajesContext"; // Usar el conte
 import { Pagination } from 'react-bootstrap';
 import './MensajesRecibidos.css';
 
-const MensajesRecibidos = ({ actualizarCantidadMensajesNoLeidos }) => {
+const MensajesRecibidos = () => {
   const { authTokens, user } = useAuth();
   const { cantidadMensajesNoLeidos, marcarMensajeComoLeido } = useMensajes();
   const [mensajes, setMensajes] = useState([]);
   const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
   const [paginaActual, setPaginaActual] = useState(1);
-  const mensajesPorPagina = 4;
+  const mensajesPorPagina = 8;
 
   useEffect(() => {
     const fetchMensajes = async () => {
@@ -21,13 +21,12 @@ const MensajesRecibidos = ({ actualizarCantidadMensajesNoLeidos }) => {
       });
       const data = await response.json();
       setMensajes(data);
-      actualizarCantidadMensajesNoLeidos(data.filter(msg => !msg.leido_por || !msg.leido_por.includes(user.user_id)).length);
     };
 
     fetchMensajes();
     const interval = setInterval(fetchMensajes, 60000); // Polling cada 1 min
     return () => clearInterval(interval);
-  }, [authTokens, user.user_id, actualizarCantidadMensajesNoLeidos]);
+  }, [authTokens, user.user_id]);
 
   const marcarComoLeido = async (id) => {
     await fetch(`http://127.0.0.1:8000/api/v1/estudiantes/mensajes/${id}/`, {
@@ -45,7 +44,6 @@ const MensajesRecibidos = ({ actualizarCantidadMensajesNoLeidos }) => {
 
     // Actualizamos la cantidad de mensajes no leídos
     marcarMensajeComoLeido();
-    actualizarCantidadMensajesNoLeidos(mensajes.filter(msg => !msg.leido_por || !msg.leido_por.includes(user.user_id)).length - 1);
   };
 
   const handleMensajeClick = (msg) => {

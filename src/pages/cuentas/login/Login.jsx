@@ -51,12 +51,6 @@ const Login = () => {
                   Acceder
                 </Button>
               </Form>
-
-              <div className="text-center mt-3">
-                <Link to="/recuperar-password" className="text-muted">
-                  ¿Olvidaste tu contraseña?
-                </Link>
-              </div>
             </Card.Body>
           </Card>
         </Col>

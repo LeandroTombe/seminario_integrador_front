@@ -59,14 +59,14 @@ const EnviarMensajeAlumno = () => {
           )}
           <form onSubmit={enviarMensaje}>
             <div className="form-group mb-3">
-              <label htmlFor="asunto" className="form-label">Título</label>
+              <label htmlFor="asunto" className="form-label">Asunto</label>
               <input
                 type="text"
                 id="asunto"
                 className="form-control"
                 value={asunto}
                 onChange={(e) => setAsunto(e.target.value)}
-                placeholder="Ingresa el título del mensaje"
+                placeholder="Ingresa el asunto del mensaje"
                 required
               />
             </div>

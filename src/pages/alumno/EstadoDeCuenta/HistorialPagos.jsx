@@ -38,6 +38,15 @@ const HistorialPagos = ({ authTokens, alumno }) => {
         fetchPagos();
     }, [authTokens, alumno]);
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const dia = date.getUTCDate().toString().padStart(2, '0');
+        const mes = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+        const año = date.getUTCFullYear();
+    
+        return `${dia}/${mes}/${año}`;
+      };
 
     return(
         <>
@@ -49,6 +58,7 @@ const HistorialPagos = ({ authTokens, alumno }) => {
                         <tr>
                         <th>Nro Recibo</th>
                         <th>Monto Pagado</th>
+                        <th>Fecha Pago</th>
                         <th>Forma de Pago</th>
                         <th>Concepto de Pago</th>
                         </tr>
@@ -58,6 +68,7 @@ const HistorialPagos = ({ authTokens, alumno }) => {
                         <tr key={pago.id}>
                             <td>{pago.numero_recibo}</td>
                             <td>{pago.monto_confirmado}</td>
+                            <td>{formatDate(pago.fecha_pago_confirmado) || 'N/A'}</td>
                             <td>{pago.forma_pago}</td>
                             <td>
                                 <>

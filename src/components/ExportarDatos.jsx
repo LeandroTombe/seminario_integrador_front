@@ -40,37 +40,38 @@ const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
         const margenIzquierdo = 10;
         const margenSuperior = 10;
         const anchoPagina = doc.internal.pageSize.width - margenIzquierdo * 2;
-
-        // Título
+    
+        // Fecha de emisión (arriba del título)
+        doc.setFontSize(10);
+        doc.text(`Fecha de emisión: ${obtenerFechaEmision()}`, margenIzquierdo, margenSuperior);
+    
+        // Título (debajo de la fecha de emisión)
         const tituloAjustado = doc.splitTextToSize(titulo, anchoPagina);
         doc.setFontSize(14);
-        doc.text(tituloAjustado, margenIzquierdo, margenSuperior);
-
-        // Fecha de emisión
-        doc.setFontSize(10);
-        doc.text(`Fecha de emisión: ${obtenerFechaEmision()}`, margenIzquierdo, margenSuperior + 10);
-
-        // Tabla
+        doc.text(tituloAjustado, margenIzquierdo, margenSuperior + 10);
+    
+        // Tabla con texto más pequeño
         doc.autoTable({
             head: [encabezados.map(header => header.label)],
             body: datos.map(item => encabezados.map(header => item[header.key])),
-            startY: margenSuperior + 20,
+            startY: margenSuperior + 20, // Ajustado para incluir fecha y título
             margin: { top: margenSuperior, left: margenIzquierdo, right: margenIzquierdo },
+            styles: { fontSize: 8 }, // Reducimos el tamaño de la fuente
         });
-
+    
         // Total
         if (totales) {
             const finalY = doc.lastAutoTable.finalY || margenSuperior + 30;
             doc.text(totales, margenIzquierdo, finalY + 10);
         }
-
+    
         doc.save(`${titulo}.pdf`);
     };
 
     const exportarXLSX = () => {
         const hoja = [
-            [`${titulo}`], // Primera fila: Título del informe
             [`Fecha de emisión: ${obtenerFechaEmision()}`], // Segunda fila: Fecha de emisión
+            [`${titulo}`], // Primera fila: Título del informe
             [], // Fila vacía para separar encabezados de los datos
             encabezados.map(header => header.label), // Encabezados
             ...datos.map(item => encabezados.map(header => item[header.key])), // Datos
@@ -101,13 +102,13 @@ const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
                     <p>Seleccione el formato de exportación:</p>
                     <div className="d-flex justify-content-around">
                         <Button variant="outline-primary" onClick={exportarCSV}>
-                            Exportar CSV
+                            Exportar .csv
                         </Button>
                         <Button variant="outline-secondary" onClick={exportarPDF}>
                             Exportar PDF
                         </Button>
                         <Button variant="outline-success" onClick={exportarXLSX}>
-                            Exportar Excel
+                            Exportar .xlsx
                         </Button>
                     </div>
                 </Modal.Body>

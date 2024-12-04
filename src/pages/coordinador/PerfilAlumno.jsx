@@ -61,7 +61,7 @@ const PerfilAlumno = () => {
                     <ListGroup.Item><strong>Nombre completo:</strong> {firmante.apellido} {firmante.nombre}</ListGroup.Item>
                     <ListGroup.Item><strong>DNI:</strong> {firmante.dni}</ListGroup.Item>
                     <ListGroup.Item><strong>Legajo:</strong> {firmante.legajo}</ListGroup.Item>
-                    <ListGroup.Item><strong>Teléfono:</strong> {firmante.telefono}</ListGroup.Item>
+                    <ListGroup.Item><strong>Teléfono:</strong> {firmante.telefono || "3624316523"}</ListGroup.Item>
                     <ListGroup.Item><strong>Email:</strong> {firmante.email}</ListGroup.Item>
                   </ListGroup>
                 </Accordion.Body>

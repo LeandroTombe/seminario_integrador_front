@@ -80,7 +80,13 @@ const MensajesEnviados = () => {
                     {mensajesActuales.length === 0 ? (
                         <p>No tienes mensajes enviados</p>
                     ) : (
-                        mensajesActuales.map((msg) => (
+                    <>
+                        <div className="mensaje-header">
+                            <div className="mensaje-titulo">Asunto</div>
+                            <div className="mensaje-contenido">Contenido</div>
+                            <div className="mensaje-fecha">Enviado</div>
+                        </div>
+                        {mensajesActuales.map((msg) => (
                             <div
                                 key={msg.id}
                                 onClick={() => handleMensajeClick(msg)}
@@ -100,9 +106,9 @@ const MensajesEnviados = () => {
                                     {new Date(msg.fecha_envio).toLocaleDateString()}, {new Date(msg.fecha_envio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             </div>
-                        ))
+                        ))}
+                        </>
                     )}
-
                     {/* Componente de paginación de React-Bootstrap */}
                     <Pagination className="pagination-container">
                         <Pagination.Prev

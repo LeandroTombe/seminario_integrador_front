@@ -83,26 +83,35 @@ const MensajesRecibidos = () => {
           <span>Recibido: {new Date(mensajeSeleccionado.fecha_envio).toLocaleDateString()}, {new Date(mensajeSeleccionado.fecha_envio).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
       ) : (
-        <div className="mensaje-lista">
-          {mensajesActuales.length === 0 ? (
-            <p>No tienes mensajes recibidos</p>
-          ) : (
-            mensajesActuales.map((msg) => (
-              <div
-                key={msg.id}
-                onClick={() => handleMensajeClick(msg)}
-                className={`mensaje-item ${msg.leido_por && msg.leido_por.includes(user.user_id) ? 'read' : 'unread'}`}
-              >
-                <h3 className="mensaje-titulo">{msg.remitente.apellido} {msg.remitente.nombre}</h3>
-                <p className="mensaje-contenido">
-                  {msg.asunto.length > 100 ? `${msg.asunto.substring(0, 100)}...` : msg.asunto}
-                </p>
-                <span className="mensaje-fecha">
-                  {new Date(msg.fecha_envio).toLocaleDateString()}, {new Date(msg.fecha_envio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-            ))
-          )}
+          <div className="mensaje-lista">
+            {mensajesActuales.length === 0 ? (
+              <p>No tienes mensajes recibidos</p>
+            ) : (
+              <>
+
+                <div className="mensaje-header">
+                  <div className="mensaje-titulo">Remitente</div>
+                  <div className="mensaje-contenido">Asunto</div>
+                  <div className="mensaje-fecha">Recibido</div>
+                </div>
+
+                {mensajesActuales.map((msg) => (
+                  <div
+                    key={msg.id}
+                    onClick={() => handleMensajeClick(msg)}
+                    className={`mensaje-item ${msg.leido_por && msg.leido_por.includes(user.user_id) ? 'read' : 'unread'}`}
+                  >
+                    <h3 className="mensaje-titulo">{msg.remitente.apellido} {msg.remitente.nombre}</h3>
+                    <p className="mensaje-contenido">
+                      {msg.asunto.length > 100 ? `${msg.asunto.substring(0, 100)}...` : msg.asunto}
+                    </p>
+                    <span className="mensaje-fecha">
+                      {new Date(msg.fecha_envio).toLocaleDateString()}, {new Date(msg.fecha_envio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                ))}
+              </>
+            )}
 
           <Pagination className="pagination-container">
             <Pagination.Prev

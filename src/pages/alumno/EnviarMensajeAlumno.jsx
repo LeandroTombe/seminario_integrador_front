@@ -57,6 +57,7 @@ const EnviarMensajeAlumno = () => {
               ¡Mensaje enviado con éxito!
             </div>
           )}
+          <h2>Enviar mensaje a coordinador</h2>
           <form onSubmit={enviarMensaje}>
             <div className="form-group mb-3">
               <label htmlFor="asunto" className="form-label">Asunto</label>
@@ -88,7 +89,7 @@ const EnviarMensajeAlumno = () => {
                 type="submit"
                 className="btn btn-primary"
               >
-                Enviar Mensaje
+                Enviar
               </button>
             </div>
           </form>

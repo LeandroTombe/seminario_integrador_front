@@ -226,7 +226,7 @@ const EnviarMensajeMultidestinatario = () => {
                 className="btn btn-primary"
                 disabled={alumnosSeleccionados.length === 0}
               >
-                Enviar Mensaje
+                Enviar
               </button>
             </div>
       </form>

@@ -125,3 +125,36 @@
 .pagination-container .page-item {
     cursor: pointer;
 }
+
+.mensaje-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background-color: #f1f1f1;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+}
+
+.mensaje-header .mensaje-titulo {
+    font-size: 18px;
+    color: #000;
+    flex: 1;
+    text-align: left;
+}
+
+.mensaje-header .mensaje-contenido {
+    font-size: 16px;
+    color: #000;
+    flex: 2;
+    margin: 0 10px;
+    text-align: left;
+}
+
+.mensaje-header .mensaje-fecha {
+    font-size: 16px;
+    color: #000;
+    flex: 0.5;
+    text-align: right;
+}

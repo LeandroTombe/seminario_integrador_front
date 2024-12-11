@@ -81,7 +81,13 @@ const BaseNotificacion = () => {
                     {currentNotifications.length === 0 ? (
                         <p>No tienes notificaciones</p>
                     ) : (
-                        currentNotifications.map((notif) => (
+                        <>
+                        <div className="mensaje-header">
+                            <div className="mensaje-titulo">Asunto</div>
+                            <div className="mensaje-contenido">Contenido</div>
+                            <div className="mensaje-fecha">Recibido</div>
+                        </div>
+                        {currentNotifications.map((notif) => (
                             <div
                                 key={notif.id}
                                 onClick={() => handleNotificationClick(notif)}
@@ -97,7 +103,8 @@ const BaseNotificacion = () => {
                                     {new Date(notif.fecha).toLocaleDateString()}, {new Date(notif.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             </div>
-                        ))
+                        ))}
+                        </>
                     )}
 
                     {/* Componente de paginación de React-Bootstrap */}

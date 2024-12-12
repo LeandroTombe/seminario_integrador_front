@@ -19,6 +19,7 @@ const GestionHabilitacionAlumno = () => {
   const [mes, setMes] = useState([]);
   const [inhabilitados, setInhabilitados] = useState(0);
   const [filtroEstado, setFiltroEstado] = useState('todos');
+  const [filtroAccion, setFiltroAccion] = useState('seleccionar');
 
     useEffect(() => {
       const fetchultimacuotapagada = async () => {
@@ -97,6 +98,16 @@ const GestionHabilitacionAlumno = () => {
     });
   };
 
+  const AlumnosInhabilitar = alumnos.filter(item => 
+    item.pago_al_dia && 
+    item.cuotas_vencidas.length > 0
+  );
+
+  const AlumnosHabilitar = alumnos.filter(item => 
+    !item.pago_al_dia && 
+    item.cuotas_vencidas.length == 0
+  );
+
   // Filtrar alumnos según el filtro de estado
   const filteredAlumnos = alumnos.filter(alumno => {
     const matchesSearch = 
@@ -108,7 +119,12 @@ const GestionHabilitacionAlumno = () => {
             (filtroEstado === 'habilitado' && alumno.pago_al_dia) ||
             (filtroEstado === 'inhabilitado' && !alumno.pago_al_dia);
     
-  return matchesSearch && matchesEstadoFilter;
+    const matchesAccionFilter =
+            filtroAccion === "seleccionar" ||
+            (filtroAccion === "habilitar" && (!alumno.pago_al_dia && alumno.cuotas_vencidas.length == 0)) ||
+            (filtroAccion === "inhabilitar" && (alumno.pago_al_dia && alumno.cuotas_vencidas.length > 0));
+    
+  return matchesSearch && matchesEstadoFilter && matchesAccionFilter;
   });
 
   // Paginación
@@ -196,22 +212,35 @@ const GestionHabilitacionAlumno = () => {
 
     // Generación del título según los filtros seleccionados
     const generarTitulo = () => {
-      let titulo = "Alumnos con cuotas vencidas";
-      if (filtroEstado !== 'todos') {
-          titulo += ` con estado ${filtroEstado === 'habilitado' ? 'habilitado' : 'inhabilitado'}`;
+      let titulo = "";
+      if (filtroAccion == 'seleccionar') {
+        titulo += 'Alumnos a habilitar o inhabilitar'
+      } else {
+          titulo += `Alumnos a ${filtroAccion === 'habilitar' ? 'habilitar' : 'inhabilitar'}`;
       }
       return titulo;
     };
 
   return (
     <div>
+      {console.log(AlumnosHabilitar)}
         <Row className="justify-content-center">
             <Col xs={12} md={5}>
                 <Card className="text-center bg-light">
                     <Card.Body>
-                        <Card.Title>{inhabilitados} / {totalFirmantes}</Card.Title>
+                        <Card.Title>{AlumnosHabilitar.length}</Card.Title>
                         <Card.Text className="text-secondary">
-                            Total de alumnos inhabilitados sobre total de alumnos firmantes del compromiso actual
+                            Total de alumnos a habilitar
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+            <Col xs={12} md={5}>
+                <Card className="text-center bg-light">
+                    <Card.Body>
+                        <Card.Title>{AlumnosInhabilitar.length}</Card.Title>
+                        <Card.Text className="text-secondary">
+                            Total de alumnos a inhabilitar
                         </Card.Text>
                     </Card.Body>
                 </Card>
@@ -230,13 +259,23 @@ const GestionHabilitacionAlumno = () => {
             />
           </Form.Group>
 
-          {/* Filtro de estado */}
+          {/* Filtro de estado
           <Form.Group controlId="estadoFilter" className="w-50 ms-2">
             <Form.Label>Estado Actual</Form.Label>
             <Form.Select value={filtroEstado} onChange={handleFiltroEstadoChange}>
               <option value="todos">Todos</option>
               <option value="habilitado">Habilitado</option>
               <option value="inhabilitado">Inhabilitado</option>
+            </Form.Select>
+          </Form.Group>
+          */}
+          {/* Filtro de accion */}
+          <Form.Group controlId="accionFilter" className="w-50 ms-2">
+            <Form.Label>Accion</Form.Label>
+            <Form.Select value={filtroAccion} onChange={(e) => setFiltroAccion(e.target.value)}>
+              <option value="seleccionar">Todos</option>
+              <option value="habilitar">Alumnos a habilitar</option>
+              <option value="inhabilitar">Alumnos a inhabilitar</option>
             </Form.Select>
           </Form.Group>
         </Form>
@@ -255,6 +294,7 @@ const GestionHabilitacionAlumno = () => {
       </thead>
       <tbody>
         {currentItems.map((item) => {
+          {console.log(item.pago_al_dia)}
           // Obtener el importe de la última cuota pagada (si existe)
           const ultimaCuotaPagada = item.cuotas_vencidas.length > 0
             ? Math.max(...item.cuotas_vencidas.map((cuota) => cuota.importePagado || 0))
@@ -271,8 +311,6 @@ const GestionHabilitacionAlumno = () => {
               
               {/* Nueva columna para mostrar las cuotas vencidas */}
               <td>
-                {console.log(item.cuotas_vencidas)}
-                {console.log(item.cuotas_vencidas)}
                 {item.cuotas_vencidas && item.cuotas_vencidas.length > 0 ? (
                   <ul>
                     {item.cuotas_vencidas

@@ -15,7 +15,7 @@ function Reportes() {
                 <Tab eventKey="reporte1" title="Historial de Pagos" mountOnEnter unmountOnExit>
                     <ListadoPagos />
                 </Tab>
-                <Tab eventKey="reporte2" title="Alumnos con Cuotas Vencidas" mountOnEnter unmountOnExit>
+                <Tab eventKey="reporte2" title="Gestión de inhabilitaciones" mountOnEnter unmountOnExit>
                     <GestionHabilitacionAlumno />
                 </Tab>
                 <Tab eventKey="reporte3" title="Prórrogas de Regularización" mountOnEnter unmountOnExit>

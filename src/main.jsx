@@ -19,6 +19,7 @@ import AlumnoTramites from "./pages/alumno/AlumnoTramites.jsx";
 import AlumnoPago from "./pages/alumno/AlumnoPago.jsx";
 import BaseNotificacion from "./pages/notificacion/BaseNotificacion.jsx";
 import Prorroga from "./pages/alumno/Tramites/Prorroga.jsx"
+import Perfil from "./pages/alumno/Perfil.jsx"
 
 /* Paginas de coordinador */
 import Inicio from "./pages/coordinador/Inicio.jsx";
@@ -92,6 +93,12 @@ const App = () => {
           path="/alumno/tramites/prorroga"
           element={
             <ProtectedRoute element={<Prorroga />} roles={["Alumno"]} />
+          }
+        />
+        <Route
+          path="/alumno/perfil"
+          element={
+            <ProtectedRoute element={<Perfil />} roles={["Alumno"]} />
           }
         />
         <Route

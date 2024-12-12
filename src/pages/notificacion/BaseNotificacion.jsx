@@ -83,7 +83,7 @@ const BaseNotificacion = () => {
                     ) : (
                         <>
                         <div className="mensaje-header">
-                            <div className="mensaje-titulo">Asunto</div>
+                            <div className="mensaje-titulo">Título</div>
                             <div className="mensaje-contenido">Contenido</div>
                             <div className="mensaje-fecha">Recibido</div>
                         </div>

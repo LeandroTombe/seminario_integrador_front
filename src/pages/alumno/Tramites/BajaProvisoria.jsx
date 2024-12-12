@@ -65,10 +65,19 @@ const BajaProvisoria = () => {
         fetchBajas(); // Actualizar el historial
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const dia = date.getUTCDate().toString().padStart(2, '0');
+        const mes = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+        const año = date.getUTCFullYear();
+        return `${dia}/${mes}/${año}`;
+    };
+
     return (
         <>
             <h2>Historial de Bajas Provisorias</h2>
-            
+            {console.log(compromiso)}
             {bajas.length === 0 ? (
                 <p>No existen solicitudes de bajas provisorias anteriores</p>
             ) : (
@@ -113,6 +122,7 @@ const BajaProvisoria = () => {
             <Button variant="primary" onClick={() => setShowModal(true)}>
                 Solicitar Baja Provisoria
             </Button>
+            <p>Fecha límite para solicitar la baja provisoria: {formatDate(compromiso[0]?.fecha_limite_baja)}</p>
             <br /><br />
             {message && <Alert variant="success">{message}</Alert>}
 

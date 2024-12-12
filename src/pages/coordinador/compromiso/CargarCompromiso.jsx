@@ -18,6 +18,7 @@ function CargarCompromiso({setActiveTab}) {
     importe_seg_venc_comp: '',
     importe_pri_venc_red: '',
     importe_seg_venc_red: '',
+    fecha_limite_baja: '',
   });
 
   const [pdfFile, setPdfFile] = useState(null);
@@ -62,20 +63,34 @@ function CargarCompromiso({setActiveTab}) {
 
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
   
-    // Convertir el valor a número
-    const numericValue = Number(value);
+    if (type === "number") {
+      // Convertir el valor a número
+      const numericValue = Number(value);
   
-    // Verificar si el valor es un número y no negativo
-    if (!isNaN(numericValue) && numericValue >= 0) {
+      // Verificar si el valor es un número y no negativo
+      if (!isNaN(numericValue) && numericValue >= 0) {
+        setFormData({
+          ...formData,
+          [name]: numericValue,
+        });
+      } else {
+        // Opcional: Manejar valores no válidos (por ejemplo, mostrar un mensaje de error)
+        console.error("El valor ingresado no es válido o es negativo.");
+      }
+    } else if (type === "date") {
+      // Manejar fechas
       setFormData({
         ...formData,
-        [name]: numericValue
+        [name]: value, // Guardar el valor tal cual (es un string en formato de fecha)
       });
     } else {
-      // Opcional: Manejar valores no válidos (por ejemplo, mostrar un mensaje de error)
-      console.error("El valor ingresado no es válido o es negativo.");
+      // Manejo genérico para otros tipos de input
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     }
   };
 
@@ -288,6 +303,20 @@ function CargarCompromiso({setActiveTab}) {
                     required
                   />
                 </div>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="fecha_limite_baja" className="form-label">
+                Fecha límite para solicitud de baja provisoria
+              </label>
+              <input
+                type="date"
+                className="form-control"
+                id="fecha_limite_baja"
+                name="fecha_limite_baja"
+                value={formData.fecha_limite_baja}
+                onChange={handleChange}
+                required
+              />
             </div>
             
             <div className="mb-3">

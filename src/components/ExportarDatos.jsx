@@ -41,33 +41,41 @@ const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
         const margenSuperior = 10;
         const anchoPagina = doc.internal.pageSize.width - margenIzquierdo * 2;
     
-        // Fecha de emisión (arriba del título)
+        // Fecha de emisión
         doc.setFontSize(10);
         doc.text(`Fecha de emisión: ${obtenerFechaEmision()}`, margenIzquierdo, margenSuperior);
     
-        // Título (debajo de la fecha de emisión)
-        const tituloAjustado = doc.splitTextToSize(titulo, anchoPagina);
+        // Ajustar el título al ancho de la página
         doc.setFontSize(14);
-        doc.text(tituloAjustado, margenIzquierdo, margenSuperior + 10);
+        const tituloAjustado = doc.splitTextToSize(titulo, anchoPagina); // Divide el título
+        const alturaTitulo = tituloAjustado.length * doc.getTextDimensions('Text').h; // Calcula la altura
+        const posicionTitulo = margenSuperior + 10;
     
-        // Tabla con texto más pequeño
+        // Renderiza el título ajustado
+        doc.text(tituloAjustado, margenIzquierdo, posicionTitulo);
+    
+        // Posiciona la tabla después del título
+        const posicionTabla = posicionTitulo + alturaTitulo + 5;
+    
+        // Renderiza la tabla
         doc.autoTable({
             head: [encabezados.map(header => header.label)],
             body: datos.map(item => encabezados.map(header => item[header.key])),
-            startY: margenSuperior + 20, // Ajustado para incluir fecha y título
-            margin: { top: margenSuperior, left: margenIzquierdo, right: margenIzquierdo },
-            styles: { fontSize: 8 }, // Reducimos el tamaño de la fuente
+            startY: posicionTabla, // Coloca la tabla debajo del título
+            margin: { left: margenIzquierdo, right: margenIzquierdo },
+            styles: { fontSize: 8 },
         });
     
-        // Total
+        // Total (si existe)
         if (totales) {
-            const finalY = doc.lastAutoTable.finalY || margenSuperior + 30;
+            const finalY = doc.lastAutoTable.finalY || posicionTabla + 10;
             doc.text(totales, margenIzquierdo, finalY + 10);
         }
     
+        // Guarda el PDF
         doc.save(`${titulo}.pdf`);
     };
-
+    
     const exportarXLSX = () => {
         const hoja = [
             [`Fecha de emisión: ${obtenerFechaEmision()}`], // Segunda fila: Fecha de emisión
@@ -104,7 +112,7 @@ const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
                         <Button variant="outline-primary" onClick={exportarCSV}>
                             Exportar .csv
                         </Button>
-                        <Button variant="outline-secondary" onClick={exportarPDF}>
+                        <Button variant="outline-danger" onClick={exportarPDF}>
                             Exportar PDF
                         </Button>
                         <Button variant="outline-success" onClick={exportarXLSX}>

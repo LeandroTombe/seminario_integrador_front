@@ -4,7 +4,7 @@ import { Pagination } from 'react-bootstrap';
 import './MensajesRecibidos.css'; // Archivo CSS actualizado para estilos
 
 const MensajesEnviados = () => {
-    const { authTokens } = useAuth();
+    const { authTokens, user } = useAuth();
     const [mensajes, setMensajes] = useState([]);
     const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
     const [paginaActual, setPaginaActual] = useState(1); // Página actual
@@ -61,19 +61,28 @@ const MensajesEnviados = () => {
                     <h3>{mensajeSeleccionado.asunto}</h3>
                     <p>{mensajeSeleccionado.contenido}</p>
                     <span>Enviado: {new Date(mensajeSeleccionado.fecha_envio).toLocaleDateString()}, {new Date(mensajeSeleccionado.fecha_envio).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    <p>
-                        <button onClick={toggleDestinatariosVisibility}>
-                            {isDestinatariosVisible ? 'Ocultar Destinatarios' : 'Ver Destinatarios'}
-                        </button>
-                    </p>
+                    
+                    {user.role == "Coordinador" &&
+                    <>
+                        <p>
+                            <button onClick={toggleDestinatariosVisibility}>
+                                {isDestinatariosVisible ? 'Ocultar Destinatarios' : 'Ver Destinatarios'}
+                            </button>
+                        </p>
 
-                    {isDestinatariosVisible && (
-                        <div className="destinatarios-lista">
-                            {mensajeSeleccionado.destinatario.map((dest, index) => (
-                                <p key={index}>{dest.apellido}, {dest.nombre}</p>
-                            ))}
-                        </div>
-                    )}
+                        {isDestinatariosVisible && (
+                            <>
+                            <h2>Destinatarios</h2>
+                                <div className="alumnos-list">
+                                    {mensajeSeleccionado.destinatario.map((dest, index) => (
+                                        <p key={index}>{dest.apellido}, {dest.nombre} - {dest.legajo}</p>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+                    </>
+                    }
+
                 </div>
             ) : (
                 <div className="mensaje-lista">

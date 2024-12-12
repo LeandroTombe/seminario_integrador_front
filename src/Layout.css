@@ -27,3 +27,11 @@
   font-size: 30px;
 }
 
+.no-underline {
+  text-decoration: none; /* Elimina el subrayado */
+  color: inherit; /* Mantiene el color original */
+}
+
+.no-underline:hover {
+  text-decoration: none; /* Asegura que no se subraye al pasar el mouse */
+}

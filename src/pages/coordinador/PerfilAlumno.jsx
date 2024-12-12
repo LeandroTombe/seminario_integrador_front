@@ -69,7 +69,9 @@ const PerfilAlumno = () => {
               <Accordion.Item eventKey="1">
                 <Accordion.Header>Datos Académicos</Accordion.Header>
                 <Accordion.Body>
-                  <h5>Materias Actuales</h5>
+                  <h5><strong>Año de ingreso:</strong> {firmante.ingreso}</h5>
+                  <br />
+                  <h5>Materias cursadas actualmente</h5>
                   {materiasActuales.length > 0 ? (
                     <Table striped bordered hover>
                       <thead>
@@ -90,27 +92,25 @@ const PerfilAlumno = () => {
                   )}
 
                   <h5>Materias Cursadas en Años Anteriores</h5>
-                  {materiasAnteriores.length > 0 ? (
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Año</th>
-                          <th>Materia</th>
-                          <th>Calificación</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {materiasAnteriores.map((materia, index) => (
-                          <tr key={index}>
-                            <td>{materia.anio}</td>
-                            <td>{materia.nombre}</td>
-                            <td>{materia.calificacion}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                  {firmante.ingreso === 2024 ? (
+                    <p>No ha cursado materias en años anteriores</p>
                   ) : (
-                    <p>No ha cursado materias en años anteriores.</p>
+                    <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Año</th>
+                        <th>Materia</th>
+                        <th>Calificación</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>2023</td>
+                        <td>Programación I</td>
+                        <td>8</td>
+                      </tr>
+                    </tbody>
+                  </Table>
                   )}
                 </Accordion.Body>
               </Accordion.Item>

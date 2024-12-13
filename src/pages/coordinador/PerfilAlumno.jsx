@@ -69,9 +69,12 @@ const PerfilAlumno = () => {
               <Accordion.Item eventKey="1">
                 <Accordion.Header>Datos Académicos</Accordion.Header>
                 <Accordion.Body>
-                  <h5><strong>Año de ingreso:</strong> {firmante.ingreso}</h5>
-                  <br />
-                  <h5>Materias cursadas actualmente</h5>
+                <ListGroup variant="flush">
+                  <ListGroup.Item><strong>Año de ingreso:</strong> {firmante.ingreso}</ListGroup.Item>
+                  <ListGroup.Item><strong>Estado actual:</strong> {firmante.pago_al_dia ? "habilitado" : "inhabilitado"}</ListGroup.Item>
+                </ListGroup>
+                <br />
+                  <h5>Materias cursando actualmente</h5>
                   {materiasActuales.length > 0 ? (
                     <Table striped bordered hover>
                       <thead>

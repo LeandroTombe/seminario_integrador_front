@@ -99,31 +99,6 @@ const EnviarMensajeMultidestinatario = () => {
         </div>
       )}
       <form onSubmit={enviarMensaje}>
-        <div className="form-group mb-3">
-          <label htmlFor="asunto" className="form-label">Asunto</label>
-          <input
-            type="text"
-            id="asunto"
-            className="form-control"
-            value={asunto}
-            onChange={(e) => setAsunto(e.target.value)}
-            placeholder="Ingresa el asunto del mensaje"
-            required
-          />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="contenido" className="form-label">Contenido</label>
-          <textarea
-            id="contenido"
-            className="form-control"
-            value={contenido}
-            onChange={(e) => setContenido(e.target.value)}
-            placeholder="Escribe el contenido del mensaje"
-            rows="4"
-            required
-          ></textarea>
-        </div>
-        <hr />
         <h5 className="mb-3">Seleccionar destinatarios</h5>
         {/* Botón para mostrar/ocultar filtros */}
         <div className="mb-4">
@@ -218,6 +193,31 @@ const EnviarMensajeMultidestinatario = () => {
               </label>
             </div>
           ))}
+        </div>
+        <hr />
+        <div className="form-group mb-3">
+          <label htmlFor="asunto" className="form-label">Asunto</label>
+          <input
+            type="text"
+            id="asunto"
+            className="form-control"
+            value={asunto}
+            onChange={(e) => setAsunto(e.target.value)}
+            placeholder="Ingresa el asunto del mensaje"
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <label htmlFor="contenido" className="form-label">Contenido</label>
+          <textarea
+            id="contenido"
+            className="form-control"
+            value={contenido}
+            onChange={(e) => setContenido(e.target.value)}
+            placeholder="Escribe el contenido del mensaje"
+            rows="4"
+            required
+          ></textarea>
         </div>
           <br />
             <div className="d-flex justify-content-center">

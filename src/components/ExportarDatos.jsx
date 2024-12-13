@@ -102,7 +102,7 @@ const ExportarDatos = ({ titulo, encabezados, datos, totales }) => {
                 Exportar Datos
             </Button>
 
-            <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal show={showModal} onHide={handleCloseModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Exportar Datos</Modal.Title>
                 </Modal.Header>

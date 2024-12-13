@@ -363,40 +363,63 @@ const CuotasActuales = ({ authTokens, alumno }) => {
                 </>
             )}
                 {/* Modal para confirmar pago */}
-            <Modal show={showModal} onHide={handleCerrarModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Informar Pago</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>El pago de las cuotas seleccionadas se realiza a través de un formulario externo. Por favor, complete y envíe el formulario para continuar con el proceso de pago.</p>
-                    <p>Tenga en cuenta que la confirmación del pago se hará únicamente después de verificar que el pago ha sido efectivamente realizado.</p>
-                    <p style={{ textAlign: 'center' }}>
-                        <span
-                            style={{ 
-                                color: 'blue', 
-                                textDecoration: 'underline',
-                                cursor: 'pointer', 
-                                fontSize: '24px', // Tamaño del texto
-                                display: 'inline-block', 
-                                marginTop: '10px' 
-                            }}
-                            onClick={() => manejoForm()}
-                            //onClick={() => handlePago()}
-                        >
-                            Formulario de pago
-                        </span>
-                    </p>
-                    <p>Una vez que haya enviado correctamente el formulario, presione en "Confirmar".</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCerrarModal}>
-                        Cancelar
-                    </Button>
-                    <Button variant="primary" onClick={handleConfirmarPago}>
-                        Confirmar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                <Modal show={showModal} onHide={handleCerrarModal} centered>
+                    <Modal.Header closeButton >
+                        <Modal.Title >Informar Pago</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ padding: "20px", fontSize: "16px", lineHeight: "1.5" }}>
+                        <p>
+                            El pago de las cuotas seleccionadas se realiza a través de un formulario externo. Por favor, complete y envíe el
+                            formulario para continuar con el proceso de pago.
+                        </p>
+                        <p>
+                            Tenga en cuenta que la confirmación del pago se hará únicamente después de verificar que el pago ha sido
+                            efectivamente realizado.
+                        </p>
+                        <div style={{ textAlign: "center", margin: "20px 0" }}>
+                            <span
+                                style={{
+                                    color: "#007bff",
+                                    textDecoration: "underline",
+                                    cursor: "pointer",
+                                    fontSize: "20px",
+                                    fontWeight: "bold",
+                                    display: "inline-block",
+                                    padding: "10px",
+                                    border: "2px solid #007bff",
+                                    borderRadius: "5px",
+                                }}
+                                onClick={manejoForm}
+                            >
+                                Formulario de pago
+                            </span>
+                        </div>
+                        <p>
+                            Una vez que haya enviado correctamente el formulario, presione en <strong>"Confirmar"</strong>.
+                        </p>
+                        <div style={{
+                            backgroundColor: "#f1f1f1",
+                            padding: "15px",
+                            borderRadius: "8px",
+                            margin: "15px 0",
+                        }}>
+                            <p style={{ fontWeight: "bold", color: "#333" }}>
+                                Cuotas a pagar: <span >{mesesSeleccionados}</span>
+                            </p>
+                            <p style={{ fontWeight: "bold", color: "#333" }}>
+                                Monto a pagar: <span>${montoAPagar}</span>
+                            </p>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer >
+                        <Button variant="secondary" onClick={handleCerrarModal} style={{ padding: "10px 20px", fontSize: "16px" }}>
+                            Cancelar
+                        </Button>
+                        <Button variant="primary" onClick={handleConfirmarPago} style={{ padding: "10px 20px", fontSize: "16px" }}>
+                            Confirmar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
         </>
     );
 };

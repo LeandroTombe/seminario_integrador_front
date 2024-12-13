@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import {Form, Row, Col, Card, Pagination} from 'react-bootstrap';
 import ExportarDatos from '../../components/ExportarDatos'
+import InformacionFinanciera from '../../components/InformacionFinanciera';
 
 const ListadoPagos = () => {
   const [pagos, setPagos] = useState([]);
@@ -382,7 +383,8 @@ const ListadoPagos = () => {
             </tbody>
           </Table>
 
-          <div className="text-end">
+          <div className="d-flex justify-content-end gap-2">
+              {/*<InformacionFinanciera pagos={pagos}></InformacionFinanciera>*/}
               <ExportarDatos 
                   titulo={generarTitulo()}
                   encabezados={encabezados}

@@ -89,9 +89,10 @@ const Perfil = () => {
             {/* Columna de Datos Académicos */}
             <Col md={6}>
                 <h2>Datos Académicos</h2>
-                <h5>
-                <strong>Año de ingreso:</strong> {alumno?.ingreso}
-                </h5>
+                <ListGroup variant="flush">
+                  <ListGroup.Item><strong>Año de ingreso:</strong> {alumno?.ingreso}</ListGroup.Item>
+                  <ListGroup.Item><strong>Estado actual:</strong> {alumno?.pago_al_dia ? "habilitado" : "inhabilitado"}</ListGroup.Item>
+                </ListGroup>
                 <br />
                 <h5>Materias cursadas actualmente</h5>
                 {materiasActuales.length > 0 ? (

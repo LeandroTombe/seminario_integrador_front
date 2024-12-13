@@ -232,7 +232,7 @@ const GestionBajaProvisoria = () => {
                             </div>
 
                             <EstadoDeCuenta alumno={selectedBaja.alumno} />
-                            <strong>Al aceptar la baja provisoria, se eliminarán las cuotas con estado "Pendiente"</strong>
+                            <h3>Al aprobar la baja provisoria, se eliminarán las cuotas con estado "Pendiente"</h3>
                             <Form.Group className="mt-3">
                                 <Form.Label>Comentarios</Form.Label>
                                 <Form.Control

@@ -214,7 +214,7 @@ const GestionHabilitacionAlumno = () => {
     const generarTitulo = () => {
       let titulo = "";
       if (filtroAccion == 'seleccionar') {
-        titulo += 'Alumnos a habilitar o inhabilitar'
+        titulo += 'Gestion de inhabilitaciones'
       } else {
           titulo += `Alumnos a ${filtroAccion === 'habilitar' ? 'habilitar' : 'inhabilitar'}`;
       }

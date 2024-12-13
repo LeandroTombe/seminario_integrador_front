@@ -14,6 +14,7 @@ const AlumnosCuatrimestre = () => {
     const [filterEstado, setFilterEstado] = useState('todos'); // Estado para el filtro de firma de compromiso
     const [filterCursa, setFilterCursa] = useState('SI')
     const [filterIngreso, setFilterIngreso] = useState('todos');
+    const [filterCuota, setFilterCuota] = useState('todos');
 
     const navigate = useNavigate(); // Hook para redirigir
 
@@ -59,7 +60,12 @@ const AlumnosCuatrimestre = () => {
             filterIngreso === 'todos' ||
             firmante.alumno.ingreso === parseInt(filterIngreso);
 
-        return matchesSearch && matchesFirmoFilter && matchesEstadoFilter && matchesAnioIngresoFilter && matchesCursaFilter;
+        const matchesCuotaFilter = 
+            filterCuota === 'todos' || 
+            (filterCuota === 'completa' && firmante.alumno.materias.length > 2) ||
+            (filterCuota === 'reducida' && firmante.alumno.materias.length > 0 && firmante.alumno.materias.length <= 2);
+
+        return matchesSearch && matchesFirmoFilter && matchesEstadoFilter && matchesAnioIngresoFilter && matchesCursaFilter && matchesCuotaFilter;
     });
 
     // Contar el total de firmantes y no firmantes
@@ -90,7 +96,7 @@ const AlumnosCuatrimestre = () => {
         { label: 'Nombre', key: 'nombre' },
         { label: 'Ingreso', key: 'ingreso' },
         { label: 'Correo', key: 'email' },
-        { label: 'Cantidad de Materias', key: 'materiasCount' },
+        { label: 'Cuota', key: 'materiasCount' },
         { label: 'Compromiso Firmado', key: 'firmo_compromiso' },
         { label: 'Estado', key: 'pago_al_dia' },
     ];
@@ -102,7 +108,7 @@ const AlumnosCuatrimestre = () => {
         nombre: firmante.alumno.nombre,
         ingreso: firmante.alumno.ingreso,
         email: firmante.alumno.email,
-        materiasCount: firmante.alumno.materias.length || "No cursa",
+        materiasCount: firmante.alumno.materias.length === 0 ? "No cursa" : (firmante.alumno.materias.length <= 2 ? "Reducida" : "Completa"),
         firmo_compromiso: firmante.firmo_compromiso ? 'SI' : 'NO',
         pago_al_dia: firmante.alumno.pago_al_dia ? 'Habilitado' : 'Inhabilitado',
     }));
@@ -112,6 +118,9 @@ const AlumnosCuatrimestre = () => {
         let titulo = "Alumnos";
         if (filterCursa !== 'todos') {
             titulo += filterCursa === 'SI' ? " cursantes del cuatrimestre actual" : "";
+        }
+        if (filterCuota !== 'todos') {
+            titulo += ` con cuota ${filterCuota}`;
         }
         if (filterIngreso !== 'todos') {
             titulo += ` ingresantes en ${filterIngreso}`
@@ -175,6 +184,14 @@ const AlumnosCuatrimestre = () => {
                                 <option value="NO">NO</option>
                             </Form.Select>
                         </Form.Group>
+                        <Form.Group controlId="cuotaFilter" className="w-50 ms-2">
+                            <Form.Label>Cuota</Form.Label>
+                            <Form.Select value={filterCuota} onChange={(e) => setFilterCuota(e.target.value)}>
+                                <option value="todos">Todos</option>
+                                <option value="completa">Completa</option>
+                                <option value="reducida">Reducida</option>
+                            </Form.Select>
+                        </Form.Group>
                         {/* Filtro de año de ingreso */}
                         <Form.Group controlId="ingresoFilter" className="w-50 ms-2">
                             <Form.Label>Año de Ingreso</Form.Label>
@@ -215,7 +232,7 @@ const AlumnosCuatrimestre = () => {
                                 <th>Nombre</th>
                                 <th>Ingreso</th>
                                 <th>Correo</th>
-                                <th>Cantidad de Materias</th>
+                                <th>Cuota</th>
                                 <th>Compromiso Firmado</th>
                                 <th>Estado</th>
                             </tr>
@@ -229,7 +246,7 @@ const AlumnosCuatrimestre = () => {
                                     <td>{firmante.alumno.nombre}</td>
                                     <td>{firmante.alumno.ingreso}</td>
                                     <td>{firmante.alumno.email}</td>
-                                    <td>{firmante.alumno.materias.length || "No cursa"}</td>
+                                    <td>{firmante.alumno.materias.length === 0 ? "No cursa" : (firmante.alumno.materias.length <= 2 ? "Reducida" : "Completa")}</td>
                                     <td>{firmante.firmo_compromiso ? 'SI' : 'NO'}</td>
                                     <td>{firmante.alumno.pago_al_dia ? 'Habilitado' : 'Inhabilitado'}</td>
                                 </tr>

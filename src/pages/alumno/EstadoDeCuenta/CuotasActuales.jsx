@@ -245,7 +245,7 @@ const CuotasActuales = ({ authTokens, alumno }) => {
             }
     
             const data = await response.json();
-            alert('Pago confirmado:', data);
+            alert('Pago informado con éxito', data);
             setShowModal(false);  // Cierra el modal después de confirmar el pago
             window.location.reload();  // Recarga la página después del pago
         } catch (error) {

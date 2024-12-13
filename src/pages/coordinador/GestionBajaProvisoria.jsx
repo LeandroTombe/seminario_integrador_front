@@ -153,7 +153,7 @@ const GestionBajaProvisoria = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </Col>
-                    <Col md={4}>
+                    <Col md={6}>
                         <Form.Label>Estado</Form.Label>
                         <Form.Select
                             value={estadoFiltro}
